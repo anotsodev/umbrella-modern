@@ -24,16 +24,16 @@ datasource db {
 // ---- Languages ------------------------------------------------------------
 
 model Language {
-  code        String   @id // e.g. "en", "ar", "es", "fa", "fr", "ru", "zh-Hant"
-  name        String // e.g. "English"
-  nativeName  String   @map("native_name")
-  rtl         Boolean  @default(false)
-  createdAt   DateTime @default(now()) @map("created_at")
+  code       String   @id // e.g. "en", "ar", "es", "fa", "fr", "ru", "zh-Hant"
+  name       String // e.g. "English"
+  nativeName String   @map("native_name")
+  rtl        Boolean  @default(false)
+  createdAt  DateTime @default(now()) @map("created_at")
 
-  categories          Category[]
-  contents            Content[]
-  checklists          Checklist[]
-  forms               Form[]
+  categories Category[]
+  contents   Content[]
+  checklists Checklist[]
+  forms      Form[]
 
   @@map("languages")
 }
@@ -41,21 +41,21 @@ model Language {
 // ---- Categories -----------------------------------------------------------
 
 model Category {
-  id          BigInt   @id @default(autoincrement())
-  languageId  String   @map("language_id")
-  slug        String // e.g. "communications"
-  title       String
-  iconUrl     String?  @map("icon_url")
-  position    Int      @default(0)
-  parentId    BigInt?  @map("parent_id")
-  createdAt   DateTime @default(now()) @map("created_at")
+  id         BigInt   @id @default(autoincrement())
+  languageId String   @map("language_id")
+  slug       String // e.g. "communications"
+  title      String
+  iconUrl    String?  @map("icon_url")
+  position   Int      @default(0)
+  parentId   BigInt?  @map("parent_id")
+  createdAt  DateTime @default(now()) @map("created_at")
 
-  language    Language  @relation(fields: [languageId], references: [code], onDelete: Cascade)
-  parent      Category? @relation("CategoryToParent", fields: [parentId], references: [id], onDelete: SetNull)
-  children    Category[] @relation("CategoryToParent")
-  contents    Content[]
-  checklists  Checklist[]
-  forms       Form[]
+  language   Language    @relation(fields: [languageId], references: [code], onDelete: Cascade)
+  parent     Category?   @relation("CategoryToParent", fields: [parentId], references: [id], onDelete: SetNull)
+  children   Category[]  @relation("CategoryToParent")
+  contents   Content[]
+  checklists Checklist[]
+  forms      Form[]
 
   @@unique([languageId, slug])
   @@index([parentId])
@@ -78,14 +78,14 @@ model Content {
   title       String
   mdPath      String      @map("md_path") // e.g. "communications/s_encrypted-messengers.md"
   html        String      @db.Text // rendered HTML, populated by the import job
-  frontmatter Json        // YAML frontmatter as a JSON blob
+  frontmatter Json // YAML frontmatter as a JSON blob
   position    Int         @default(0)
   type        ContentType @default(topic)
   createdAt   DateTime    @default(now()) @map("created_at")
   updatedAt   DateTime    @updatedAt @map("updated_at")
 
-  language    Language   @relation(fields: [languageId], references: [code], onDelete: Cascade)
-  category    Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  language Language @relation(fields: [languageId], references: [code], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@unique([languageId, mdPath])
   @@index([categoryId, position])
@@ -96,20 +96,20 @@ model Content {
 // ---- Checklists (pathways) -----------------------------------------------
 
 model Checklist {
-  id          BigInt   @id @default(autoincrement())
-  slug        String
-  categoryId  BigInt   @map("category_id")
-  languageId  String   @map("language_id")
-  title       String
-  custom      Boolean  @default(false)
-  ownerId     String?  @map("owner_id") // null for built-in checklists
-  position    Int      @default(0)
-  createdAt   DateTime @default(now()) @map("created_at")
+  id         BigInt   @id @default(autoincrement())
+  slug       String
+  categoryId BigInt   @map("category_id")
+  languageId String   @map("language_id")
+  title      String
+  custom     Boolean  @default(false)
+  ownerId    String?  @map("owner_id") // null for built-in checklists
+  position   Int      @default(0)
+  createdAt  DateTime @default(now()) @map("created_at")
 
-  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  language    Language  @relation(fields: [languageId], references: [code], onDelete: Cascade)
-  items       ChecklistItem[]
-  runs        UserChecklistRun[]
+  category Category           @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  language Language           @relation(fields: [languageId], references: [code], onDelete: Cascade)
+  items    ChecklistItem[]
+  runs     UserChecklistRun[]
 
   @@unique([languageId, slug])
   @@index([categoryId, position])
@@ -124,8 +124,8 @@ model ChecklistItem {
   disabled    Boolean  @default(false)
   createdAt   DateTime @default(now()) @map("created_at")
 
-  checklist   Checklist @relation(fields: [checklistId], references: [id], onDelete: Cascade)
-  progress    UserChecklistProgress[]
+  checklist Checklist               @relation(fields: [checklistId], references: [id], onDelete: Cascade)
+  progress  UserChecklistProgress[]
 
   @@index([checklistId, position])
   @@map("checklist_items")
@@ -140,8 +140,8 @@ model UserChecklistRun {
   startedAt   DateTime  @default(now()) @map("started_at")
   completedAt DateTime? @map("completed_at")
 
-  checklist   Checklist @relation(fields: [checklistId], references: [id], onDelete: Cascade)
-  progress    UserChecklistProgress[]
+  checklist Checklist               @relation(fields: [checklistId], references: [id], onDelete: Cascade)
+  progress  UserChecklistProgress[]
 
   @@index([userId, checklistId])
   @@map("user_checklist_runs")
@@ -154,8 +154,8 @@ model UserChecklistProgress {
   checked   Boolean  @default(false)
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  run       UserChecklistRun  @relation(fields: [runId], references: [id], onDelete: Cascade)
-  item      ChecklistItem     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  run  UserChecklistRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  item ChecklistItem    @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
   @@unique([runId, itemId])
   @@map("user_checklist_progress")
@@ -164,17 +164,17 @@ model UserChecklistProgress {
 // ---- Forms ---------------------------------------------------------------
 
 model Form {
-  id          BigInt   @id @default(autoincrement())
-  categoryId  BigInt   @map("category_id")
-  languageId  String   @map("language_id")
-  slug        String
-  title       String
-  schema      Json // raw f_*.yml contents: screens → items w/ types
-  createdAt   DateTime @default(now()) @map("created_at")
+  id         BigInt   @id @default(autoincrement())
+  categoryId BigInt   @map("category_id")
+  languageId String   @map("language_id")
+  slug       String
+  title      String
+  schema     Json // raw f_*.yml contents: screens → items w/ types
+  createdAt  DateTime @default(now()) @map("created_at")
 
-  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  language    Language @relation(fields: [languageId], references: [code], onDelete: Cascade)
-  userForms   UserForm[]
+  category  Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  language  Language   @relation(fields: [languageId], references: [code], onDelete: Cascade)
+  userForms UserForm[]
 
   @@unique([languageId, slug])
   @@map("forms")
@@ -189,21 +189,26 @@ model UserForm {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  form      Form @relation(fields: [formId], references: [id], onDelete: Cascade)
+  form Form @relation(fields: [formId], references: [id], onDelete: Cascade)
 
   @@index([userId, formId])
   @@map("user_forms")
 }
 
-// ---- Users (Phase 2; table exists for NextAuth + future audit_log FK) ----
+// ---- Users (better-auth: email + magic-link, no passwords) -------------
 
 model User {
-  id           String   @id @default(cuid())
-  email        String?  @unique
-  passwordHash String?  @map("password_hash")
-  createdAt    DateTime @default(now()) @map("created_at")
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false) @map("email_verified")
+  image         String?
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
 
-  auditEntries AuditLogEntry[]
+  sessions      Session[]
+  accounts      Account[]
+  auditEntries  AuditLogEntry[]
 
   @@map("users")
 }
@@ -215,8 +220,56 @@ model AuditLogEntry {
   payload   Json
   createdAt DateTime @default(now()) @map("created_at")
 
-  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@index([userId, createdAt])
   @@map("audit_log")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
 }
