@@ -23,7 +23,29 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      init:
+        condition: service_completed_successfully
     restart: unless-stopped
+
+  # One-shot init: apply Prisma schema, then import umbrella-content
+  # if the DB is empty. On subsequent `make up` runs the schema push
+  # is a no-op and the import skips itself once categories > 0, so
+  # this is cheap and safe to re-run.
+  init:
+    build:
+      context: .
+      target: dev
+    command: ["sh", "-c", "npx prisma db push --skip-generate && sh bin/import-if-empty"]
+    environment:
+      - DATABASE_URL=postgresql://app:app@db:5432/app?schema=public
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - umbrella-content:/app/public/content
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
 
   db:
     image: postgres:16-alpine@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea
