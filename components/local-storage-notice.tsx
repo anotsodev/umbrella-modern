@@ -1,10 +1,9 @@
 "use client";
 
-// First-visit banner explaining that pathway + form progress is
-// device-local until sign-in lands. Sign-in already exists in
-// Phase 0, so the "Sign in to sync" link in the banner is real;
-// the "coming soon" framing refers to the per-user server
-// persistence that Phase 2 adds in this same release.
+// First-visit banner explaining that pathway + form progress
+// is device-local for anonymous users. Signed-in users get
+// per-user server persistence (Phase 2). The "Sign in to sync"
+// link goes to the real sign-in page.
 //
 // Dismissal is sticky via a localStorage key. We don't try to
 // hide it server-side (it would defeat the point — anonymous
