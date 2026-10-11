@@ -303,3 +303,124 @@ export async function searchContent(
     rank: r.rank,
   }));
 }
+
+// ---- Checklists (pathways) ----------------------------------------------
+
+export type ChecklistItem = {
+  id: string; // BigInt from the DB, stringified for client-side keying
+  position: number;
+  kind: string; // "check" | "section" | "umbrella"
+  label: string;
+  body: string | null;
+  href: string | null;
+  // The label of the most recent "section" item before this one.
+  // null for items before the first section header. Used by the
+  // reader UI to render section headings.
+  sectionTitle: string | null;
+};
+
+export type ChecklistSummary = {
+  id: string;
+  slug: string;
+  title: string;
+  categorySlug: string;
+  categoryTitle: string;
+  itemCount: number;
+};
+
+export type ChecklistDetail = ChecklistSummary & {
+  // Optional intro pulled from the first "umbrella" item body (a
+  // cross-reference to a topic) or a leading markdown body, if the
+  // import job populated one. null when there's nothing to show.
+  intro: string | null;
+  items: ChecklistItem[];
+};
+
+// All checklists for a language, grouped by their parent category. The
+// reader surface uses this to render the /<lang>/pathways index.
+export async function getAllChecklists(
+  lang: string
+): Promise<ChecklistSummary[]> {
+  assertLocale(lang);
+  const rows = await prisma.checklist.findMany({
+    where: { languageId: lang },
+    orderBy: [{ categoryId: "asc" }, { position: "asc" }, { slug: "asc" }],
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      category: { select: { slug: true, title: true } },
+      _count: { select: { items: true } },
+    },
+  });
+  return rows.map((r) => ({
+    id: String(r.id),
+    slug: r.slug,
+    title: r.title,
+    categorySlug: r.category.slug,
+    categoryTitle: r.category.title,
+    itemCount: r._count.items,
+  }));
+}
+
+// One checklist with its items, ordered by position. Returns null if
+// the slug doesn't exist for the language.
+export async function getChecklist(
+  lang: string,
+  slug: string
+): Promise<ChecklistDetail | null> {
+  assertLocale(lang);
+  const row = await prisma.checklist.findUnique({
+    where: { languageId_slug: { languageId: lang, slug } },
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      category: { select: { slug: true, title: true } },
+      items: {
+        orderBy: { position: "asc" },
+        select: {
+          id: true,
+          position: true,
+          kind: true,
+          label: true,
+          body: true,
+          href: true,
+        },
+      },
+    },
+  });
+  if (!row) return null;
+
+  // Walk items once: track the most recent section heading and
+  // capture the first umbrella-kind body as the optional intro.
+  let sectionTitle: string | null = null;
+  let intro: string | null = null;
+  const items: ChecklistItem[] = row.items.map((it) => {
+    if (it.kind === "section") {
+      sectionTitle = it.label;
+    } else if (intro === null && it.kind === "umbrella" && it.body) {
+      intro = it.body;
+    }
+    return {
+      id: String(it.id),
+      position: it.position,
+      kind: it.kind,
+      label: it.label,
+      body: it.body,
+      href: it.href,
+      sectionTitle,
+    };
+  });
+
+  return {
+    id: String(row.id),
+    slug: row.slug,
+    title: row.title,
+    categorySlug: row.category.slug,
+    categoryTitle: row.category.title,
+    itemCount: items.length,
+    intro,
+    items,
+  };
+}
