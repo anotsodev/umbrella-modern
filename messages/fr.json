@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "title": "Umbrella — Guides de sécurité",
+    "description": "Guides de sécurité open source pour journalistes, militants, diplomates et voyageurs."
+  },
+  "home": {
+    "phase": "Bootstrap Phase 0",
+    "title": "Umbrella, sur le web",
+    "subtitle": "La surface de lecture arrive en Phase 1. La pile tourne ; le catalogue de sujets n'est pas encore chargé.",
+    "footer": "Open source sous GPLv3. Source : github.com/anotsodev/Umbrella_android."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "title": "Umbrella — 資訊安全指南",
+    "description": "為記者、活動人士、外交官與旅客提供的開源資訊安全指南。"
+  },
+  "home": {
+    "phase": "Phase 0 啟動中",
+    "title": "Umbrella, 搬到網頁上",
+    "subtitle": "閱讀介面會在第一階段上線。技術堆疊已就緒；主題目錄尚未載入。",
+    "footer": "以 GPLv3 授權開放原始碼。來源：github.com/anotsodev/Umbrella_android。"
+  }
+}
