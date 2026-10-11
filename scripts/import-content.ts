@@ -366,7 +366,13 @@ async function importChecklists(lang: string, catMap: Map<string, CatRow>) {
     });
     await prisma.checklistItem.deleteMany({ where: { checklistId: checklist.id } });
     for (let i = 0; i < doc.list.length; i++) {
-      const raw = doc.list[i];
+      // The yaml parser narrows each entry to a single-key object
+      // ({check: string} | {label: string} | ...), but we need to
+      // discriminate at runtime, so widen here.
+      const raw = doc.list[i] as unknown as
+        | string
+        | { label?: unknown; check?: unknown; umbrella?: unknown }
+        | Record<string, unknown>;
       // Checklist items are one of:
       //   { label: "..." }  — section heading
       //   { check: "..." }  — action item (markdown body)
