@@ -35,3 +35,21 @@ will boot an image missing the new dep. The cause is `npm ci` in the
 Dockerfile deps stage vs. `npm install` on the host.
 
 **Phase 0 follow-up:** automate a `bin/doctor` warning for this drift.
+
+## Pushing to upstream
+
+The upstream remote is `https://github.com/anotsodev/umbrella-modern.git`
+configured as `origin` (default `gh` convention). The local history
+is currently ahead of the remote — the local repo has 50+ commits on
+`anotsodev-umbrella-modern-web-bootstrap` that don't exist upstream.
+
+**Do not push unless the user explicitly requests it in a chat turn.**
+
+When the user requests a push:
+
+1. `git remote -v` to confirm `origin` is the upstream
+2. `git push -u origin anotsodev-umbrella-modern-web-bootstrap`
+   (first push sets upstream tracking)
+3. Open a PR on GitHub via
+   `gh pr create --base main --head anotsodev-umbrella-modern-web-bootstrap --draft`
+4. Report PR URL to the user
