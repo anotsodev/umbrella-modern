@@ -9,7 +9,8 @@
     "search": "Search",
     "searchPlaceholder": "Search…",
     "pathways": "Pathways",
-    "forms": "Forms"
+    "forms": "Forms",
+    "howToUse": "How to use"
   },
   "home": {
     "phase": "Phase 1 reader",
@@ -117,5 +118,18 @@
     "form": "We found saved answers for this form on this device. Move them to your account so they sync across devices?",
     "accept": "Yes, move it",
     "decline": "Not now"
+  },
+  "notFound": {
+    "title": "This page doesn't exist",
+    "body": "The page you were looking for isn't here. Try searching, browse a category, or return to the home page.",
+    "searchPlaceholder": "Search topics…",
+    "searchButton": "Search",
+    "home": "Go to home"
+  },
+  "howToUse": {
+    "title": "How to use Umbrella",
+    "intro": "Umbrella is a set of short, practical guides for people who need to think about their security — at work, at home, or on the move. The guides are written by trainers and practitioners who have used these techniques in the field.",
+    "audience": "If you are a journalist, activist, aid worker, diplomat, or business traveller in a high-risk environment, the app is designed for you. Everyone else is welcome too — the advice is generally good practice.",
+    "footer": "These screenshots come from the Android build of Umbrella. The web build is functionally equivalent: the same content, the same pathways, the same forms. Differences you may notice are intentional — the web build has a wider screen and keyboard-driven navigation."
   }
 }

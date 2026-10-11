@@ -9,7 +9,8 @@
     "search": "Rechercher",
     "searchPlaceholder": "Rechercher…",
     "pathways": "Parcours",
-    "forms": "Formulaires"
+    "forms": "Formulaires",
+    "howToUse": "Comment utiliser"
   },
   "home": {
     "phase": "Lecteur Phase 1",
@@ -111,5 +112,18 @@
     "form": "Nous avons trouvé des réponses enregistrées pour ce formulaire sur cet appareil. Les transférer vers votre compte pour les synchroniser entre appareils ?",
     "accept": "Oui, transférer",
     "decline": "Pas maintenant"
+  },
+  "notFound": {
+    "title": "Cette page n'existe pas",
+    "body": "La page que vous cherchez n'est pas ici. Essayez de rechercher, parcourez une catégorie ou revenez à l'accueil.",
+    "searchPlaceholder": "Rechercher des sujets…",
+    "searchButton": "Rechercher",
+    "home": "Aller à l'accueil"
+  },
+  "howToUse": {
+    "title": "Comment utiliser Umbrella",
+    "intro": "Umbrella est un ensemble de guides pratiques et courts pour les personnes qui doivent réfléchir à leur sécurité — au travail, à la maison ou en déplacement. Les guides sont rédigés par des formateurs et des praticiens qui ont utilisé ces techniques sur le terrain.",
+    "audience": "Si vous êtes journaliste, militant, travailleur humanitaire, diplomate ou voyageur d'affaires dans un environnement à haut risque, l'application est conçue pour vous. Toute autre personne est également la bienvenue — les conseils sont généralement de bonnes pratiques.",
+    "footer": "Ces captures d'écran proviennent de la version Android d'Umbrella. La version web est fonctionnellement équivalente : le même contenu, les mêmes parcours, les mêmes formulaires. Les différences que vous pouvez remarquer sont intentionnelles — la version web a un écran plus large et une navigation au clavier."
   }
 }
