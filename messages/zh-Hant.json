@@ -3,11 +3,43 @@
     "title": "Umbrella — 資訊安全指南",
     "description": "為記者、活動人士、外交官與旅客提供的開源資訊安全指南。"
   },
+  "nav": {
+    "home": "首頁",
+    "categories": "類別",
+    "search": "搜尋"
+  },
   "home": {
-    "phase": "Phase 0 啟動中",
+    "phase": "第一階段閱讀介面",
     "title": "Umbrella, 搬到網頁上",
-    "subtitle": "閱讀介面會在第一階段上線。技術堆疊已就緒；主題目錄尚未載入。",
+    "subtitle": "為記者、活動人士、外交官與旅客提供的開源資訊安全指南。",
+    "intro": "依主題瀏覽目錄，或進入檢核清單按部就班地擬定安全計畫。",
+    "exploreCategories": "瀏覽類別",
     "footer": "以 GPLv3 授權開放原始碼。來源：github.com/anotsodev/Umbrella_android。"
+  },
+  "categories": {
+    "title": "所有類別",
+    "intro": "Umbrella 中的所有主題，依領域與程度分類。",
+    "topLevel": "主要類別",
+    "subcategories": "子類別"
+  },
+  "topic": {
+    "browseTopics": "此類別中的主題",
+    "updated": "最後更新",
+    "notFound": "找不到主題。",
+    "prev": "上一頁",
+    "next": "下一頁",
+    "inCategory": "於"
+  },
+  "breadcrumb": {
+    "home": "首頁",
+    "categories": "類別"
+  },
+  "localePicker": {
+    "label": "語言",
+    "menu": "切換語言"
+  },
+  "footer": {
+    "license": "以 GPLv3 授權"
   },
   "auth": {}
 }

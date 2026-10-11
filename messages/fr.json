@@ -3,11 +3,43 @@
     "title": "Umbrella — Guides de sécurité",
     "description": "Guides de sécurité open source pour journalistes, militants, diplomates et voyageurs."
   },
+  "nav": {
+    "home": "Accueil",
+    "categories": "Catégories",
+    "search": "Rechercher"
+  },
   "home": {
-    "phase": "Bootstrap Phase 0",
+    "phase": "Lecteur Phase 1",
     "title": "Umbrella, sur le web",
-    "subtitle": "La surface de lecture arrive en Phase 1. La pile tourne ; le catalogue de sujets n'est pas encore chargé.",
+    "subtitle": "Guides de sécurité open source pour journalistes, militants, diplomates et voyageurs.",
+    "intro": "Parcourez le catalogue par sujet, ou ouvrez une liste de contrôle pour travailler un plan de sécurité étape par étape.",
+    "exploreCategories": "Explorer les catégories",
     "footer": "Open source sous GPLv3. Source : github.com/anotsodev/Umbrella_android."
+  },
+  "categories": {
+    "title": "Toutes les catégories",
+    "intro": "Chaque sujet dans Umbrella, organisé par domaine et niveau.",
+    "topLevel": "Catégories principales",
+    "subcategories": "Sous-catégories"
+  },
+  "topic": {
+    "browseTopics": "Sujets dans cette catégorie",
+    "updated": "Dernière mise à jour",
+    "notFound": "Sujet introuvable.",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "inCategory": "dans"
+  },
+  "breadcrumb": {
+    "home": "Accueil",
+    "categories": "Catégories"
+  },
+  "localePicker": {
+    "label": "Langue",
+    "menu": "Changer de langue"
+  },
+  "footer": {
+    "license": "Sous licence GPLv3"
   },
   "auth": {}
 }
