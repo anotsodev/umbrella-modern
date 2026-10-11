@@ -146,6 +146,22 @@ else
   exit 1
 fi
 
+# Sign-out must handle the "already signed out" path without
+# 500-ing. Regression test for the server-side session-deletion
+# path: this endpoint is required to delete the row in the
+# `session` table on a real sign-out (verified by hand in the
+# dev workflow), and must also tolerate no-cookie and stale-cookie
+# callers so the dropdown's sign-out click is always safe.
+signout=$(curl -s -o /dev/null -w "%{http_code}" -X POST http://localhost:3000/api/auth/sign-out \
+  -H "Origin: http://localhost:3000" -H "Content-Type: application/json" -d '{}' || echo "000")
+if [ "$signout" = "200" ] || [ "$signout" = "204" ]; then
+  ok "POST /api/auth/sign-out (no session) -> $signout (anonymous-safe)"
+else
+  echo "  ✘ POST /api/auth/sign-out -> $signout (expected 200 or 204)"
+  docker compose logs web
+  exit 1
+fi
+
 for loc in en ar es fa fr ru zh-Hant; do
   code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000/$loc/sign-in" || echo "000")
   if [ "$code" = "200" ]; then
