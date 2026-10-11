@@ -18,7 +18,7 @@ business travelers working in high-risk contexts.
 | ORM | Prisma |
 | i18n | next-intl (`/[lang]/...` URL shape) |
 | UI | Tailwind + shadcn/ui |
-| Auth | NextAuth (Phase 2) — anonymous by default in Phase 0/1 |
+| Auth | NextAuth (Phase 2) — anonymous by default in Phase 0/1; Next 16 compat lands before Phase 2 |
 | Dev loop | Docker Compose (`web` + `db`) + Make |
 
 ## Local development
