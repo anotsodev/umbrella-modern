@@ -87,6 +87,7 @@ export default async function LocaleLayout({
                   {tNav("search")}
                 </Link>
               </div>
+              {/* Suspense required: next-intl client components use usePathname() which must be inside a Suspense boundary under Next 16 cacheComponents. */}
               <Suspense fallback={null}>
                 <LocalePicker current={lang} />
               </Suspense>

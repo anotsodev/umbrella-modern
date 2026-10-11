@@ -7,6 +7,8 @@ import { notFound } from "next/navigation";
 // Reader is per-request, per-language content from Postgres.
 // `instant = false` opts out of Next 16's prerender-at-build-time
 // attempt; the page renders on every request.
+// Next 16 `cacheComponents: true` rejects `export const dynamic = "force-dynamic"`.
+// Use `instant = false` instead, per Next.js 16 docs.
 export const instant = false;
 
 type Props = {

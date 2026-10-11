@@ -9,6 +9,8 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n";
 
+// Next 16 `cacheComponents: true` rejects `export const dynamic = "force-dynamic"`.
+// Use `instant = false` instead, per Next.js 16 docs.
 export const instant = false;
 
 type Props = {
