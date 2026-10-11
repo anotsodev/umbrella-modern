@@ -4,7 +4,7 @@
 # The Prisma schema is copied here so the generated client lives in node_modules
 # and survives into the dev/builder/runner stages without re-running prisma.
 # openssl is required by Prisma's query engine at runtime.
-FROM node:20-alpine AS deps
+FROM node:22-alpine AS deps
 RUN apk add --no-cache openssl
 WORKDIR /app
 COPY package.json package-lock.json* ./
@@ -13,7 +13,7 @@ RUN npm ci
 RUN npx prisma generate
 
 # ---------- dev stage: full dev environment with HMR ----------
-FROM node:20-alpine AS dev
+FROM node:22-alpine AS dev
 WORKDIR /app
 ENV NODE_ENV=development
 # Install dumb-init for proper signal handling, openssl for Prisma,
@@ -27,14 +27,14 @@ ENTRYPOINT ["dumb-init", "--"]
 CMD ["npm", "run", "dev"]
 
 # ---------- builder stage: production build ----------
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
 
 # ---------- runner stage: minimal production image ----------
-FROM node:20-alpine AS runner
+FROM node:22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
