@@ -177,3 +177,33 @@ for path in /api/me/pathway/test /api/me/form/test; do
     exit 1
   fi
 done
+
+# Phase 3 surface: /how-to-use and /terms, per locale. Liveness
+# only — we don't probe the asset or assert the pending-review
+# banner is present (that's a manual review step before v1).
+for path in how-to-use terms; do
+  for loc in en ar es fa fr ru zh-Hant; do
+    code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000/$loc/$path" || echo "000")
+    if [ "$code" = "200" ]; then
+      ok "/$loc/$path -> 200"
+    else
+      echo "  ✘ /$loc/$path -> $code (expected 200)"
+      docker compose logs web
+      exit 1
+    fi
+  done
+done
+
+# Phase 3 404: a non-existent path under each locale should
+# return 404 with the styled body. We assert the status code
+# only; the body content is checked manually in the dev console.
+for loc in en ar es fa fr ru zh-Hant; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000/$loc/does-not-exist" || echo "000")
+  if [ "$code" = "404" ]; then
+    ok "/$loc/does-not-exist -> 404 (styled)"
+  else
+    echo "  ✘ /$loc/does-not-exist -> $code (expected 404)"
+    docker compose logs web
+    exit 1
+  fi
+done
