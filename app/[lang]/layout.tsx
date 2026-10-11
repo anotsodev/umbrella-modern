@@ -124,14 +124,19 @@ export default async function LocaleLayout({
           </header>
           <div className="flex-1">{children}</div>
           <footer className="border-t border-zinc-200 dark:border-zinc-800">
-            <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-6 text-xs text-zinc-500">
+            <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-6 py-6 text-xs text-zinc-500">
               <span>© Umbrella · {tFoot("license")}</span>
-              <a
-                href="https://github.com/anotsodev/Umbrella_android"
-                className="hover:underline"
-              >
-                Source
-              </a>
+              <div className="flex items-center gap-4">
+                <Link href={`/${lang}/terms`} className="hover:underline">
+                  {tFoot("privacy")}
+                </Link>
+                <a
+                  href="https://github.com/anotsodev/Umbrella_android"
+                  className="hover:underline"
+                >
+                  Source
+                </a>
+              </div>
             </div>
           </footer>
         </NextIntlClientProvider>

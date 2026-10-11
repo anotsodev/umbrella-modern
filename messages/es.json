@@ -42,7 +42,8 @@
     "menu": "Cambiar idioma"
   },
   "footer": {
-    "license": "Licenciado bajo GPLv3"
+    "license": "Licenciado bajo GPLv3",
+    "privacy": "Privacidad"
   },
   "notice": {
     "localStorageOnly": "Tu progreso se guarda solo en este dispositivo. <signInLink>Inicia sesión</signInLink> para sincronizar entre dispositivos.",

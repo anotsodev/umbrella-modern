@@ -42,7 +42,8 @@
     "menu": "切換語言"
   },
   "footer": {
-    "license": "以 GPLv3 授權"
+    "license": "以 GPLv3 授權",
+    "privacy": "隱私權"
   },
   "notice": {
     "localStorageOnly": "您的進度僅儲存於此裝置。<signInLink>登入</signInLink>以跨裝置同步。",

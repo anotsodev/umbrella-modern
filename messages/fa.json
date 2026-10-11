@@ -42,7 +42,8 @@
     "menu": "تغییر زبان"
   },
   "footer": {
-    "license": "تحت مجوز GPLv3"
+    "license": "تحت مجوز GPLv3",
+    "privacy": "حریم خصوصی"
   },
   "notice": {
     "localStorageOnly": "پیشرفت شما فقط در این دستگاه ذخیره می‌شود. برای همگام‌سازی بین دستگاه‌ها <signInLink>وارد شوید</signInLink>.",
