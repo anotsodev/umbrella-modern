@@ -23,8 +23,10 @@ finalized; this is a placeholder).
   progress, your form answers, and the locale you last viewed
   from. That's it. We do not collect your name, your IP address,
   your device fingerprint, or anything else.
-- **You can export or delete your data at any time** from the
-  account page.
+- **You'll be able to export or delete your data** from your
+  account page. (We are adding these controls in a follow-up
+  release. Until they're live, contact us at the email below and
+  we'll handle export or deletion manually.)
 - **We will not sell, rent, or share your data with anyone.** The
   service is self-hosted by the project maintainers; we do not
   rely on third-party data processors beyond the email-sending
