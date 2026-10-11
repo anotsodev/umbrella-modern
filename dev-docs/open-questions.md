@@ -4,6 +4,18 @@ Things the PM agent (or the dev agent when blocked) should surface back
 to the user. Format: short title, the actual question, why it matters,
 and a recommended default if the user wants to defer.
 
+## Resolved by Phase 1 (kept for context)
+
+- **Form field types** → shipped the 4 upstream types
+  (`text_input` / `text_area` / `single_choice` /
+  `multiple_choice`) plus `label` (rendered as a section
+  heading, not a form input). Parser fails loud on any
+  unknown type. Defer date / file pickers until the upstream
+  schema adds them.
+- **Reader surface scope** → Phase 1 shipped browse + search +
+  read topics + pathway tick state + form fill + form HTML
+  export. No read-only fallback needed.
+
 ## Deferred from the plan
 
 ### Hosting target

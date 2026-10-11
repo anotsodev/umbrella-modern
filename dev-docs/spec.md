@@ -179,6 +179,58 @@ Shipped: `app/[lang]/pathways/page.tsx` + `app/[lang]/pathways/[slug]/page.tsx`
   for `/<lang>/pathways/<slug>` (404 acceptable when a checklist
   hasn't been translated into that locale yet).
 
+## Forms (Phase 1, partial)
+
+Shipped: `app/[lang]/forms/page.tsx` + `app/[lang]/forms/[slug]/page.tsx`
++ `components/form-runner.tsx` + `lib/reader.getAllForms` /
+`getForm` + `assertValidFormSchema` + header nav link + per-locale
+i18n + smoke coverage.
+
+- Source: the upstream `securityfirst/umbrella-content` repo
+  ships forms as `forms/<slug>/<lang>.yml` with a `screens` →
+  `items` shape. Item types: `label`, `text_input`, `text_area`,
+  `single_choice`, `multiple_choice`. Three places must stay in
+  lockstep when adding a type: import job
+  (`scripts/import-content.ts`), validator
+  (`lib/reader.ts assertValidFormSchema`), and renderer
+  (`components/form-runner.tsx Field`).
+- **Optional `label`**: at least one upstream form
+  (`digital-security-incident`, screen 8, "Provide Brief
+  Description") ships `text_area` items with no `label` field.
+  The schema marks `label` as optional; the validator only
+  requires `name` + `type`; the renderer falls back to `name`
+  (the machine-readable slug) for the human-visible label.
+  Translation of the machine name is a future improvement.
+- `getAllForms(lang)` returns one row per form, ordered by
+  `title ASC`. The displayed field count (`itemCount`) excludes
+  `label`-type items so the number matches what the user
+  actually has to fill in.
+- `getForm(lang, slug)` returns the full schema; the
+  validator re-asserts the shape on every read (a DB row can
+  outlive a code change). If a form's stored schema is
+  malformed, the detail page 500s with the offending path;
+  Phase 1 does NOT filter bad forms out of the index
+  (deliberate — better to surface the bug than hide it).
+- `FormRunner` is a client component. Wizard-style: one
+  screen at a time with prev/next/finish buttons. Per-field
+  answers live in `localStorage` under
+  `umbrella.form.<slug>.answers`. Phase 2 swaps to per-user
+  server state keyed off the existing `user_forms` table.
+- **Printable HTML export**: "Export HTML" builds a
+  self-contained document (inline CSS, no external assets)
+  matching the shape of the Android `asHTML()` reference in
+  `data/database/form/entity.kt:149` — h1 form title, h3 per
+  screen, h5 per item, then readonly input/textarea/radio/
+  checkbox per type. Browser print preview renders cleanly
+  with `body { font-family: … }` and `field { break-inside:
+  avoid }` so multi-line answers don't split across pages.
+- v1 has no validation beyond type coercion; Phase 2 (when
+  forms save server-side) is the right time to add
+  per-field validation rules.
+- Smoke: 200 for `/<lang>/forms` across all 7 locales, 200/404
+  for `/<lang>/forms/<slug>` (same locale-tolerance rules as
+  pathways).
+
 ## i18n
 
 - Library: [`next-intl`](https://next-intl.dev) v4 with App Router.
@@ -202,13 +254,16 @@ Shipped: `app/[lang]/pathways/page.tsx` + `app/[lang]/pathways/[slug]/page.tsx`
 
 - `lib/reader.ts` is the read-side data layer. As of Phase 1 it
   carries topics (`getTopLevelCategories`, `getCategoryContents`,
-  `getContent`, …), search (`searchContent`), and pathways
-  (`getAllChecklists`, `getChecklist`) in one file. **Once it
-  crosses ~600 lines or becomes hard to navigate, split it by
-  domain** — `lib/reader/topics.ts`, `lib/reader/search.ts`,
-  `lib/reader/pathways.ts`, etc. — and keep the `assertLocale`
-  helper in a shared `lib/reader/index.ts`. Don't refactor
-  proactively; this is a size/navigation signal, not a smell.
+  `getContent`, …), search (`searchContent`), pathways
+  (`getAllChecklists`, `getChecklist`), and forms
+  (`getAllForms`, `getForm`, `assertValidFormSchema`) in one
+  file — currently ~596 lines. **Once it crosses ~600 lines or
+  becomes hard to navigate, split it by domain** —
+  `lib/reader/topics.ts`, `lib/reader/search.ts`,
+  `lib/reader/pathways.ts`, `lib/reader/forms.ts` — and keep
+  the `assertLocale` helper in a shared `lib/reader/index.ts`.
+  Don't refactor proactively; this is a size/navigation signal,
+  not a smell.
 - The import job (`bin/import-content` or wherever it lives) is
   similarly monolithic; same rule applies.
 
