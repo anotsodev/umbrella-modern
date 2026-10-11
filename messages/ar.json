@@ -49,7 +49,12 @@
     "localStorageOnly": "يتم حفظ تقدمك على هذا الجهاز فقط. <signInLink>سجّل الدخول</signInLink> للمزامنة عبر الأجهزة.",
     "gotIt": "حسناً"
   },
-  "auth": {},
+  "auth": {
+    "headerSignIn": "تسجيل الدخول",
+    "signedInFallback": "الحساب",
+    "account": "الحساب",
+    "signOut": "تسجيل الخروج"
+  },
   "search": {
     "title": "بحث",
     "placeholder": "ابحث في المواضيع…",

@@ -8,6 +8,7 @@ import Link from "next/link";
 import { locales, isLocale, rtlLocales } from "@/i18n";
 import { LocalePicker } from "@/components/locale-picker";
 import { LocalStorageNotice } from "@/components/local-storage-notice";
+import { HeaderAuth } from "@/components/header-auth";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -119,6 +120,15 @@ export default async function LocaleLayout({
               {/* Suspense required: next-intl client components use usePathname() which must be inside a Suspense boundary under Next 16 cacheComponents. */}
               <Suspense fallback={null}>
                 <LocalePicker current={lang} />
+              </Suspense>
+              <Suspense
+                fallback={
+                  <span className="text-sm text-zinc-400" aria-hidden="true">
+                    …
+                  </span>
+                }
+              >
+                <HeaderAuth lang={lang} />
               </Suspense>
             </nav>
           </header>

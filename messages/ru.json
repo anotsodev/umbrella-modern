@@ -49,7 +49,12 @@
     "localStorageOnly": "Ваш прогресс сохраняется только на этом устройстве. <signInLink>Войдите</signInLink>, чтобы синхронизировать между устройствами.",
     "gotIt": "Понятно"
   },
-  "auth": {},
+  "auth": {
+    "headerSignIn": "Войти",
+    "signedInFallback": "Аккаунт",
+    "account": "Аккаунт",
+    "signOut": "Выйти"
+  },
   "search": {
     "title": "Поиск",
     "placeholder": "Поиск тем…",

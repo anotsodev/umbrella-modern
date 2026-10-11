@@ -49,7 +49,12 @@
     "localStorageOnly": "Tu progreso se guarda solo en este dispositivo. <signInLink>Inicia sesión</signInLink> para sincronizar entre dispositivos.",
     "gotIt": "Entendido"
   },
-  "auth": {},
+  "auth": {
+    "headerSignIn": "Iniciar sesión",
+    "signedInFallback": "Cuenta",
+    "account": "Cuenta",
+    "signOut": "Cerrar sesión"
+  },
   "search": {
     "title": "Buscar",
     "placeholder": "Buscar temas…",

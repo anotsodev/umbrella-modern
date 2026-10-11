@@ -49,7 +49,12 @@
     "localStorageOnly": "Votre progression est enregistrée uniquement sur cet appareil. <signInLink>Connectez-vous</signInLink> pour la synchroniser entre vos appareils.",
     "gotIt": "Compris"
   },
-  "auth": {},
+  "auth": {
+    "headerSignIn": "Se connecter",
+    "signedInFallback": "Compte",
+    "account": "Compte",
+    "signOut": "Se déconnecter"
+  },
   "search": {
     "title": "Rechercher",
     "placeholder": "Rechercher des sujets…",

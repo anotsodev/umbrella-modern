@@ -55,7 +55,11 @@
     "emailLabel": "Email",
     "sendLink": "Send sign-in link",
     "sending": "Sending…",
-    "checkYourEmail": "Check your inbox for the sign-in link. (In dev, the link is logged to the web container's stdout.)"
+    "checkYourEmail": "Check your inbox for the sign-in link. (In dev, the link is logged to the web container's stdout.)",
+    "headerSignIn": "Sign in",
+    "signedInFallback": "Account",
+    "account": "Account",
+    "signOut": "Sign out"
   },
   "search": {
     "title": "Search",

@@ -49,7 +49,12 @@
     "localStorageOnly": "您的進度僅儲存於此裝置。<signInLink>登入</signInLink>以跨裝置同步。",
     "gotIt": "知道了"
   },
-  "auth": {},
+  "auth": {
+    "headerSignIn": "登入",
+    "signedInFallback": "帳號",
+    "account": "帳號",
+    "signOut": "登出"
+  },
   "search": {
     "title": "搜尋",
     "placeholder": "搜尋主題…",

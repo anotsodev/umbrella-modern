@@ -49,7 +49,12 @@
     "localStorageOnly": "پیشرفت شما فقط در این دستگاه ذخیره می‌شود. برای همگام‌سازی بین دستگاه‌ها <signInLink>وارد شوید</signInLink>.",
     "gotIt": "متوجه شدم"
   },
-  "auth": {},
+  "auth": {
+    "headerSignIn": "ورود",
+    "signedInFallback": "حساب کاربری",
+    "account": "حساب کاربری",
+    "signOut": "خروج"
+  },
   "search": {
     "title": "جستجو",
     "placeholder": "جستجوی موضوعات…",
