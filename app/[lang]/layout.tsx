@@ -86,6 +86,12 @@ export default async function LocaleLayout({
                 >
                   {tNav("pathways")}
                 </Link>
+                <Link
+                  href={`/${lang}/forms`}
+                  className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                >
+                  {tNav("forms")}
+                </Link>
                 <form
                   action={`/${lang}/search`}
                   method="get"

@@ -8,7 +8,8 @@
     "categories": "دسته‌بندی‌ها",
     "search": "جستجو",
     "searchPlaceholder": "جستجو…",
-    "pathways": "مسیرها"
+    "pathways": "مسیرها",
+    "forms": "فرم‌ها"
   },
   "home": {
     "phase": "خواندن فاز ۱",
@@ -60,5 +61,26 @@
     "markAllDone": "همه را انجام شده علامت بزن",
     "clearAll": "پاک کردن همه",
     "back": "بازگشت به مسیرها"
+  },
+  "forms": {
+    "title": "فرم‌ها",
+    "intro": "فرم‌های قابل پر کردن برای پاسخ به حادثه، سفر و اثبات زنده بودن. پاسخ‌های شما روی این دستگاه ذخیره می‌شود؛ در پایان به یک فایل HTML قابل چاپ صادر کنید.",
+    "empty": "هنوز فرمی به این زبان وجود ندارد.",
+    "screenCount": "{count, plural, =0 {بدون صفحه} one {۱ صفحه} other {{count} صفحه}}",
+    "itemCount": "{count, plural, =0 {بدون فیلد} one {۱ فیلد} other {{count} فیلد}}",
+    "back": "بازگشت به فرم‌ها",
+    "saveDraft": "ذخیره پیش‌نویس",
+    "clearAll": "پاک کردن همه",
+    "exportHtml": "خروجی HTML",
+    "savedLocally": "پیش‌نویس روی این دستگاه ذخیره شد.",
+    "fieldEmpty": "(بدون پاسخ)",
+    "confirmClear": "همه پاسخ‌ها پاک شود؟",
+    "prev": "قبلی",
+    "next": "بعدی",
+    "finish": "پایان و صدور",
+    "screenOf": "صفحه {current} از {total}",
+    "fieldEmptyText": "این صفحه فیلدی برای پر کردن ندارد.",
+    "exportTitle": "فرم صادر شده",
+    "exportedAt": "تاریخ صدور:"
   }
 }

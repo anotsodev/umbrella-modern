@@ -8,7 +8,8 @@
     "categories": "Categories",
     "search": "Search",
     "searchPlaceholder": "Search…",
-    "pathways": "Pathways"
+    "pathways": "Pathways",
+    "forms": "Forms"
   },
   "home": {
     "phase": "Phase 1 reader",
@@ -67,5 +68,26 @@
     "markAllDone": "Mark all done",
     "clearAll": "Clear all",
     "back": "Back to pathways"
+  },
+  "forms": {
+    "title": "Forms",
+    "intro": "Fillable forms for incident response, travel, and proof of life. Your answers are saved on this device; export to a printable HTML file when you're done.",
+    "empty": "No forms in this language yet.",
+    "screenCount": "{count, plural, =0 {No screens} one {1 screen} other {{count} screens}}",
+    "itemCount": "{count, plural, =0 {No fields} one {1 field} other {{count} fields}}",
+    "back": "Back to forms",
+    "saveDraft": "Save draft",
+    "clearAll": "Clear all",
+    "exportHtml": "Export HTML",
+    "savedLocally": "Draft saved on this device.",
+    "fieldEmpty": "(no answer)",
+    "confirmClear": "Clear all answers?",
+    "prev": "Previous",
+    "next": "Next",
+    "finish": "Finish & export",
+    "screenOf": "Screen {current} of {total}",
+    "fieldEmptyText": "This screen has no fields to fill in.",
+    "exportTitle": "Exported form",
+    "exportedAt": "Exported:"
   }
 }

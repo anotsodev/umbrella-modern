@@ -8,7 +8,8 @@
     "categories": "Categorías",
     "search": "Buscar",
     "searchPlaceholder": "Buscar…",
-    "pathways": "Rutas"
+    "pathways": "Rutas",
+    "forms": "Formularios"
   },
   "home": {
     "phase": "Lector Fase 1",
@@ -60,5 +61,26 @@
     "markAllDone": "Marcar todo como hecho",
     "clearAll": "Borrar todo",
     "back": "Volver a rutas"
+  },
+  "forms": {
+    "title": "Formularios",
+    "intro": "Formularios rellenables para respuesta a incidentes, viajes y prueba de vida. Tus respuestas se guardan en este dispositivo; expórtalas a un archivo HTML imprimible cuando termines.",
+    "empty": "Aún no hay formularios en este idioma.",
+    "screenCount": "{count, plural, =0 {Sin pantallas} one {1 pantalla} other {{count} pantallas}}",
+    "itemCount": "{count, plural, =0 {Sin campos} one {1 campo} other {{count} campos}}",
+    "back": "Volver a formularios",
+    "saveDraft": "Guardar borrador",
+    "clearAll": "Borrar todo",
+    "exportHtml": "Exportar HTML",
+    "savedLocally": "Borrador guardado en este dispositivo.",
+    "fieldEmpty": "(sin respuesta)",
+    "confirmClear": "¿Borrar todas las respuestas?",
+    "prev": "Anterior",
+    "next": "Siguiente",
+    "finish": "Finalizar y exportar",
+    "screenOf": "Pantalla {current} de {total}",
+    "fieldEmptyText": "Esta pantalla no tiene campos para rellenar.",
+    "exportTitle": "Formulario exportado",
+    "exportedAt": "Exportado:"
   }
 }

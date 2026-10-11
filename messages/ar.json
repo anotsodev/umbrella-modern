@@ -8,7 +8,8 @@
     "categories": "الفئات",
     "search": "بحث",
     "searchPlaceholder": "بحث…",
-    "pathways": "المسارات"
+    "pathways": "المسارات",
+    "forms": "النماذج"
   },
   "home": {
     "phase": "واجهة القراءة - المرحلة 1",
@@ -60,5 +61,26 @@
     "markAllDone": "وضع علامة على الكل",
     "clearAll": "مسح الكل",
     "back": "العودة إلى المسارات"
+  },
+  "forms": {
+    "title": "النماذج",
+    "intro": "نماذج قابلة للتعبئة للاستجابة للحوادث والسفر وإثبات الحياة. تُحفظ إجاباتك على هذا الجهاز؛ صدّرها إلى ملف HTML قابل للطباعة عند الانتهاء.",
+    "empty": "لا توجد نماذج بهذه اللغة بعد.",
+    "screenCount": "{count, plural, =0 {لا شاشات} one {شاشة واحدة} two {شاشتان} few {{count} شاشات} many {{count} شاشة} other {{count} شاشة}}",
+    "itemCount": "{count, plural, =0 {لا حقول} one {حقل واحد} two {حقلان} few {{count} حقول} many {{count} حقلاً} other {{count} حقل}}",
+    "back": "العودة إلى النماذج",
+    "saveDraft": "حفظ المسودة",
+    "clearAll": "مسح الكل",
+    "exportHtml": "تصدير HTML",
+    "savedLocally": "تم حفظ المسودة على هذا الجهاز.",
+    "fieldEmpty": "(لا إجابة)",
+    "confirmClear": "مسح جميع الإجابات؟",
+    "prev": "السابق",
+    "next": "التالي",
+    "finish": "إنهاء وتصدير",
+    "screenOf": "الشاشة {current} من {total}",
+    "fieldEmptyText": "لا توجد حقول لتعبئتها في هذه الشاشة.",
+    "exportTitle": "نموذج مُصدَّر",
+    "exportedAt": "تاريخ التصدير:"
   }
 }

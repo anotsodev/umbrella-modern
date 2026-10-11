@@ -8,7 +8,8 @@
     "categories": "Catégories",
     "search": "Rechercher",
     "searchPlaceholder": "Rechercher…",
-    "pathways": "Parcours"
+    "pathways": "Parcours",
+    "forms": "Formulaires"
   },
   "home": {
     "phase": "Lecteur Phase 1",
@@ -60,5 +61,26 @@
     "markAllDone": "Tout marquer comme fait",
     "clearAll": "Tout effacer",
     "back": "Retour aux parcours"
+  },
+  "forms": {
+    "title": "Formulaires",
+    "intro": "Formulaires à remplir pour la réponse aux incidents, les voyages et la preuve de vie. Vos réponses sont enregistrées sur cet appareil ; exportez-les vers un fichier HTML imprimable une fois terminé.",
+    "empty": "Aucun formulaire dans cette langue pour l'instant.",
+    "screenCount": "{count, plural, =0 {Aucun écran} one {1 écran} other {{count} écrans}}",
+    "itemCount": "{count, plural, =0 {Aucun champ} one {1 champ} other {{count} champs}}",
+    "back": "Retour aux formulaires",
+    "saveDraft": "Enregistrer le brouillon",
+    "clearAll": "Tout effacer",
+    "exportHtml": "Exporter en HTML",
+    "savedLocally": "Brouillon enregistré sur cet appareil.",
+    "fieldEmpty": "(sans réponse)",
+    "confirmClear": "Effacer toutes les réponses ?",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "finish": "Terminer et exporter",
+    "screenOf": "Écran {current} sur {total}",
+    "fieldEmptyText": "Cet écran n'a pas de champ à remplir.",
+    "exportTitle": "Formulaire exporté",
+    "exportedAt": "Exporté le :"
   }
 }
