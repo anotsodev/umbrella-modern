@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Apply the FTS migration (trigger + GIN index + backfill) to the
+# running Postgres container.
+#
+# Why this is separate from bin/migrate:
+# Prisma's `db push` syncs the schema but doesn't manage triggers or
+# tsvector columns. The schema carries the `searchVector Unsupported`
+# field; this script applies the trigger + index + backfill that
+# Prisma can't model.
+#
+# Idempotent: the SQL is written to be re-runnable.
+
+set -euo pipefail
+
+ok()   { printf "  \033[32m✔\033[0m %s\n" "$1"; }
+fail() { printf "  \033[31m✘\033[0m %s\n" "$1"; exit 1; }
+
+if [ -z "${DATABASE_URL:-}" ]; then
+  if [ -f .env ]; then
+    set -a; . ./.env; set +a
+  else
+    fail "DATABASE_URL is not set and .env is missing"
+  fi
+fi
+
+echo "▶ pushing Prisma schema (carries searchVector column)"
+docker compose exec -T web npx prisma db push --skip-generate 2>&1 | tail -5
+
+echo "▶ applying FTS trigger + GIN index + backfill"
+# psql rejects Prisma's ?schema=... query param; strip it for psql only.
+PG_URL=$(echo "$DATABASE_URL" | sed -E 's/[?&]schema=[^&]*//')
+docker compose exec -T db psql "$PG_URL" -v ON_ERROR_STOP=1 -f - < prisma/migrations/fts.sql
+
+ok "FTS migration applied"

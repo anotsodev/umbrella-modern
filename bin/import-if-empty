@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Cold-start content import.
+#
+# Idempotent. Probes the DB to check whether the categories table
+# is already populated. If yes, exit 0 immediately. If no, run
+# the import job. Used by the `import` service in compose.yml so
+# that `make up` on a fresh checkout brings the app up with
+# content rather than an empty homepage.
+
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+echo "▶ probing categories table"
+n=$(npx tsx scripts/db-row-count.ts 2>/dev/null | tail -1 || echo 0)
+echo "  categories count = ${n}"
+
+if [ "${n:-0}" -gt 0 ]; then
+  echo "  skipping import — DB already has content"
+  exit 0
+fi
+
+echo "▶ running import"
+exec npm run import-content

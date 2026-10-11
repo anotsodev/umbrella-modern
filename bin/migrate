@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Apply the Prisma schema to the running Postgres container.
+#
+# Why this lives in bin/ and not in a Makefile recipe: Prisma's CLI needs
+# to reach the DB via the Docker network's internal hostname `db`, which
+# only resolves inside the web container. Running `npx prisma db push`
+# from the host tries to reach `db:5432` and fails.
+#
+# Idempotent: `prisma db push` is a no-op when the schema already matches.
+
+set -euo pipefail
+
+ok()   { printf "  \033[32m✔\033[0m %s\n" "$1"; }
+fail() { printf "  \033[31m✘\033[0m %s\n" "$1"; exit 1; }
+
+echo "▶ pushing schema via web container"
+docker compose exec -T web npx prisma db push --skip-generate 2>&1 | tail -20
+
+ok "schema is in sync"

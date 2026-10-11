@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Minimal article-body styles. We avoid @tailwindcss/typography
+   to keep the dep tree small; the rendered content is headings,
+   paragraphs, lists, links, and images. */
+.prose-umbrella {
+  color: var(--foreground);
+  line-height: 1.7;
+  font-size: 1.0625rem;
+}
+.prose-umbrella h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 2.25rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.01em;
+}
+.prose-umbrella h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.005em;
+}
+.prose-umbrella h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.prose-umbrella p {
+  margin-top: 0.875rem;
+  margin-bottom: 0.875rem;
+}
+.prose-umbrella a {
+  color: #2563eb;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-umbrella a:hover {
+  text-decoration-thickness: 2px;
+}
+.prose-umbrella ul,
+.prose-umbrella ol {
+  padding-inline-start: 1.5rem;
+  margin: 0.875rem 0;
+}
+.prose-umbrella ul {
+  list-style: disc;
+}
+.prose-umbrella ol {
+  list-style: decimal;
+}
+.prose-umbrella li {
+  margin: 0.25rem 0;
+}
+.prose-umbrella li > p {
+  margin: 0.25rem 0;
+}
+.prose-umbrella img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 1.5rem 0;
+}
+.prose-umbrella blockquote {
+  border-inline-start: 3px solid #d4d4d8;
+  padding-inline-start: 1rem;
+  color: #52525b;
+  font-style: italic;
+  margin: 1.25rem 0;
+}
+.prose-umbrella code {
+  background: #f4f4f5;
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.25rem;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.9em;
+}
+.prose-umbrella pre {
+  background: #f4f4f5;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1.25rem 0;
+}
+.prose-umbrella pre code {
+  background: transparent;
+  padding: 0;
+}
+.prose-umbrella strong {
+  font-weight: 600;
+}
+.prose-umbrella hr {
+  border: 0;
+  border-top: 1px solid #e4e4e7;
+  margin: 2rem 0;
+}
+@media (prefers-color-scheme: dark) {
+  .prose-umbrella a {
+    color: #93c5fd;
+  }
+  .prose-umbrella blockquote {
+    border-inline-start-color: #3f3f46;
+    color: #a1a1aa;
+  }
+  .prose-umbrella code,
+  .prose-umbrella pre {
+    background: #18181b;
+  }
+  .prose-umbrella hr {
+    border-top-color: #27272a;
+  }
+}

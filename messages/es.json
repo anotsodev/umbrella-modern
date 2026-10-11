@@ -1,0 +1,130 @@
+{
+  "metadata": {
+    "title": "Umbrella — Guías de seguridad",
+    "description": "Guías de seguridad de código abierto para periodistas, activistas, diplomáticos y viajeros."
+  },
+  "nav": {
+    "home": "Inicio",
+    "categories": "Categorías",
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar…",
+    "pathways": "Rutas",
+    "forms": "Formularios",
+    "howToUse": "Cómo usar"
+  },
+  "home": {
+    "phase": "Lector Fase 1",
+    "title": "Umbrella, en la web",
+    "subtitle": "Guías de seguridad de código abierto para periodistas, activistas, diplomáticos y viajeros.",
+    "intro": "Explora el catálogo por tema o entra a una lista de verificación para trabajar un plan de seguridad paso a paso.",
+    "exploreCategories": "Explorar categorías",
+    "footer": "Código abierto bajo GPLv3. Fuente: github.com/anotsodev/Umbrella_android."
+  },
+  "categories": {
+    "title": "Todas las categorías",
+    "intro": "Cada tema en Umbrella, organizado por área y nivel.",
+    "topLevel": "Categorías principales",
+    "subcategories": "Subcategorías"
+  },
+  "topic": {
+    "browseTopics": "Temas en esta categoría",
+    "updated": "Última actualización",
+    "notFound": "Tema no encontrado.",
+    "prev": "Anterior",
+    "next": "Siguiente",
+    "inCategory": "en"
+  },
+  "breadcrumb": {
+    "home": "Inicio",
+    "categories": "Categorías"
+  },
+  "localePicker": {
+    "label": "Idioma",
+    "menu": "Cambiar idioma"
+  },
+  "footer": {
+    "license": "Licenciado bajo GPLv3",
+    "privacy": "Privacidad",
+    "dataNote": "Sin analíticas · anónimo por defecto · inicia sesión para sincronizar"
+  },
+  "notice": {
+    "localStorageOnly": "Tu progreso se guarda solo en este dispositivo. <signInLink>Inicia sesión</signInLink> para sincronizar entre dispositivos.",
+    "gotIt": "Entendido"
+  },
+  "auth": {
+    "headerSignIn": "Iniciar sesión",
+    "signedInFallback": "Cuenta",
+    "account": "Cuenta",
+    "signOut": "Cerrar sesión"
+  },
+  "search": {
+    "title": "Buscar",
+    "placeholder": "Buscar temas…",
+    "hint": "Escribe una consulta y pulsa Buscar.",
+    "noResults": "No hay temas que coincidan con «{query}».",
+    "resultsCount": "{count, plural, =0 {Sin resultados} one {1 resultado} other {{count} resultados}} para «{query}»"
+  },
+  "pathways": {
+    "title": "Rutas",
+    "intro": "Listas de verificación paso a paso para situaciones de alto riesgo. Marca los elementos a medida que avanzas; tu progreso se guarda en este dispositivo.",
+    "itemCount": "{count, plural, =0 {Sin elementos} one {1 elemento} other {{count} elementos}}",
+    "empty": "Esta ruta aún no tiene elementos.",
+    "progress": "{percent}% completado",
+    "markAllDone": "Marcar todo como hecho",
+    "clearAll": "Borrar todo",
+    "back": "Volver a rutas",
+    "sync": {
+      "synced": "Sincronizado con tu cuenta",
+      "local": "Solo local",
+      "syncedTooltip": "Guardado en tu cuenta",
+      "localTooltip": "Guardado solo en este dispositivo — inicia sesión para sincronizar entre dispositivos"
+    }
+  },
+  "forms": {
+    "title": "Formularios",
+    "intro": "Formularios rellenables para respuesta a incidentes, viajes y prueba de vida. Tus respuestas se guardan en este dispositivo; expórtalas a un archivo HTML imprimible cuando termines.",
+    "empty": "Aún no hay formularios en este idioma.",
+    "screenCount": "{count, plural, =0 {Sin pantallas} one {1 pantalla} other {{count} pantallas}}",
+    "itemCount": "{count, plural, =0 {Sin campos} one {1 campo} other {{count} campos}}",
+    "back": "Volver a formularios",
+    "saveDraft": "Guardar borrador",
+    "clearAll": "Borrar todo",
+    "exportHtml": "Exportar HTML",
+    "savedLocally": "Borrador guardado en este dispositivo.",
+    "fieldEmpty": "(sin respuesta)",
+    "confirmClear": "¿Borrar todas las respuestas?",
+    "prev": "Anterior",
+    "next": "Siguiente",
+    "finish": "Finalizar y exportar",
+    "screenOf": "Pantalla {current} de {total}",
+    "fieldEmptyText": "Esta pantalla no tiene campos para rellenar.",
+    "exportTitle": "Formulario exportado",
+    "exportedAt": "Exportado:",
+    "sync": {
+      "synced": "Sincronizado con tu cuenta",
+      "local": "Solo local",
+      "syncedTooltip": "Guardado en tu cuenta",
+      "localTooltip": "Guardado solo en este dispositivo — inicia sesión para sincronizar entre dispositivos"
+    }
+  },
+  "merge": {
+    "title": "¿Mover tu progreso local a tu cuenta?",
+    "pathway": "Encontramos progreso guardado para esta lista de verificación en este dispositivo. ¿Moverlo a tu cuenta para que se sincronice entre dispositivos?",
+    "form": "Encontramos respuestas guardadas para este formulario en este dispositivo. ¿Moverlas a tu cuenta para que se sincronicen entre dispositivos?",
+    "accept": "Sí, mover",
+    "decline": "Ahora no"
+  },
+  "notFound": {
+    "title": "Esta página no existe",
+    "body": "La página que buscas no está aquí. Prueba a buscar, explora una categoría o vuelve a la página principal.",
+    "searchPlaceholder": "Buscar temas…",
+    "searchButton": "Buscar",
+    "home": "Ir a inicio"
+  },
+  "howToUse": {
+    "title": "Cómo usar Umbrella",
+    "intro": "Umbrella es un conjunto de guías prácticas y breves para personas que necesitan pensar en su seguridad — en el trabajo, en casa o en movimiento. Las guías están escritas por formadores y profesionales que han usado estas técnicas sobre el terreno.",
+    "audience": "Si eres periodista, activista, trabajador humanitario, diplomático o viajero de negocios en un entorno de alto riesgo, esta aplicación está pensada para ti. Cualquier otra persona también es bienvenida — los consejos son generalmente buenas prácticas.",
+    "footer": "Estas capturas provienen de la versión Android de Umbrella. La versión web es funcionalmente equivalente: el mismo contenido, las mismas rutas, los mismos formularios. Las diferencias que notes son intencionadas — la versión web tiene una pantalla más amplia y navegación con teclado."
+  }
+}

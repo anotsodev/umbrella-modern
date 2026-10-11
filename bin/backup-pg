@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Daily Postgres dump into a named volume that an external backup runner
+# (e.g. ~/Projects/backblaze-backup-runner.sh) can pick up.
+#
+# Wired but NOT enabled — Phase 1 must be deployable first. The cross-session
+# brief explicitly defers enabling the cron until then.
+
+set -euo pipefail
+
+DUMP_VOLUME_NAME="umbrella-modern-pgdumps"
+DUMP_DIR="/dumps"
+TIMESTAMP=$(date -u +"%Y%m%dT%H%M%SZ")
+DUMP_FILE="${DUMP_DIR}/umbrella-modern-${TIMESTAMP}.sql.gz"
+
+echo "▶ dumping Postgres → ${DUMP_FILE} (volume: ${DUMP_VOLUME_NAME})"
+
+# Ensure the dump target volume exists on the host so the runner can
+# `docker run --rm -v ${DUMP_VOLUME_NAME}:/dumps busybox` and read it.
+docker volume create "${DUMP_VOLUME_NAME}" >/dev/null
+
+# Use `docker compose run` (not a plain `docker run`) so the dump container
+# auto-attaches to the compose network where `db` resolves. This works
+# regardless of the directory's project name (which is what controls the
+# actual network name under the hood).
+docker compose run --rm \
+  -v "${DUMP_VOLUME_NAME}:${DUMP_DIR}" \
+  -e PGPASSWORD=app \
+  db \
+  pg_dump -h db -U app -d app --format=custom --compress=9 \
+    -f "${DUMP_FILE}"
+
+docker run --rm -v "${DUMP_VOLUME_NAME}:${DUMP_DIR}" alpine \
+  sh -c "ls -lh ${DUMP_DIR}/*.sql.gz 2>/dev/null || true"
+
+echo ""
+echo "✅ dump written to volume ${DUMP_VOLUME_NAME} at ${DUMP_FILE}"
+echo "   Wire the cron after Phase 1 ships: 0 4 * * *  $PWD/bin/backup-pg"

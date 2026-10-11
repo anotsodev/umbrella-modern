@@ -1,0 +1,130 @@
+{
+  "metadata": {
+    "title": "Umbrella — 資訊安全指南",
+    "description": "為記者、活動人士、外交官與旅客提供的開源資訊安全指南。"
+  },
+  "nav": {
+    "home": "首頁",
+    "categories": "類別",
+    "search": "搜尋",
+    "searchPlaceholder": "搜尋…",
+    "pathways": "行動路徑",
+    "forms": "表單",
+    "howToUse": "使用說明"
+  },
+  "home": {
+    "phase": "第一階段閱讀介面",
+    "title": "Umbrella, 搬到網頁上",
+    "subtitle": "為記者、活動人士、外交官與旅客提供的開源資訊安全指南。",
+    "intro": "依主題瀏覽目錄，或進入檢核清單按部就班地擬定安全計畫。",
+    "exploreCategories": "瀏覽類別",
+    "footer": "以 GPLv3 授權開放原始碼。來源：github.com/anotsodev/Umbrella_android。"
+  },
+  "categories": {
+    "title": "所有類別",
+    "intro": "Umbrella 中的所有主題，依領域與程度分類。",
+    "topLevel": "主要類別",
+    "subcategories": "子類別"
+  },
+  "topic": {
+    "browseTopics": "此類別中的主題",
+    "updated": "最後更新",
+    "notFound": "找不到主題。",
+    "prev": "上一頁",
+    "next": "下一頁",
+    "inCategory": "於"
+  },
+  "breadcrumb": {
+    "home": "首頁",
+    "categories": "類別"
+  },
+  "localePicker": {
+    "label": "語言",
+    "menu": "切換語言"
+  },
+  "footer": {
+    "license": "以 GPLv3 授權",
+    "privacy": "隱私權",
+    "dataNote": "無分析 · 預設匿名 · 登入以同步"
+  },
+  "notice": {
+    "localStorageOnly": "您的進度僅儲存於此裝置。<signInLink>登入</signInLink>以跨裝置同步。",
+    "gotIt": "知道了"
+  },
+  "auth": {
+    "headerSignIn": "登入",
+    "signedInFallback": "帳號",
+    "account": "帳號",
+    "signOut": "登出"
+  },
+  "search": {
+    "title": "搜尋",
+    "placeholder": "搜尋主題…",
+    "hint": "輸入關鍵字並按搜尋。",
+    "noResults": "沒有符合「{query}」的主題。",
+    "resultsCount": "「{query}」的 {count} 個結果"
+  },
+  "pathways": {
+    "title": "行動路徑",
+    "intro": "為高風險情境設計的逐步檢查清單。邊做邊勾選；你的進度會儲存在這部裝置上。",
+    "itemCount": "{count, plural, =0 {沒有項目} other {{count} 個項目}}",
+    "empty": "此路徑尚無項目。",
+    "progress": "已完成 {percent}%",
+    "markAllDone": "全部標示為完成",
+    "clearAll": "全部清除",
+    "back": "返回行動路徑",
+    "sync": {
+      "synced": "已同步到您的帳號",
+      "local": "僅本機",
+      "syncedTooltip": "已儲存到您的帳號",
+      "localTooltip": "僅儲存於此裝置 — 登入以跨裝置同步"
+    }
+  },
+  "forms": {
+    "title": "表單",
+    "intro": "用於事件回應、差旅與人身確認的可填寫表單。作答會儲存在這部裝置上；完成後可匯出為可列印的 HTML 檔案。",
+    "empty": "這個語言目前還沒有表單。",
+    "screenCount": "{count, plural, =0 {沒有畫面} other {{count} 個畫面}}",
+    "itemCount": "{count, plural, =0 {沒有欄位} other {{count} 個欄位}}",
+    "back": "返回表單",
+    "saveDraft": "儲存草稿",
+    "clearAll": "全部清除",
+    "exportHtml": "匯出 HTML",
+    "savedLocally": "草稿已儲存在這部裝置上。",
+    "fieldEmpty": "(未填答)",
+    "confirmClear": "確定要清除所有作答嗎？",
+    "prev": "上一頁",
+    "next": "下一頁",
+    "finish": "完成並匯出",
+    "screenOf": "畫面 {current} / {total}",
+    "fieldEmptyText": "此畫面沒有可填寫的欄位。",
+    "exportTitle": "匯出的表單",
+    "exportedAt": "匯出時間：",
+    "sync": {
+      "synced": "已同步到您的帳號",
+      "local": "僅本機",
+      "syncedTooltip": "已儲存到您的帳號",
+      "localTooltip": "僅儲存於此裝置 — 登入以跨裝置同步"
+    }
+  },
+  "merge": {
+    "title": "將本機進度移到您的帳號嗎？",
+    "pathway": "我們在此裝置上找到此檢查清單的已儲存進度。要將它移到您的帳號以便跨裝置同步嗎？",
+    "form": "我們在此裝置上找到此表單的已儲存答案。要將它們移到您的帳號以便跨裝置同步嗎？",
+    "accept": "是，移過去",
+    "decline": "現在不要"
+  },
+  "notFound": {
+    "title": "此頁面不存在",
+    "body": "您要查找的頁面不在這裡。請嘗試搜尋、瀏覽類別，或返回首頁。",
+    "searchPlaceholder": "搜尋主題…",
+    "searchButton": "搜尋",
+    "home": "返回首頁"
+  },
+  "howToUse": {
+    "title": "如何使用 Umbrella",
+    "intro": "Umbrella 是一組簡短、實用的指南，適合需要思考自身安全的人——無論是在工作、居家還是旅途中。指南由曾在實地運用這些技術的培訓者與從業者撰寫。",
+    "audience": "如果你是記者、活動人士、人道工作者、外交官，或身處高風險環境的商務旅客，這個應用程式就是為你設計的。其他朋友也歡迎——這些建議基本上都是良好的做法。",
+    "footer": "這些截圖來自 Umbrella 的 Android 版本。網頁版在功能上相同：相同的內容、相同的步驟路徑、相同的表單。你可能注意到的差異是有意為之——網頁版擁有更寬的螢幕與鍵盤導航。"
+  }
+}

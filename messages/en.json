@@ -1,0 +1,136 @@
+{
+  "metadata": {
+    "title": "Umbrella — Security guides",
+    "description": "Open-source security guides for journalists, activists, diplomats, and travelers."
+  },
+  "nav": {
+    "home": "Home",
+    "categories": "Categories",
+    "search": "Search",
+    "searchPlaceholder": "Search…",
+    "pathways": "Pathways",
+    "forms": "Forms",
+    "howToUse": "How to use"
+  },
+  "home": {
+    "phase": "Phase 1 reader",
+    "title": "Umbrella, on the web",
+    "subtitle": "Open-source security guides for journalists, activists, diplomats, and travelers.",
+    "intro": "Browse the catalogue by topic, or jump into a checklist to work through a security plan step by step.",
+    "exploreCategories": "Explore categories",
+    "footer": "Open source under GPLv3. Source: github.com/anotsodev/Umbrella_android."
+  },
+  "categories": {
+    "title": "All categories",
+    "intro": "Every topic in Umbrella, organised by area and level.",
+    "topLevel": "Top-level categories",
+    "subcategories": "Subcategories"
+  },
+  "topic": {
+    "browseTopics": "Topics in this category",
+    "updated": "Last updated",
+    "notFound": "Topic not found.",
+    "prev": "Previous",
+    "next": "Next",
+    "inCategory": "in"
+  },
+  "breadcrumb": {
+    "home": "Home",
+    "categories": "Categories"
+  },
+  "localePicker": {
+    "label": "Language",
+    "menu": "Change language"
+  },
+  "footer": {
+    "license": "Licensed under GPLv3",
+    "privacy": "Privacy",
+    "dataNote": "No analytics · anonymous by default · sign in to sync"
+  },
+  "notice": {
+    "localStorageOnly": "Your progress is saved on this device only. <signInLink>Sign in</signInLink> to sync across devices.",
+    "gotIt": "Got it"
+  },
+  "auth": {
+    "title": "Sign in",
+    "magicLinkExplainer": "Enter your email and we'll send you a sign-in link.",
+    "emailLabel": "Email",
+    "sendLink": "Send sign-in link",
+    "sending": "Sending…",
+    "checkYourEmail": "Check your inbox for the sign-in link. (In dev, the link is logged to the web container's stdout.)",
+    "headerSignIn": "Sign in",
+    "signedInFallback": "Account",
+    "account": "Account",
+    "signOut": "Sign out"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search topics…",
+    "hint": "Type a query and press Go.",
+    "noResults": "No topics match “{query}”.",
+    "resultsCount": "{count, plural, =0 {No results} one {1 result} other {{count} results}} for “{query}”"
+  },
+  "pathways": {
+    "title": "Pathways",
+    "intro": "Step-by-step checklists for high-risk situations. Tick items off as you go; your progress is saved on this device.",
+    "itemCount": "{count, plural, =0 {No items} one {1 item} other {{count} items}}",
+    "empty": "This pathway has no items yet.",
+    "progress": "{percent}% complete",
+    "markAllDone": "Mark all done",
+    "clearAll": "Clear all",
+    "back": "Back to pathways",
+    "sync": {
+      "synced": "Synced to your account",
+      "local": "Local only",
+      "syncedTooltip": "Saved to your account",
+      "localTooltip": "Saved on this device only — sign in to sync across devices"
+    }
+  },
+  "forms": {
+    "title": "Forms",
+    "intro": "Fillable forms for incident response, travel, and proof of life. Your answers are saved on this device; export to a printable HTML file when you're done.",
+    "empty": "No forms in this language yet.",
+    "screenCount": "{count, plural, =0 {No screens} one {1 screen} other {{count} screens}}",
+    "itemCount": "{count, plural, =0 {No fields} one {1 field} other {{count} fields}}",
+    "back": "Back to forms",
+    "saveDraft": "Save draft",
+    "clearAll": "Clear all",
+    "exportHtml": "Export HTML",
+    "savedLocally": "Draft saved on this device.",
+    "fieldEmpty": "(no answer)",
+    "confirmClear": "Clear all answers?",
+    "prev": "Previous",
+    "next": "Next",
+    "finish": "Finish & export",
+    "screenOf": "Screen {current} of {total}",
+    "fieldEmptyText": "This screen has no fields to fill in.",
+    "exportTitle": "Exported form",
+    "exportedAt": "Exported:",
+    "sync": {
+      "synced": "Synced to your account",
+      "local": "Local only",
+      "syncedTooltip": "Saved to your account",
+      "localTooltip": "Saved on this device only — sign in to sync across devices"
+    }
+  },
+  "merge": {
+    "title": "Move your local progress to your account?",
+    "pathway": "We found saved progress for this pathway on this device. Move it to your account so it syncs across devices?",
+    "form": "We found saved answers for this form on this device. Move them to your account so they sync across devices?",
+    "accept": "Yes, move it",
+    "decline": "Not now"
+  },
+  "notFound": {
+    "title": "This page doesn't exist",
+    "body": "The page you were looking for isn't here. Try searching, browse a category, or return to the home page.",
+    "searchPlaceholder": "Search topics…",
+    "searchButton": "Search",
+    "home": "Go to home"
+  },
+  "howToUse": {
+    "title": "How to use Umbrella",
+    "intro": "Umbrella is a set of short, practical guides for people who need to think about their security — at work, at home, or on the move. The guides are written by trainers and practitioners who have used these techniques in the field.",
+    "audience": "If you are a journalist, activist, aid worker, diplomat, or business traveller in a high-risk environment, the app is designed for you. Everyone else is welcome too — the advice is generally good practice.",
+    "footer": "These screenshots come from the Android build of Umbrella. The web build is functionally equivalent: the same content, the same pathways, the same forms. Differences you may notice are intentional — the web build has a wider screen and keyboard-driven navigation."
+  }
+}

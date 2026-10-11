@@ -1,0 +1,130 @@
+{
+  "metadata": {
+    "title": "Umbrella — Guides de sécurité",
+    "description": "Guides de sécurité open source pour journalistes, militants, diplomates et voyageurs."
+  },
+  "nav": {
+    "home": "Accueil",
+    "categories": "Catégories",
+    "search": "Rechercher",
+    "searchPlaceholder": "Rechercher…",
+    "pathways": "Parcours",
+    "forms": "Formulaires",
+    "howToUse": "Comment utiliser"
+  },
+  "home": {
+    "phase": "Lecteur Phase 1",
+    "title": "Umbrella, sur le web",
+    "subtitle": "Guides de sécurité open source pour journalistes, militants, diplomates et voyageurs.",
+    "intro": "Parcourez le catalogue par sujet, ou ouvrez une liste de contrôle pour travailler un plan de sécurité étape par étape.",
+    "exploreCategories": "Explorer les catégories",
+    "footer": "Open source sous GPLv3. Source : github.com/anotsodev/Umbrella_android."
+  },
+  "categories": {
+    "title": "Toutes les catégories",
+    "intro": "Chaque sujet dans Umbrella, organisé par domaine et niveau.",
+    "topLevel": "Catégories principales",
+    "subcategories": "Sous-catégories"
+  },
+  "topic": {
+    "browseTopics": "Sujets dans cette catégorie",
+    "updated": "Dernière mise à jour",
+    "notFound": "Sujet introuvable.",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "inCategory": "dans"
+  },
+  "breadcrumb": {
+    "home": "Accueil",
+    "categories": "Catégories"
+  },
+  "localePicker": {
+    "label": "Langue",
+    "menu": "Changer de langue"
+  },
+  "footer": {
+    "license": "Sous licence GPLv3",
+    "privacy": "Confidentialité",
+    "dataNote": "Pas d'analyse · anonyme par défaut · connectez-vous pour synchroniser"
+  },
+  "notice": {
+    "localStorageOnly": "Votre progression est enregistrée uniquement sur cet appareil. <signInLink>Connectez-vous</signInLink> pour la synchroniser entre vos appareils.",
+    "gotIt": "Compris"
+  },
+  "auth": {
+    "headerSignIn": "Se connecter",
+    "signedInFallback": "Compte",
+    "account": "Compte",
+    "signOut": "Se déconnecter"
+  },
+  "search": {
+    "title": "Rechercher",
+    "placeholder": "Rechercher des sujets…",
+    "hint": "Tapez une requête et appuyez sur Rechercher.",
+    "noResults": "Aucun sujet ne correspond à « {query} ».",
+    "resultsCount": "{count, plural, =0 {Aucun résultat} one {1 résultat} other {{count} résultats}} pour « {query} »"
+  },
+  "pathways": {
+    "title": "Parcours",
+    "intro": "Listes de vérification étape par étape pour les situations à haut risque. Cochez les éléments au fur et à mesure ; votre progression est enregistrée sur cet appareil.",
+    "itemCount": "{count, plural, =0 {Aucun élément} one {1 élément} other {{count} éléments}}",
+    "empty": "Ce parcours n'a pas encore d'éléments.",
+    "progress": "{percent}% terminé",
+    "markAllDone": "Tout marquer comme fait",
+    "clearAll": "Tout effacer",
+    "back": "Retour aux parcours",
+    "sync": {
+      "synced": "Synchronisé avec votre compte",
+      "local": "Local uniquement",
+      "syncedTooltip": "Enregistré sur votre compte",
+      "localTooltip": "Enregistré uniquement sur cet appareil — connectez-vous pour synchroniser entre appareils"
+    }
+  },
+  "forms": {
+    "title": "Formulaires",
+    "intro": "Formulaires à remplir pour la réponse aux incidents, les voyages et la preuve de vie. Vos réponses sont enregistrées sur cet appareil ; exportez-les vers un fichier HTML imprimable une fois terminé.",
+    "empty": "Aucun formulaire dans cette langue pour l'instant.",
+    "screenCount": "{count, plural, =0 {Aucun écran} one {1 écran} other {{count} écrans}}",
+    "itemCount": "{count, plural, =0 {Aucun champ} one {1 champ} other {{count} champs}}",
+    "back": "Retour aux formulaires",
+    "saveDraft": "Enregistrer le brouillon",
+    "clearAll": "Tout effacer",
+    "exportHtml": "Exporter en HTML",
+    "savedLocally": "Brouillon enregistré sur cet appareil.",
+    "fieldEmpty": "(sans réponse)",
+    "confirmClear": "Effacer toutes les réponses ?",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "finish": "Terminer et exporter",
+    "screenOf": "Écran {current} sur {total}",
+    "fieldEmptyText": "Cet écran n'a pas de champ à remplir.",
+    "exportTitle": "Formulaire exporté",
+    "exportedAt": "Exporté le :",
+    "sync": {
+      "synced": "Synchronisé avec votre compte",
+      "local": "Local uniquement",
+      "syncedTooltip": "Enregistré sur votre compte",
+      "localTooltip": "Enregistré uniquement sur cet appareil — connectez-vous pour synchroniser entre appareils"
+    }
+  },
+  "merge": {
+    "title": "Transférer votre progression locale vers votre compte ?",
+    "pathway": "Nous avons trouvé une progression enregistrée pour cette liste de contrôle sur cet appareil. La transférer vers votre compte pour la synchroniser entre appareils ?",
+    "form": "Nous avons trouvé des réponses enregistrées pour ce formulaire sur cet appareil. Les transférer vers votre compte pour les synchroniser entre appareils ?",
+    "accept": "Oui, transférer",
+    "decline": "Pas maintenant"
+  },
+  "notFound": {
+    "title": "Cette page n'existe pas",
+    "body": "La page que vous cherchez n'est pas ici. Essayez de rechercher, parcourez une catégorie ou revenez à l'accueil.",
+    "searchPlaceholder": "Rechercher des sujets…",
+    "searchButton": "Rechercher",
+    "home": "Aller à l'accueil"
+  },
+  "howToUse": {
+    "title": "Comment utiliser Umbrella",
+    "intro": "Umbrella est un ensemble de guides pratiques et courts pour les personnes qui doivent réfléchir à leur sécurité — au travail, à la maison ou en déplacement. Les guides sont rédigés par des formateurs et des praticiens qui ont utilisé ces techniques sur le terrain.",
+    "audience": "Si vous êtes journaliste, militant, travailleur humanitaire, diplomate ou voyageur d'affaires dans un environnement à haut risque, l'application est conçue pour vous. Toute autre personne est également la bienvenue — les conseils sont généralement de bonnes pratiques.",
+    "footer": "Ces captures d'écran proviennent de la version Android d'Umbrella. La version web est fonctionnellement équivalente : le même contenu, les mêmes parcours, les mêmes formulaires. Les différences que vous pouvez remarquer sont intentionnelles — la version web a un écran plus large et une navigation au clavier."
+  }
+}

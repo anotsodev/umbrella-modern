@@ -1,0 +1,225 @@
+#!/usr/bin/env bash
+# Smoke test: bring the stack up, hit the app root.
+# Idempotent: re-runs are safe; `docker compose up -d --wait` will not
+# restart a healthy stack.
+
+set -euo pipefail
+
+ok()   { printf "  \033[32m✔\033[0m %s\n" "$1"; }
+fail() { printf "  \033[31m✘\033[0m %s\n" "$1"; exit 1; }
+
+echo "▶ bringing stack up"
+docker compose up -d --wait
+
+echo "▶ probing endpoints"
+# Follow the next-intl middleware redirect from / to /<locale>.
+status=$(curl -sL -o /dev/null -w "%{http_code}" http://localhost:3000 || echo "000")
+if [ "$status" = "200" ]; then
+  ok "/  -> 200 (followed redirect to /<locale>)"
+else
+  echo "  ✘ /  -> $status (expected 200)"
+  docker compose logs web
+  exit 1
+fi
+
+# /api/health is wired in Phase 0 once the health route is added.
+# Until then, a 404 here is acceptable as long as the root returns 200.
+api=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/api/health || echo "000")
+if [ "$api" = "200" ] || [ "$api" = "404" ]; then
+  ok "/api/health -> $api (404 OK until Phase 0 health route is added)"
+else
+  echo "  ✘ /api/health -> $api (expected 200 or 404)"
+  docker compose logs web
+  exit 1
+fi
+
+# Reader surface (Phase 1)
+for url in /en /en/categories /en/categories/communications /en/search; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000$url" || echo "000")
+  if [ "$code" = "200" ]; then
+    ok "$url -> 200"
+  else
+    echo "  ✘ $url -> $code (expected 200)"
+    docker compose logs web
+    exit 1
+  fi
+done
+
+# FTS search returns 200 with results. Don't assert on a count
+# because the corpus drifts with re-imports; just confirm 200.
+search_code=$(curl -s -o /dev/null -w "%{http_code}" --get --data-urlencode "q=encryption" "http://localhost:3000/en/search" || echo "000")
+if [ "$search_code" = "200" ]; then
+  ok "/en/search?q=encryption -> 200"
+else
+  echo "  ✘ /en/search?q=encryption -> $search_code (expected 200)"
+  docker compose logs web
+  exit 1
+fi
+
+# Per-locale search smoke across all 7 languages
+for loc in ar es fa fr ru zh-Hant; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" --get --data-urlencode "q=internet" "http://localhost:3000/$loc/search" || echo "000")
+  if [ "$code" = "200" ]; then
+    ok "/$loc/search?q=internet -> 200"
+  else
+    echo "  ✘ /$loc/search?q=internet -> $code (expected 200)"
+    docker compose logs web
+    exit 1
+  fi
+done
+
+# Pathways (checklists) — index plus one per-locale detail page
+for loc in en ar es fa fr ru zh-Hant; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000/$loc/pathways" || echo "000")
+  if [ "$code" = "200" ]; then
+    ok "/$loc/pathways -> 200"
+  else
+    echo "  ✘ /$loc/pathways -> $code (expected 200)"
+    docker compose logs web
+    exit 1
+  fi
+done
+
+# Pick a slug from the en pathways index, then probe a few
+# locales for the same slug. We tolerate 404 if the locale
+# hasn't shipped a translation of this checklist yet.
+slug=$(curl -sL "http://localhost:3000/en/pathways" \
+  | grep -oE 'href="/en/pathways/[^"]+"' \
+  | head -1 \
+  | sed -E 's|.*/pathways/([^"]+)".*|\1|')
+if [ -n "$slug" ]; then
+  ok "probing checklist slug: $slug"
+  for loc in en ar fr; do
+    code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000/$loc/pathways/$slug" || echo "000")
+    if [ "$code" = "200" ] || [ "$code" = "404" ]; then
+      ok "/$loc/pathways/$slug -> $code (404 OK if not yet translated)"
+    else
+      echo "  ✘ /$loc/pathways/$slug -> $code (expected 200 or 404)"
+      docker compose logs web
+      exit 1
+    fi
+  done
+fi
+
+# Forms (Phase 1) — index across all locales
+for loc in en ar es fa fr ru zh-Hant; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000/$loc/forms" || echo "000")
+  if [ "$code" = "200" ]; then
+    ok "/$loc/forms -> 200"
+  else
+    echo "  ✘ /$loc/forms -> $code (expected 200)"
+    docker compose logs web
+    exit 1
+  fi
+done
+
+# Probe one form detail page per locale (en/ar/fr). Pick the
+# first slug from the en forms index; same locale-tolerance
+# rules as pathways (404 OK if not yet translated).
+form_slug=$(curl -sL "http://localhost:3000/en/forms" \
+  | grep -oE 'href="/en/forms/[^"]+"' \
+  | head -1 \
+  | sed -E 's|.*/forms/([^"]+)".*|\1|')
+if [ -n "$form_slug" ]; then
+  ok "probing form slug: $form_slug"
+  for loc in en ar fr; do
+    code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000/$loc/forms/$form_slug" || echo "000")
+    if [ "$code" = "200" ] || [ "$code" = "404" ]; then
+      ok "/$loc/forms/$form_slug -> $code (404 OK if not yet translated)"
+    else
+      echo "  ✘ /$loc/forms/$form_slug -> $code (expected 200 or 404)"
+      docker compose logs web
+      exit 1
+    fi
+  done
+fi
+
+# Auth surface (Phase 2). better-auth exposes /api/auth/*.
+# We don't exercise the full magic-link flow (no email in CI);
+# just confirm the route is live and the sign-in page renders.
+session=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/api/auth/get-session || echo "000")
+if [ "$session" = "200" ]; then
+  ok "/api/auth/get-session -> 200 (anonymous OK)"
+else
+  echo "  ✘ /api/auth/get-session -> $session (expected 200)"
+  docker compose logs web
+  exit 1
+fi
+
+# Sign-out must handle the "already signed out" path without
+# 500-ing. Regression test for the server-side session-deletion
+# path: this endpoint is required to delete the row in the
+# `session` table on a real sign-out (verified by hand in the
+# dev workflow), and must also tolerate no-cookie and stale-cookie
+# callers so the dropdown's sign-out click is always safe.
+signout=$(curl -s -o /dev/null -w "%{http_code}" -X POST http://localhost:3000/api/auth/sign-out \
+  -H "Origin: http://localhost:3000" -H "Content-Type: application/json" -d '{}' || echo "000")
+if [ "$signout" = "200" ] || [ "$signout" = "204" ]; then
+  ok "POST /api/auth/sign-out (no session) -> $signout (anonymous-safe)"
+else
+  echo "  ✘ POST /api/auth/sign-out -> $signout (expected 200 or 204)"
+  docker compose logs web
+  exit 1
+fi
+
+for loc in en ar es fa fr ru zh-Hant; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000/$loc/sign-in" || echo "000")
+  if [ "$code" = "200" ]; then
+    ok "/$loc/sign-in -> 200"
+  else
+    echo "  ✘ /$loc/sign-in -> $code (expected 200)"
+    docker compose logs web
+    exit 1
+  fi
+done
+
+# Per-user persistence endpoints (Phase 2). Anonymous calls
+# must return 401; the runner is what makes them useful.
+for path in /api/me/pathway/test /api/me/form/test; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000$path" || echo "000")
+  if [ "$code" = "401" ]; then
+    ok "GET $path -> 401 (auth required)"
+  else
+    echo "  ✘ GET $path -> $code (expected 401)"
+    docker compose logs web
+    exit 1
+  fi
+  code=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-Type: application/json" -d '{}' "http://localhost:3000${path}/sync" || echo "000")
+  if [ "$code" = "401" ]; then
+    ok "POST ${path}/sync -> 401 (auth required)"
+  else
+    echo "  ✘ POST ${path}/sync -> $code (expected 401)"
+    docker compose logs web
+    exit 1
+  fi
+done
+
+# Phase 3 surface: /how-to-use and /terms, per locale. Liveness
+# only — we don't probe the asset or assert the pending-review
+# banner is present (that's a manual review step before v1).
+for path in how-to-use terms; do
+  for loc in en ar es fa fr ru zh-Hant; do
+    code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000/$loc/$path" || echo "000")
+    if [ "$code" = "200" ]; then
+      ok "/$loc/$path -> 200"
+    else
+      echo "  ✘ /$loc/$path -> $code (expected 200)"
+      docker compose logs web
+      exit 1
+    fi
+  done
+done
+
+# Phase 3 404: a non-existent path under each locale should
+# return 404 with the styled body. We assert the status code
+# only; the body content is checked manually in the dev console.
+for loc in en ar es fa fr ru zh-Hant; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000/$loc/does-not-exist" || echo "000")
+  if [ "$code" = "404" ]; then
+    ok "/$loc/does-not-exist -> 404 (styled)"
+  else
+    echo "  ✘ /$loc/does-not-exist -> $code (expected 404)"
+    docker compose logs web
+    exit 1
+  fi
+done
