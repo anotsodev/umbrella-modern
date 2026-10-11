@@ -8,5 +8,13 @@
     "title": "Umbrella, on the web",
     "subtitle": "Reader surface lands in Phase 1. The stack is up; the topic catalogue isn't yet.",
     "footer": "Open source under GPLv3. Source: github.com/anotsodev/Umbrella_android."
+  },
+  "auth": {
+    "title": "Sign in",
+    "magicLinkExplainer": "Enter your email and we'll send you a sign-in link.",
+    "emailLabel": "Email",
+    "sendLink": "Send sign-in link",
+    "sending": "Sending…",
+    "checkYourEmail": "Check your inbox for the sign-in link. (In dev, the link is logged to the web container's stdout.)"
   }
 }

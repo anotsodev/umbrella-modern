@@ -8,5 +8,6 @@
     "title": "Umbrella в вебе",
     "subtitle": "Интерфейс чтения появится в Фазе 1. Стек запущен; каталог тем ещё не загружен.",
     "footer": "Открытый исходный код под GPLv3. Источник: github.com/anotsodev/Umbrella_android."
-  }
+  },
+  "auth": {}
 }
