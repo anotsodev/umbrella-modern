@@ -15,7 +15,8 @@ help:
 	@echo "  make build     Production build"
 	@echo "  make start     Run production build"
 	@echo "  make migrate   Run DB migrations (idempotent)"
-	@echo "  make seed      Seed the database (idempotent)"
+	@echo "  make import-content   Clone securityfirst/umbrella-content and upsert into DB"
+	@echo "  make seed      Seed the database (alias for import-content for now)"
 	@echo "  make test      Run the test suite"
 	@echo "  make lint      Run the linter"
 	@echo "  make typecheck Run the TypeScript checker"
@@ -67,7 +68,13 @@ migrate:
 	@bash bin/migrate
 
 seed:
-	@echo "  ⚠ no seed yet — Phase 1 work"
+	@echo "  ⚠ no seed yet — use 'make import-content' for umbrella-content"
+
+import-content:
+	@echo "▶ Importing umbrella-content into Postgres"
+	@docker compose exec -T web npm run import-content
+	@echo ""
+	@echo "✅ Import complete."
 
 # --- Quality ---
 test:

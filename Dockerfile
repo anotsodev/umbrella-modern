@@ -16,8 +16,9 @@ RUN npx prisma generate
 FROM node:20-alpine AS dev
 WORKDIR /app
 ENV NODE_ENV=development
-# Install dumb-init for proper signal handling and openssl for Prisma
-RUN apk add --no-cache dumb-init openssl
+# Install dumb-init for proper signal handling, openssl for Prisma,
+# and git for the import-content script (which clones umbrella-content).
+RUN apk add --no-cache dumb-init openssl git
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 EXPOSE 3000

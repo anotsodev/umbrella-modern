@@ -120,7 +120,12 @@ model ChecklistItem {
   id          BigInt   @id @default(autoincrement())
   checklistId BigInt   @map("checklist_id")
   position    Int
+  // Item kind: section (heading), check (action item), or umbrella (cross-ref to a topic)
+  kind        String   @default("check")
   label       String
+  // Markdown body for "check" items, or umbrella:// target for "umbrella" items
+  body        String?
+  href        String?
   disabled    Boolean  @default(false)
   createdAt   DateTime @default(now()) @map("created_at")
 
