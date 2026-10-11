@@ -91,6 +91,12 @@
     "screenOf": "الشاشة {current} من {total}",
     "fieldEmptyText": "لا توجد حقول لتعبئتها في هذه الشاشة.",
     "exportTitle": "نموذج مُصدَّر",
-    "exportedAt": "تاريخ التصدير:"
+    "exportedAt": "تاريخ التصدير:",
+    "sync": {
+      "synced": "محفوظ في حسابك",
+      "local": "محلي فقط",
+      "syncedTooltip": "محفوظ في حسابك",
+      "localTooltip": "محفوظ على هذا الجهاز فقط — سجّل الدخول للمزامنة بين الأجهزة"
+    }
   }
 }

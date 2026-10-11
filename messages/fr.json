@@ -91,6 +91,12 @@
     "screenOf": "Écran {current} sur {total}",
     "fieldEmptyText": "Cet écran n'a pas de champ à remplir.",
     "exportTitle": "Formulaire exporté",
-    "exportedAt": "Exporté le :"
+    "exportedAt": "Exporté le :",
+    "sync": {
+      "synced": "Synchronisé avec votre compte",
+      "local": "Local uniquement",
+      "syncedTooltip": "Enregistré sur votre compte",
+      "localTooltip": "Enregistré uniquement sur cet appareil — connectez-vous pour synchroniser entre appareils"
+    }
   }
 }

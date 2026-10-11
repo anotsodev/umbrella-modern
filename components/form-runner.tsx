@@ -13,7 +13,9 @@
 // assets) that opens in a browser and prints cleanly.
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import type { FormItem, FormSchema } from "@/lib/reader";
+import { useFormSync } from "@/lib/server-state";
 
 type Labels = {
   saveDraft: string;
@@ -183,26 +185,48 @@ ${screens}
 }
 
 export function FormRunner({ slug, title, schema, lang, labels }: Props) {
+  const t = useTranslations("forms");
   const [answers, setAnswers] = useState<Record<string, AnswerValue>>({});
   const [hydrated, setHydrated] = useState(false);
   const [screenIndex, setScreenIndex] = useState(0);
   const [savedAt, setSavedAt] = useState<string | null>(null);
 
-  // Load persisted state on mount. We intentionally don't read
-  // localStorage during SSR — the rendered HTML uses an empty map,
-  // then a useEffect hydrates the real state on the client.
+  const {
+    isSignedIn,
+    serverAnswers,
+    hydratedFromServer,
+    synced,
+    scheduleSync,
+  } = useFormSync(slug, lang);
+
+  // Hydration. Order:
+  //   1. localStorage (always — anonymous fallback + merge source)
+  //   2. server (when signed in) — server wins on conflict
   useEffect(() => {
     setAnswers(loadAnswers(slug));
     setHydrated(true);
   }, [slug]);
 
-  // Persist on every change after hydration, and surface a
-  // "Draft saved" timestamp for the UI.
+  useEffect(() => {
+    if (!hydrated) return;
+    if (!isSignedIn) return;
+    if (!hydratedFromServer) return;
+    if (serverAnswers === null) return;
+    const hasLocalEntries = Object.keys(loadAnswers(slug)).length > 0;
+    if (Object.keys(serverAnswers).length > 0 && !hasLocalEntries) {
+      setAnswers(serverAnswers);
+    }
+  }, [hydrated, isSignedIn, hydratedFromServer, serverAnswers, slug]);
+
+  // Persist on every change after hydration, surface a "Draft
+  // saved" timestamp for the UI, and (when signed in) debounce
+  // a server sync.
   useEffect(() => {
     if (!hydrated) return;
     saveAnswers(slug, answers);
     setSavedAt(new Date().toLocaleTimeString());
-  }, [slug, answers, hydrated]);
+    if (isSignedIn) scheduleSync(answers, title);
+  }, [slug, answers, hydrated, isSignedIn, scheduleSync, title]);
 
   const totalScreens = schema.screens.length;
   const currentScreen = schema.screens[screenIndex];
@@ -256,11 +280,37 @@ export function FormRunner({ slug, title, schema, lang, labels }: Props) {
             .replace("{current}", String(screenIndex + 1))
             .replace("{total}", String(totalScreens))}
         </span>
-        {savedAt ? (
-          <span className="text-xs text-zinc-500">
-            {labels.savedLocally} ({savedAt})
+        <div className="flex items-center gap-3">
+          {savedAt ? (
+            <span className="text-xs text-zinc-500">
+              {labels.savedLocally} ({savedAt})
+            </span>
+          ) : null}
+          <span
+            className={
+              "inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium " +
+              (isSignedIn
+                ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"
+                : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400")
+            }
+            title={
+              synced.lastSyncError ??
+              (isSignedIn ? t("sync.syncedTooltip") : t("sync.localTooltip"))
+            }
+          >
+            <span
+              className={
+                "inline-block h-1.5 w-1.5 rounded-full " +
+                (synced.status === "synced"
+                  ? "bg-emerald-500"
+                  : isSignedIn
+                    ? "bg-amber-500"
+                    : "bg-zinc-400")
+              }
+            />
+            {isSignedIn ? t("sync.synced") : t("sync.local")}
           </span>
-        ) : null}
+        </div>
       </div>
       <div
         className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800"

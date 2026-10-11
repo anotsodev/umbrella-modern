@@ -91,6 +91,12 @@
     "screenOf": "Pantalla {current} de {total}",
     "fieldEmptyText": "Esta pantalla no tiene campos para rellenar.",
     "exportTitle": "Formulario exportado",
-    "exportedAt": "Exportado:"
+    "exportedAt": "Exportado:",
+    "sync": {
+      "synced": "Sincronizado con tu cuenta",
+      "local": "Solo local",
+      "syncedTooltip": "Guardado en tu cuenta",
+      "localTooltip": "Guardado solo en este dispositivo — inicia sesión para sincronizar entre dispositivos"
+    }
   }
 }

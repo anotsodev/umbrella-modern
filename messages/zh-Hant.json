@@ -91,6 +91,12 @@
     "screenOf": "畫面 {current} / {total}",
     "fieldEmptyText": "此畫面沒有可填寫的欄位。",
     "exportTitle": "匯出的表單",
-    "exportedAt": "匯出時間："
+    "exportedAt": "匯出時間：",
+    "sync": {
+      "synced": "已同步到您的帳號",
+      "local": "僅本機",
+      "syncedTooltip": "已儲存到您的帳號",
+      "localTooltip": "僅儲存於此裝置 — 登入以跨裝置同步"
+    }
   }
 }
