@@ -442,6 +442,29 @@ i18n + smoke coverage.
   in Phase 0 and only surfaced when the cold-start init
   service was added in Phase 2.
 
+## Deployment posture
+
+- **Compute:** self-hosted Docker on a single VPS,
+  compose-managed (web + db services).
+- **Reverse proxy / access layer:** Cloudflare Zero Trust via
+  a Cloudflare Tunnel in front of the `web` service. Identity /
+  access policy is enforced at Cloudflare.
+- **No application-side IP or user identity from Cloudflare
+  headers.** The application does NOT read the
+  `cf-access-authenticated-user-email` header (or any
+  `cf-access-*` header). The app sees only "Cloudflare edge IP
+  made a request". A future change that does want
+  identity-aware behavior must be a deliberate addition, not a
+  silent grant.
+- **DNS / TLS** is handled by Cloudflare as part of the tunnel
+  setup.
+- **Backups:** daily `pg_dump` to a Docker volume picked up by
+  the existing Backblaze sync runner.
+
+If the deployment posture changes (new access layer, new
+compute target, identity becomes something the app reads),
+update this section first, before the code.
+
 ## What's still loading-bearable for v1 deploy
 
 - **localStorage is the anonymous fallback in Phase 2, not
