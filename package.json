@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "better-auth": "^1.7.7",
     "next": "16.4.0",
     "next-intl": "^4.14.0",
     "pg": "^8.13.0",
@@ -28,6 +29,7 @@
     "@types/pg": "^8.11.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "auth": "^1.7.7",
     "eslint": "^9",
     "eslint-config-next": "16.4.0",
     "prisma": "^5.22.0",
