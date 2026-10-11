@@ -80,12 +80,21 @@ export default async function LocaleLayout({
                 >
                   {tNav("categories")}
                 </Link>
-                <Link
-                  href={`/${lang}/search`}
-                  className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                <form
+                  action={`/${lang}/search`}
+                  method="get"
+                  className="flex items-center"
+                  role="search"
                 >
-                  {tNav("search")}
-                </Link>
+                  <input
+                    type="search"
+                    name="q"
+                    defaultValue=""
+                    placeholder={tNav("searchPlaceholder")}
+                    aria-label="Search"
+                    className="w-40 rounded-md border border-zinc-300 bg-white px-2 py-1 text-xs text-zinc-900 placeholder-zinc-400 focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-500"
+                  />
+                </form>
               </div>
               {/* Suspense required: next-intl client components use usePathname() which must be inside a Suspense boundary under Next 16 cacheComponents. */}
               <Suspense fallback={null}>

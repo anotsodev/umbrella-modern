@@ -6,7 +6,8 @@
   "nav": {
     "home": "Inicio",
     "categories": "Categorías",
-    "search": "Buscar"
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar…"
   },
   "home": {
     "phase": "Lector Fase 1",
@@ -41,5 +42,12 @@
   "footer": {
     "license": "Licenciado bajo GPLv3"
   },
-  "auth": {}
+  "auth": {},
+  "search": {
+    "title": "Buscar",
+    "placeholder": "Buscar temas…",
+    "hint": "Escribe una consulta y pulsa Buscar.",
+    "noResults": "No hay temas que coincidan con «{query}».",
+    "resultsCount": "{count, plural, =0 {Sin resultados} one {1 resultado} other {{count} resultados}} para «{query}»"
+  }
 }

@@ -6,7 +6,8 @@
   "nav": {
     "home": "Главная",
     "categories": "Категории",
-    "search": "Поиск"
+    "search": "Поиск",
+    "searchPlaceholder": "Поиск…"
   },
   "home": {
     "phase": "Чтение Фаза 1",
@@ -41,5 +42,12 @@
   "footer": {
     "license": "Лицензия GPLv3"
   },
-  "auth": {}
+  "auth": {},
+  "search": {
+    "title": "Поиск",
+    "placeholder": "Поиск тем…",
+    "hint": "Введите запрос и нажмите Найти.",
+    "noResults": "Темы, соответствующие «{query}», не найдены.",
+    "resultsCount": "{count, plural, =0 {Нет результатов} one {1 результат} few {{count} результата} many {{count} результатов} other {{count} результата}} по запросу «{query}»"
+  }
 }

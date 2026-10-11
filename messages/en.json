@@ -6,7 +6,8 @@
   "nav": {
     "home": "Home",
     "categories": "Categories",
-    "search": "Search"
+    "search": "Search",
+    "searchPlaceholder": "Search…"
   },
   "home": {
     "phase": "Phase 1 reader",
@@ -48,5 +49,12 @@
     "sendLink": "Send sign-in link",
     "sending": "Sending…",
     "checkYourEmail": "Check your inbox for the sign-in link. (In dev, the link is logged to the web container's stdout.)"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search topics…",
+    "hint": "Type a query and press Go.",
+    "noResults": "No topics match “{query}”.",
+    "resultsCount": "{count, plural, =0 {No results} one {1 result} other {{count} results}} for “{query}”"
   }
 }

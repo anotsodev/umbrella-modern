@@ -6,7 +6,8 @@
   "nav": {
     "home": "الرئيسية",
     "categories": "الفئات",
-    "search": "بحث"
+    "search": "بحث",
+    "searchPlaceholder": "بحث…"
   },
   "home": {
     "phase": "واجهة القراءة - المرحلة 1",
@@ -41,5 +42,12 @@
   "footer": {
     "license": "مرخصة بموجب GPLv3"
   },
-  "auth": {}
+  "auth": {},
+  "search": {
+    "title": "بحث",
+    "placeholder": "ابحث في المواضيع…",
+    "hint": "اكتب استعلامًا واضغط على بحث.",
+    "noResults": "لا توجد مواضيع مطابقة لـ «{query}».",
+    "resultsCount": "{count, plural, =0 {لا نتائج} one {نتيجة واحدة} two {نتيجتان} few {{count} نتائج} many {{count} نتيجة} other {{count} نتائج}} لـ «{query}»"
+  }
 }

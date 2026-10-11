@@ -6,7 +6,8 @@
   "nav": {
     "home": "خانه",
     "categories": "دسته‌بندی‌ها",
-    "search": "جستجو"
+    "search": "جستجو",
+    "searchPlaceholder": "جستجو…"
   },
   "home": {
     "phase": "خواندن فاز ۱",
@@ -41,5 +42,12 @@
   "footer": {
     "license": "تحت مجوز GPLv3"
   },
-  "auth": {}
+  "auth": {},
+  "search": {
+    "title": "جستجو",
+    "placeholder": "جستجوی موضوعات…",
+    "hint": "یک پرسش وارد کنید و دکمه جستجو را بزنید.",
+    "noResults": "هیچ موضوعی با «{query}» مطابقت ندارد.",
+    "resultsCount": "{count, plural, =0 {بدون نتیجه} one {۱ نتیجه} other {{count} نتیجه}} برای «{query}»"
+  }
 }

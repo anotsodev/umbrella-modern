@@ -6,7 +6,8 @@
   "nav": {
     "home": "Accueil",
     "categories": "Catégories",
-    "search": "Rechercher"
+    "search": "Rechercher",
+    "searchPlaceholder": "Rechercher…"
   },
   "home": {
     "phase": "Lecteur Phase 1",
@@ -41,5 +42,12 @@
   "footer": {
     "license": "Sous licence GPLv3"
   },
-  "auth": {}
+  "auth": {},
+  "search": {
+    "title": "Rechercher",
+    "placeholder": "Rechercher des sujets…",
+    "hint": "Tapez une requête et appuyez sur Rechercher.",
+    "noResults": "Aucun sujet ne correspond à « {query} ».",
+    "resultsCount": "{count, plural, =0 {Aucun résultat} one {1 résultat} other {{count} résultats}} pour « {query} »"
+  }
 }

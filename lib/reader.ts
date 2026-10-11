@@ -207,3 +207,99 @@ export async function getNeighbours(
   ]);
   return { prev, next };
 }
+
+export type SearchHit = {
+  id: bigint;
+  slug: string;
+  title: string;
+  categorySlug: string;
+  categoryTitle: string;
+  // Short snippet for the result list. HTML stripped + truncated.
+  snippet: string;
+  rank: number;
+};
+
+// Postgres FTS search over Content for a single language. Uses the
+// `simple` config and the GIN index populated by the FTS trigger
+// (see prisma/migrations/fts.sql). Returns up to `limit` rows ranked
+// by ts_rank.
+//
+// We use $queryRaw because Prisma can't express tsvector @@ to_tsquery.
+// The query is parameterized so user input is escaped.
+export async function searchContent(
+  lang: string,
+  query: string,
+  limit: number = 20
+): Promise<SearchHit[]> {
+  assertLocale(lang);
+  const trimmed = query.trim();
+  if (!trimmed) return [];
+
+  // Convert user input into a tsquery. Split on whitespace, join with
+  // &, and append :* for prefix matching on each term. This handles
+  // "intern" → "intern:*" so partial words match the way users expect.
+  //
+  // Strip characters that would confuse the tsquery parser: parens,
+  // ampersands, pipes, colons, quotes, etc. Keep letters (any script),
+  // digits, and underscores. Postgres `simple` config tokenises on
+  // whitespace, so non-Latin scripts work without stemming.
+  const terms = trimmed
+    .split(/\s+/)
+    .map((t) => t.replace(/[()&|:!"'`~*?\\\/]/g, ""))
+    .filter((t) => t.length > 0);
+  if (terms.length === 0) return [];
+  const tsquery = terms.map((t) => `${t}:*`).join(" & ");
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const rows = await (prisma as any).$queryRaw<
+    {
+      id: bigint;
+      slug: string;
+      title: string;
+      category_slug: string;
+      category_title: string;
+      snippet: string;
+      rank: number;
+    }[]
+  >`
+    SELECT
+      c.id,
+      c.slug,
+      c.title,
+      cat.slug AS category_slug,
+      cat.title AS category_title,
+      substring(
+        regexp_replace(
+          regexp_replace(coalesce(c.html, ''), '<[^>]+>', ' ', 'g'),
+          '\\s+', ' ', 'g'
+        ),
+        1, 240
+      ) AS snippet,
+      ts_rank_cd(c.search_vector, to_tsquery('simple', ${tsquery})) AS rank
+    FROM contents c
+    JOIN categories cat ON cat.id = c.category_id
+    WHERE c.language_id = ${lang}
+      AND c.type = 'topic'
+      AND c.search_vector @@ to_tsquery('simple', ${tsquery})
+    ORDER BY rank DESC, c.title ASC
+    LIMIT ${limit}
+  `;
+
+  return rows.map((r: {
+    id: bigint;
+    slug: string;
+    title: string;
+    category_slug: string;
+    category_title: string;
+    snippet: string;
+    rank: number;
+  }) => ({
+    id: r.id,
+    slug: r.slug,
+    title: r.title,
+    categorySlug: r.category_slug,
+    categoryTitle: r.category_title,
+    snippet: r.snippet,
+    rank: r.rank,
+  }));
+}
