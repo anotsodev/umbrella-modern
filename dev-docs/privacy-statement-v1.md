@@ -23,6 +23,11 @@ finalized; this is a placeholder).
   progress, your form answers, and the locale you last viewed
   from. That's it. We do not collect your name, your IP address,
   your device fingerprint, or anything else.
+- **We invalidate your server session immediately when you sign
+  out.** The session record in our database is deleted the moment
+  you click "Sign out" — the cookie is cleared in the same call.
+  The same code path is exercised on every browser, every device,
+  every time.
 - **You'll be able to export or delete your data** from your
   account page. (We are adding these controls in a follow-up
   release. Until they're live, contact us at the email below and
@@ -75,7 +80,7 @@ sign in:
 | Per-pathway check states | Sync your progress across devices | Until you delete your account |
 | Per-form answer snapshots | Sync your progress across devices | Until you delete your account |
 | Last-viewed locale | Show you the right language on next visit | Until you delete your account |
-| Hashed session token | Keep you signed in | Until you sign out or the session expires |
+| Hashed session token | Keep you signed in | Until you sign out. When you click "Sign out", the server-side session record is deleted immediately. The cookie is also removed. |
 
 We do **not** collect:
 
