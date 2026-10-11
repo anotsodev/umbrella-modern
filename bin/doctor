@@ -68,3 +68,25 @@ else
   printf "\n\033[31m✘ Doctor found %d problem(s). Fix and re-run: make doctor\033[0m\n" "$errors"
   exit 1
 fi
+
+hdr "Checking host-vs-container dep drift"
+# If the host's package-lock.json is newer than the container's
+# node_modules/.package-lock.json, the web image is stale and the
+# container will be missing whatever was added on the host. This is the
+# classic "tsc complains on host but works in container" / vice versa
+# failure mode. Warn (don't fail) so it shows up before `make up`.
+
+if [ -f package-lock.json ] && command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
+  container_marker=$(docker compose ps -q web 2>/dev/null | head -1)
+  if [ -n "$container_marker" ]; then
+    host_mtime=$(stat -f '%m' package-lock.json 2>/dev/null || echo 0)
+    container_mtime=$(docker compose exec -T web stat -c '%Y' node_modules/.package-lock.json 2>/dev/null | tr -d '[:space:]' || echo 0)
+    if [ -n "$container_mtime" ] && [ "$container_mtime" != "0" ] && [ "$host_mtime" -gt "$container_mtime" ]; then
+      printf "\n\033[33m⚠️  Host package-lock.json is newer than the container's.\n    Container is missing deps installed on the host.\n    Run \`docker compose build web --no-cache\` before \`make up\`.\033[0m\n"
+    else
+      ok "Host and container package-lock.json in sync"
+    fi
+  else
+    warn "Web container is not running; skipping drift check"
+  fi
+fi
