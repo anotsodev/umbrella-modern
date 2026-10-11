@@ -15,7 +15,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { FormItem, FormSchema } from "@/lib/reader";
-import { useFormSync } from "@/lib/server-state";
+import { useFormSync, useLocalStorageMergePrompt, localStorageKeys } from "@/lib/server-state";
+import { MergePrompt } from "./merge-prompt";
 
 type Labels = {
   saveDraft: string;
@@ -228,6 +229,19 @@ export function FormRunner({ slug, title, schema, lang, labels }: Props) {
     if (isSignedIn) scheduleSync(answers, title);
   }, [slug, answers, hydrated, isSignedIn, scheduleSync, title]);
 
+  // One-shot prompt to migrate local answers into the signed-in
+  // account. Fires the first time a signed-in user visits a form
+  // that has localStorage entries but no server state.
+  const merge = useLocalStorageMergePrompt({
+    enabled: hydrated && isSignedIn && hydratedFromServer,
+    hasLocal: Object.keys(answers).length > 0,
+    hasServer: serverAnswers !== null && Object.keys(serverAnswers).length > 0,
+    localStorageKey: localStorageKeys.form(slug),
+    onAccept: () => {
+      scheduleSync(answers, title);
+    },
+  });
+
   const totalScreens = schema.screens.length;
   const currentScreen = schema.screens[screenIndex];
 
@@ -273,6 +287,12 @@ export function FormRunner({ slug, title, schema, lang, labels }: Props) {
 
   return (
     <section className="mt-8">
+      <MergePrompt
+        show={merge.showPrompt}
+        onAccept={merge.accept}
+        onDecline={merge.decline}
+        kind="form"
+      />
       {/* Wizard nav */}
       <div className="flex items-center justify-between gap-3 text-sm">
         <span className="text-zinc-600 dark:text-zinc-400">

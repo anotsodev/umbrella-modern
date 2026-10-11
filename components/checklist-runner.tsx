@@ -11,7 +11,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { ChecklistItem } from "@/lib/reader";
-import { usePathwaySync } from "@/lib/server-state";
+import { usePathwaySync, useLocalStorageMergePrompt, localStorageKeys } from "@/lib/server-state";
+import { MergePrompt } from "./merge-prompt";
 
 type Labels = {
   progress: string;
@@ -91,7 +92,8 @@ export function ChecklistRunner({ slug, lang, items, labels }: Props) {
       setChecked(serverChecked);
     }
     // If server has nothing and we have local entries, those will
-    // get scheduled for sync by the next effect.
+    // get scheduled for sync by the next effect — but only after
+    // the user accepts the one-shot merge prompt below.
   }, [hydrated, isSignedIn, hydratedFromServer, serverChecked, slug]);
 
   // Persist on every change after hydration.
@@ -100,6 +102,19 @@ export function ChecklistRunner({ slug, lang, items, labels }: Props) {
     saveLocal(slug, checked);
     if (isSignedIn) scheduleSync(checked);
   }, [slug, checked, hydrated, isSignedIn, scheduleSync]);
+
+  // One-shot prompt to migrate local progress into the signed-in
+  // account. Fires the first time a signed-in user visits a
+  // pathway that has localStorage entries but no server state.
+  const merge = useLocalStorageMergePrompt({
+    enabled: hydrated && isSignedIn && hydratedFromServer,
+    hasLocal: Object.keys(checked).length > 0,
+    hasServer: serverChecked !== null && Object.keys(serverChecked).length > 0,
+    localStorageKey: localStorageKeys.pathway(slug),
+    onAccept: () => {
+      scheduleSync(checked);
+    },
+  });
 
   // Only "check" and "umbrella" items are user-actionable. The
   // helper has already attached a sectionTitle to each item by
@@ -157,6 +172,12 @@ export function ChecklistRunner({ slug, lang, items, labels }: Props) {
 
   return (
     <section className="mt-8">
+      <MergePrompt
+        show={merge.showPrompt}
+        onAccept={merge.accept}
+        onDecline={merge.decline}
+        kind="pathway"
+      />
       <div className="flex items-center justify-between gap-3 text-sm">
         <span className="text-zinc-600 dark:text-zinc-400">
           {labels.itemCount}

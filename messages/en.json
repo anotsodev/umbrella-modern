@@ -105,5 +105,12 @@
       "syncedTooltip": "Saved to your account",
       "localTooltip": "Saved on this device only — sign in to sync across devices"
     }
+  },
+  "merge": {
+    "title": "Move your local progress to your account?",
+    "pathway": "We found saved progress for this pathway on this device. Move it to your account so it syncs across devices?",
+    "form": "We found saved answers for this form on this device. Move them to your account so they sync across devices?",
+    "accept": "Yes, move it",
+    "decline": "Not now"
   }
 }

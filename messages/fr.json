@@ -98,5 +98,12 @@
       "syncedTooltip": "Enregistré sur votre compte",
       "localTooltip": "Enregistré uniquement sur cet appareil — connectez-vous pour synchroniser entre appareils"
     }
+  },
+  "merge": {
+    "title": "Transférer votre progression locale vers votre compte ?",
+    "pathway": "Nous avons trouvé une progression enregistrée pour cette liste de contrôle sur cet appareil. La transférer vers votre compte pour la synchroniser entre appareils ?",
+    "form": "Nous avons trouvé des réponses enregistrées pour ce formulaire sur cet appareil. Les transférer vers votre compte pour les synchroniser entre appareils ?",
+    "accept": "Oui, transférer",
+    "decline": "Pas maintenant"
   }
 }

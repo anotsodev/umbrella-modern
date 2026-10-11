@@ -98,5 +98,12 @@
       "syncedTooltip": "Guardado en tu cuenta",
       "localTooltip": "Guardado solo en este dispositivo — inicia sesión para sincronizar entre dispositivos"
     }
+  },
+  "merge": {
+    "title": "¿Mover tu progreso local a tu cuenta?",
+    "pathway": "Encontramos progreso guardado para esta lista de verificación en este dispositivo. ¿Moverlo a tu cuenta para que se sincronice entre dispositivos?",
+    "form": "Encontramos respuestas guardadas para este formulario en este dispositivo. ¿Moverlas a tu cuenta para que se sincronicen entre dispositivos?",
+    "accept": "Sí, mover",
+    "decline": "Ahora no"
   }
 }

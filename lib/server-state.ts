@@ -249,3 +249,85 @@ export const localStorageKeys = {
     return formKey(slug);
   },
 };
+
+// ---------------------------------------------------------------------------
+// One-shot localStorage → server merge prompt.
+//
+// Fires the first time a signed-in user visits a runner that has
+// localStorage state but no server state. Once the user accepts or
+// declines, the decision is remembered for that key in a separate
+// `umbrella.merged.<key>` flag so the prompt never reappears.
+//
+//   - The merge is one-way: local → server. Server never overwrites
+//     local. After merge, localStorage keeps a mirror until the next
+//     sign-in is detected (i.e. when the user opens the same runner
+//     on another device).
+//   - Decline: server stays empty, the runner keeps using local.
+//   - The "merged" flag is stored in *localStorage*, not on the
+//     server, because it's a per-device UX preference — signing in
+//     on a new device should still let the user merge again if that
+//     device's local has different data.
+// ---------------------------------------------------------------------------
+
+const MERGE_FLAG_PREFIX = "umbrella.merged.";
+
+function mergeFlagKey(localStorageKey: string): string {
+  return `${MERGE_FLAG_PREFIX}${localStorageKey}`;
+}
+
+type MergePromptState = {
+  showPrompt: boolean;
+  accept: () => void;
+  decline: () => void;
+};
+
+export function useLocalStorageMergePrompt({
+  enabled,
+  hasLocal,
+  hasServer,
+  localStorageKey,
+  onAccept,
+}: {
+  enabled: boolean; // signed in + hydrated from server
+  hasLocal: boolean;
+  hasServer: boolean;
+  localStorageKey: string;
+  onAccept: () => void;
+}): MergePromptState {
+  const [showPrompt, setShowPrompt] = useState(false);
+
+  useEffect(() => {
+    if (!enabled) return;
+    if (!hasLocal || hasServer) return;
+    try {
+      if (window.localStorage.getItem(mergeFlagKey(localStorageKey)) !== null) {
+        return;
+      }
+    } catch {
+      return;
+    }
+    setShowPrompt(true);
+  }, [enabled, hasLocal, hasServer, localStorageKey]);
+
+  const remember = (decision: "merged" | "skipped") => {
+    try {
+      window.localStorage.setItem(mergeFlagKey(localStorageKey), decision);
+    } catch {
+      // localStorage might be disabled; the prompt will reappear next
+      // visit, which is fine.
+    }
+  };
+
+  const accept = useCallback(() => {
+    onAccept();
+    remember("merged");
+    setShowPrompt(false);
+  }, [onAccept, localStorageKey]);
+
+  const decline = useCallback(() => {
+    remember("skipped");
+    setShowPrompt(false);
+  }, [localStorageKey]);
+
+  return { showPrompt, accept, decline };
+}
