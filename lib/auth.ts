@@ -2,9 +2,9 @@
 //
 // We use the magic-link plugin for email-based auth (no passwords —
 // matches Security First's no-collection stance in the Android
-// terms.html). In dev, the email "sender" just logs the magic-link
-// URL to stdout so the route is exercisable without real SMTP. A
-// real Resend/Postmark/SMTP backend is a Phase 2+ decision.
+// terms.html). The actual email transport lives in lib/email.ts
+// (Resend in production, dev-stub fallback when RESEND_API_KEY is
+// unset and NODE_ENV !== "production").
 //
 // The `nextCookies` plugin is the last item in `plugins` (better-auth
 // requires this ordering) so that server actions / route handlers
@@ -16,6 +16,7 @@ import { nextCookies } from "better-auth/next-js";
 import { magicLink } from "better-auth/plugins";
 
 import { prisma } from "../lib/db";
+import { sendMagicLink } from "./email";
 
 const baseURL = process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
 const secret = process.env.BETTER_AUTH_SECRET;
@@ -40,14 +41,11 @@ export const auth = betterAuth({
   plugins: [
     magicLink({
       sendMagicLink: async ({ email, url }) => {
-        // Dev sender: print the link. In production, swap this for
-        // a real Resend / Postmark / SMTP call.
-        if (process.env.NODE_ENV === "production") {
-          throw new Error(
-            "sendMagicLink is not configured for production. Wire Resend/Postmark/SMTP in lib/auth.ts before deploying.",
-          );
-        }
-        console.log(`[magic-link] ${email} → ${url}`);
+        // Delegates to lib/email.ts. Production requires
+        // RESEND_API_KEY + EMAIL_FROM (it'll throw at send time if
+        // either is missing); development falls back to a stdout
+        // log when RESEND_API_KEY is unset.
+        await sendMagicLink({ to: email, url });
       },
     }),
     nextCookies(),
