@@ -442,7 +442,8 @@ export type FormOption = { label: string; value: string };
 export type FormItem = {
   name: string;
   type: FormItemType;
-  label: string;
+  // Optional in the upstream data. The renderer falls back to `name`.
+  label?: string;
   options?: FormOption[];
 };
 export type FormScreen = { title: string; items: FormItem[] };
@@ -496,10 +497,18 @@ function assertValidFormSchema(doc: unknown): FormSchema {
         );
       }
       const it = item as { name?: unknown; type?: unknown; label?: unknown; options?: unknown };
-      if (typeof it.name !== "string" || typeof it.type !== "string" ||
-          typeof it.label !== "string") {
+      if (typeof it.name !== "string" || typeof it.type !== "string") {
         throw new Error(
-          `form schema screens[${sIdx}].items[${iIdx}] missing name/type/label`,
+          `form schema screens[${sIdx}].items[${iIdx}] missing name or type`,
+        );
+      }
+      // `label` is optional in the upstream data (some text_area
+      // items ship with no label). The renderer falls back to
+      // `name` in that case. We only require it to be a string
+      // when present.
+      if (it.label !== undefined && typeof it.label !== "string") {
+        throw new Error(
+          `form schema screens[${sIdx}].items[${iIdx}].label is not a string`,
         );
       }
       if (!FORM_ITEM_TYPES.has(it.type as FormItemType)) {
