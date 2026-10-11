@@ -140,8 +140,12 @@ export default async function LocaleLayout({
           </header>
           <div className="flex-1">{children}</div>
           <footer className="border-t border-zinc-200 dark:border-zinc-800">
-            <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-6 py-6 text-xs text-zinc-500">
-              <span>© Umbrella · {tFoot("license")}</span>
+            <div className="mx-auto flex w-full max-w-5xl flex-col gap-2 px-6 py-6 text-xs text-zinc-500 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+              <div className="flex flex-wrap items-center gap-3">
+                <span>© Umbrella · {tFoot("license")}</span>
+                <span aria-hidden="true">·</span>
+                <span>{tFoot("dataNote")}</span>
+              </div>
               <div className="flex items-center gap-4">
                 <Link href={`/${lang}/terms`} className="hover:underline">
                   {tFoot("privacy")}

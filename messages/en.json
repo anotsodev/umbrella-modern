@@ -44,7 +44,8 @@
   },
   "footer": {
     "license": "Licensed under GPLv3",
-    "privacy": "Privacy"
+    "privacy": "Privacy",
+    "dataNote": "No analytics · anonymous by default · sign in to sync"
   },
   "notice": {
     "localStorageOnly": "Your progress is saved on this device only. <signInLink>Sign in</signInLink> to sync across devices.",

@@ -131,6 +131,15 @@ tables: `session`, `account`, `verification`. Full DDL in
   (or upsert the parent + replace children). This keeps the server
   row in lockstep with what the client shows without inventing a
   diff protocol.
+  - **Future contributor note (Phase 3)**: today the "upsert"
+    pattern is implemented as `findFirst` + `update`/`create`
+    because Prisma's `upsert` requires a compound unique key
+    and we don't have one on `(userId, formId)` /
+    `(userId, checklistId)`. If you want a real `upsert`, add
+    a compound unique index in `schema.prisma` first, then
+    swap the `findFirst`-based code in `app/api/me/...` for
+    `prisma.userForm.upsert({ where: { userId_formId: ... } })`.
+    Both `UserForm` and `UserChecklistRun` are affected.
 - **API surface**:
   - `GET /api/me/pathway/[slug]` — `{ checked: Record<itemId, boolean> }` or `{}`. 401 anonymous.
   - `POST /api/me/pathway/[slug]/sync` — body `{ checked, lang }`. 401 anonymous.
