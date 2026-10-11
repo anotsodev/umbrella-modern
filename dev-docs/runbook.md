@@ -10,7 +10,7 @@ make doctor         # preflight: Docker, Node, ports, .env
 make up             # web + db online
 make logs           # tail everything
 make ps             # container status
-make smoke          # hit / and /api/health
+make smoke          # hit / and /api/health (liveness only; not feature coverage)
 make down           # stop stack (keeps data)
 make reset          # nuke volumes, rebuild from scratch
 make backup         # pg_dump → umbrella-modern-pgdumps volume
