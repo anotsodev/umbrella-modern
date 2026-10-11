@@ -133,3 +133,47 @@ if [ -n "$form_slug" ]; then
     fi
   done
 fi
+
+# Auth surface (Phase 2). better-auth exposes /api/auth/*.
+# We don't exercise the full magic-link flow (no email in CI);
+# just confirm the route is live and the sign-in page renders.
+session=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/api/auth/get-session || echo "000")
+if [ "$session" = "200" ]; then
+  ok "/api/auth/get-session -> 200 (anonymous OK)"
+else
+  echo "  ✘ /api/auth/get-session -> $session (expected 200)"
+  docker compose logs web
+  exit 1
+fi
+
+for loc in en ar es fa fr ru zh-Hant; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000/$loc/sign-in" || echo "000")
+  if [ "$code" = "200" ]; then
+    ok "/$loc/sign-in -> 200"
+  else
+    echo "  ✘ /$loc/sign-in -> $code (expected 200)"
+    docker compose logs web
+    exit 1
+  fi
+done
+
+# Per-user persistence endpoints (Phase 2). Anonymous calls
+# must return 401; the runner is what makes them useful.
+for path in /api/me/pathway/test /api/me/form/test; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000$path" || echo "000")
+  if [ "$code" = "401" ]; then
+    ok "GET $path -> 401 (auth required)"
+  else
+    echo "  ✘ GET $path -> $code (expected 401)"
+    docker compose logs web
+    exit 1
+  fi
+  code=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-Type: application/json" -d '{}' "http://localhost:3000${path}/sync" || echo "000")
+  if [ "$code" = "401" ]; then
+    ok "POST ${path}/sync -> 401 (auth required)"
+  else
+    echo "  ✘ POST ${path}/sync -> $code (expected 401)"
+    docker compose logs web
+    exit 1
+  fi
+done
