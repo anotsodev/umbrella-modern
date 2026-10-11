@@ -198,4 +198,18 @@ Shipped: `app/[lang]/pathways/page.tsx` + `app/[lang]/pathways/[slug]/page.tsx`
   branch (0, 1, 2, 5, 11) and read the rendered output to confirm
   the right rule fires.
 
+## Future refactors
+
+- `lib/reader.ts` is the read-side data layer. As of Phase 1 it
+  carries topics (`getTopLevelCategories`, `getCategoryContents`,
+  `getContent`, …), search (`searchContent`), and pathways
+  (`getAllChecklists`, `getChecklist`) in one file. **Once it
+  crosses ~600 lines or becomes hard to navigate, split it by
+  domain** — `lib/reader/topics.ts`, `lib/reader/search.ts`,
+  `lib/reader/pathways.ts`, etc. — and keep the `assertLocale`
+  helper in a shared `lib/reader/index.ts`. Don't refactor
+  proactively; this is a size/navigation signal, not a smell.
+- The import job (`bin/import-content` or wherever it lives) is
+  similarly monolithic; same rule applies.
+
 ## Next 16 `cacheComponents` rules confirmed
