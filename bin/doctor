@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# Preflight check: verify the local machine can run this stack.
+# Safe to re-run; exits non-zero on the first failure with a clear message.
+
+set -euo pipefail
+
+ok()   { printf "  \033[32m✔\033[0m %s\n" "$1"; }
+warn() { printf "  \033[33m⚠\033[0m %s\n" "$1"; }
+fail() { printf "  \033[31m✘\033[0m %s\n" "$1"; exit 1; }
+hdr()  { printf "\n\033[1m%s\033[0m\n" "$1"; }
+
+errors=0
+
+hdr "Checking tools"
+for tool in docker node npm git make; do
+  if command -v "$tool" >/dev/null 2>&1; then
+    ok "$tool: $(command -v "$tool")"
+  else
+    fail "$tool: not found in PATH"
+    errors=$((errors+1))
+  fi
+done
+
+hdr "Checking versions"
+node_major=$(node -p 'process.versions.node.split(".")[0]' 2>/dev/null || echo "0")
+if [ "$node_major" -ge 18 ]; then
+  ok "Node.js $(node -v) (>= 18)"
+else
+  fail "Node.js $(node -v) — need >= 18"
+  errors=$((errors+1))
+fi
+
+docker_version=$(docker --version 2>/dev/null | awk '{print $3}' | tr -d ',')
+ok "Docker $docker_version"
+
+hdr "Checking Docker daemon"
+if docker info >/dev/null 2>&1; then
+  ok "Docker daemon reachable"
+else
+  fail "Docker daemon not reachable. Start Docker Desktop or your daemon, then retry."
+  errors=$((errors+1))
+fi
+
+hdr "Checking ports"
+for port in 3000 5432; do
+  if lsof -nP -iTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1; then
+    warn "Port $port is in use. If this is a leftover container, run: docker compose down"
+  else
+    ok "Port $port is free"
+  fi
+done
+
+hdr "Checking env files"
+if [ -f .env ]; then
+  ok ".env present"
+else
+  if [ -f .env.example ]; then
+    warn ".env missing. Run: cp .env.example .env"
+  else
+    fail ".env.example missing — repo is incomplete"
+    errors=$((errors+1))
+  fi
+fi
+
+if [ "$errors" -eq 0 ]; then
+  printf "\n\033[32m✔ Doctor passed. Run: make up\033[0m\n"
+else
+  printf "\n\033[31m✘ Doctor found %d problem(s). Fix and re-run: make doctor\033[0m\n" "$errors"
+  exit 1
+fi

@@ -1,0 +1,53 @@
+# umbrella-modern — Next.js + PostgreSQL dev stack
+#
+# All services pinned by digest for reproducible builds.
+# `make up` (or `docker compose up -d --wait`) brings the whole stack online.
+# `make reset` is the idempotent nuke-and-rebuild path.
+
+services:
+  web:
+    build:
+      context: .
+      target: dev
+    command: ["npm", "run", "dev"]
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://app:app@db:5432/app?schema=public
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+      - umbrella-content:/app/public/content
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: app
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d app"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+    name: umbrella-modern-pgdata
+  umbrella-content:
+    name: umbrella-modern-content
+    # Bind-mount a local clone of https://github.com/securityfirst/umbrella-content
+    # on the host before `make up` to make topic images available at /content/*.
+    # Example (add to the volume above, then drop the named volume):
+    #   - ~/.local/share/umbrella-content:/app/public/content:ro

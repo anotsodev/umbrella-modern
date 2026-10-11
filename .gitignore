@@ -1,0 +1,34 @@
+# Node / Next.js
+node_modules/
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+next-env.d.ts
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+
+# Prisma (keep schema + migrations; ignore generated client)
+prisma/migrations/dev.db*
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Backup dumps (host-side; the in-container volume is separate)
+*.sql
+*.sql.gz
+*.dump
