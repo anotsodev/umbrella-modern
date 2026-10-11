@@ -63,19 +63,39 @@ tables: `session`, `account`, `verification`. Full DDL in
 | Phase | Scope | Status |
 |---|---|---|
 | 0 | Spec + ops (Docker, schema stub, i18n skeleton, **better-auth scaffolded**) | **complete** |
-| 1 | Reader surface + `umbrella-content` import job + checklist/forms | **reader + FTS + pathways shipped**; forms in flight |
-| 2 | Real SMTP/Resend/Postmark for magic-link delivery + per-user progress persistence | not started |
+| 1 | Reader surface + `umbrella-content` import job + checklist/forms | **complete** (reader + FTS + pathways + forms) |
+| 2 | Real SMTP/Resend/Postmark for magic-link delivery + per-user progress persistence | **complete** (Resend + API + sync) |
 | 3 | Read-only migration aids (Android user data export) | not started |
 | 4 | PWA / offline mode | not started |
 | 5 | NOT in scope: analytics, custom content uploads | — |
 
-## Auth notes (Phase 0 follow-up)
+## Auth / Magic-link transport (Phase 2)
 
+- **Provider**: Resend (`lib/email.ts`).
+  Rationale: best Next.js + better-auth DX, free tier covers a small
+  Umbrella-style site, and better-auth abstracts the transport so a
+  future swap (Postmark, self-hosted SMTP) is a config change rather
+  than a refactor. Umbrella is a security app — if the user later
+  prefers self-hosted SMTP for privacy reasons, swap providers; the
+  contract between `lib/auth.ts` and `lib/email.ts` is one
+  `sendMagicLink({ to, url })` call.
+- **Env vars** (see `.env.example`):
+  - `RESEND_API_KEY` — Resend API key. Required in production.
+  - `EMAIL_FROM` — sender. `"Umbrella <noreply@example.com>"` for dev;
+    swap to a verified domain in prod.
+- **Dev / prod fallback** in `lib/email.ts`:
+  - `RESEND_API_KEY` unset **and** `NODE_ENV !== "production"` →
+    `console.log` the URL (current dev stub). No email is sent.
+  - `RESEND_API_KEY` unset **and** `NODE_ENV === "production"` →
+    throw at send time so the deploy fails loudly rather than
+    silently dropping sign-in emails.
+- **Email body**: subject `"Your Umbrella sign-in link"`, body
+  `"Click to sign in: <url>. Expires in 10 minutes. If you didn't
+  request this, ignore this email."` Plain-text + HTML variants.
+  No social links, no marketing copy — privacy stance consistent
+  with the security-app positioning.
 - Library: [`better-auth`](https://www.better-auth.com) v1.7.7 with the
   Prisma adapter, `magicLink` plugin, and `nextCookies` plugin.
-- Transport: magic-link only. The dev `sendMagicLink` handler in
-  `lib/auth.ts` just `console.log`s the URL — no real SMTP. Phase 2
-  swaps this for Resend/Postmark/SMTP.
 - Server-side import: `nextCookies` is imported from `better-auth/next-js`
   in v1.7.7, **not** from `better-auth/plugins` (the docs show both
   shapes, but only the `/next-js` subpath exports it in this version).
@@ -86,6 +106,49 @@ tables: `session`, `account`, `verification`. Full DDL in
 - Docker note: the Dockerfile uses `npm ci`; after a `--legacy-peer-deps`
   install you must `docker compose build web --no-cache` for the container
   to see the new dep.
+
+## Per-user progress sync (Phase 2)
+
+- **localStorage is the anonymous fallback** and is always written.
+  The same UX works for both anonymous and signed-in users; a failed
+  server write doesn't lose progress.
+- **Server wins on hydration conflict** when the server has state and
+  the local device doesn't. localStorage is then mirrored back so a
+  future sign-out retains progress on that device.
+- **One-shot migration prompt**: when a signed-in user first visits a
+  pathway/form that has localStorage entries but no server state, a
+  one-shot amber banner asks "Move your local progress to your
+  account?". Accept writes the local state to the server via
+  `scheduleSync`; decline just records a flag. Decision is remembered
+  per-key in `umbrella.merged.<localStorageKey>` (localStorage, not
+  server — it's a per-device UX preference, not a per-user state).
+- **Debounced server writes** (`lib/server-state.ts`,
+  `SERVER_DEBOUNCE_MS = 500`): a flurry of checkbox clicks turns into
+  one POST. Failures are surfaced via `synced.lastSyncError`; the
+  runner keeps local progress.
+- **Snapshot semantics** at the API layer: `/api/me/pathway/[slug]/sync`
+  and `/api/me/form/[slug]/sync` both delete-and-reinsert child rows
+  (or upsert the parent + replace children). This keeps the server
+  row in lockstep with what the client shows without inventing a
+  diff protocol.
+- **API surface**:
+  - `GET /api/me/pathway/[slug]` — `{ checked: Record<itemId, boolean> }` or `{}`. 401 anonymous.
+  - `POST /api/me/pathway/[slug]/sync` — body `{ checked, lang }`. 401 anonymous.
+  - `GET /api/me/form/[slug]` — `{ answers: Record<itemName, string|string[]> }` or `{}`. 401 anonymous.
+  - `POST /api/me/form/[slug]/sync` — body `{ answers, lang, title? }`. 401 anonymous.
+- **Auth gating**: every `/api/me/*` route calls `await requireUserId()`
+  from `lib/auth.ts`; missing session → 401. There is no "anonymous
+  user" path on these routes — the contract is "if you're here you
+  have an account".
+- **Form `title` is included on every sync** so the server-side row's
+  title matches what the user saw at sync time, not at page-render
+  time. If upstream content renames the form later, in-flight drafts
+  still export with the name the user originally saw.
+- **Status indicator** in the runner header: a colored dot + pill
+  that reads "Synced to your account" (green, signed in, last sync
+  succeeded) or "Local only" (gray, anonymous). An amber variant
+  appears if a sync has failed — the runner keeps local progress,
+  the pill surfaces the error in its tooltip.
 
 ## Reader surface (Phase 1, partial)
 
@@ -304,8 +367,11 @@ i18n + smoke coverage.
   crash on the server. Phase 1 ships with this lint error in
   both `checklist-runner.tsx:62` and `form-runner.tsx:204,213`
   because the alternative (a `useSyncExternalStore`-shaped
-  read) is more code for a Phase 1 detail. Phase 2 cleanup
-  candidate.
+  read) is more code for a Phase 1 detail. **Phase 2 keeps
+  the pattern** — the localStorage hydration effect is
+  required for the anonymous fallback, and the new
+  server-merge effect uses the same shape. Refactor to
+  `useSyncExternalStore` is a Phase 3 candidate.
 - **Turbopack.** Stable, no surprises. The web container
   builds and serves in dev mode without the Turbopack opt-out.
   The dev experience is fast and HMR works on every page type
@@ -315,24 +381,32 @@ i18n + smoke coverage.
   `legacy-peer-deps` pin in `.npmrc` is a defensive guard
   against future minor bumps, not a workaround for an active
   mismatch.
+- **Node 22 is required.** The `auth` and `chevrotain`
+  dependencies declare `engines.node >= 22.0.0`. The
+  Dockerfile uses `node:22-alpine` for **all four stages**
+  (deps, dev, builder, runner) — bumping only the runner
+  still fails `npm ci` in the dev stage. This was hidden
+  in Phase 0 and only surfaced when the cold-start init
+  service was added in Phase 2.
 
 ## What's still loading-bearable for v1 deploy
 
-- **localStorage is the only progress layer in Phase 1.** Both
-  pathways and forms write to `localStorage` keys. A user on
-  a different device (or in a private window) starts from
-  zero. Phase 2 (after better-auth ships the per-user
-  `user_forms` and `user_checklist_progress` rows) fixes
-  this. Until then, the app is "device-local personal
-  notebook" semantics, not "account-bound notebook"
-  semantics. **Worth saying in the v1 footer or onboarding
-  page so users don't assume the cloud has their state.**
+- **localStorage is the anonymous fallback in Phase 2, not
+  the only progress layer.** Signed-in users get per-user
+  server persistence via `/api/me/pathway/*` and
+  `/api/me/form/*`. Anonymous users still get device-local
+  progress. The `LocalStorageNotice` banner
+  (`components/local-storage-notice.tsx`) explains this
+  on first visit. The "Sign in to sync across devices"
+  line in the banner still says "coming soon" — Phase 2
+  delivered the sync, not the UI text update. Worth
+  re-wording before v1 ships.
 - **No 404 page yet.** The reader surface returns 404 for
   nonexistent slugs but the layout shows the default Next.js
   404. A custom 404 with the locale picker + a search prompt
   is a small Phase 1.x polish item.
 - **The umbrella-content volume is mounted empty in
-  compose.yml.** The import job clones the repo into the
-  volume on first run (`make import-content`); the volume
-  persists across container restarts. A pre-baked image
-  would be faster on cold deploys but isn't necessary.
+  compose.yml.** The init service runs `npm run
+  import-content` on cold start; the volume persists across
+  container restarts. A pre-baked image would be faster on
+  cold deploys but isn't necessary.
