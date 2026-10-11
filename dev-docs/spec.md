@@ -94,6 +94,28 @@ tables: `session`, `account`, `verification`. Full DDL in
   request this, ignore this email."` Plain-text + HTML variants.
   No social links, no marketing copy — privacy stance consistent
   with the security-app positioning.
+- **Server-side session invalidation on sign-out** (Phase 3 follow-up).
+  The privacy statement promises that the session record in the
+  database is deleted immediately when a user clicks "Sign out", and
+  that promise is load-bearing. better-auth's default `/sign-out`
+  endpoint already does this — `internalAdapter.deleteSession` runs
+  before the cookie is cleared in the same handler, so the row is
+  gone the moment the response returns. **A future contributor who
+  changes the sign-out code path must preserve this behavior.**
+  Specifically:
+  - Don't swap `await signOut()` in `components/header-auth.tsx` for
+    a client-only `document.cookie = ...` clear; that would drop the
+    cookie without deleting the row.
+  - Don't add a custom POST handler that wraps the better-auth one
+    and short-circuits before `deleteSession` is called.
+  - The smoke test in `bin/smoke` exercises the "already signed out"
+    path (POST `/api/auth/sign-out` with no cookie) and asserts a
+    200/204 response. That's a regression test for the no-op branch
+    — the actual row-deletion behavior is verified by hand during
+    development because it requires a real signed-in session.
+  - Session TTL is left at the better-auth default and is **not** a
+    substitute for invalidation. A short TTL is belt-and-braces; the
+    primary contract is "sign out deletes the row, immediately."
 - Library: [`better-auth`](https://www.better-auth.com) v1.7.7 with the
   Prisma adapter, `magicLink` plugin, and `nextCookies` plugin.
 - Server-side import: `nextCookies` is imported from `better-auth/next-js`
