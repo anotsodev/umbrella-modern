@@ -424,3 +424,164 @@ export async function getChecklist(
     items,
   };
 }
+
+// ---- Forms ----------------------------------------------------------------
+
+// Form schema as stored in the DB (matches the upstream f_*.yml shape).
+// `text_input` and `text_area` produce strings; `single_choice` produces
+// a single value string; `multiple_choice` produces an array of value
+// strings. `label` is a non-input heading and never appears in answers.
+export type FormItemType =
+  | "text_input"
+  | "text_area"
+  | "label"
+  | "single_choice"
+  | "multiple_choice";
+
+export type FormOption = { label: string; value: string };
+export type FormItem = {
+  name: string;
+  type: FormItemType;
+  label: string;
+  options?: FormOption[];
+};
+export type FormScreen = { title: string; items: FormItem[] };
+export type FormSchema = { title: string; screens: FormScreen[] };
+
+export type FormSummary = {
+  id: string; // BigInt, stringified
+  slug: string;
+  title: string;
+  screenCount: number;
+  itemCount: number;
+};
+
+export type FormDetail = FormSummary & {
+  schema: FormSchema;
+};
+
+const FORM_ITEM_TYPES: ReadonlySet<FormItemType> = new Set<FormItemType>([
+  "text_input",
+  "text_area",
+  "label",
+  "single_choice",
+  "multiple_choice",
+]);
+
+// Sanity-check a schema before handing it to the client. The import
+// job already enforces this (scripts/import-content.ts), but the DB
+// row can outlive a code change, so we re-verify on read. A bad row
+// causes a 500 with a descriptive error rather than a blank field
+// in the UI.
+function assertValidFormSchema(doc: unknown): FormSchema {
+  if (!doc || typeof doc !== "object") {
+    throw new Error("form schema is not an object");
+  }
+  const d = doc as { title?: unknown; screens?: unknown };
+  if (typeof d.title !== "string" || !Array.isArray(d.screens)) {
+    throw new Error("form schema missing title or screens");
+  }
+  for (const [sIdx, screen] of d.screens.entries()) {
+    if (!screen || typeof screen !== "object") {
+      throw new Error(`form schema screens[${sIdx}] is not an object`);
+    }
+    const s = screen as { title?: unknown; items?: unknown };
+    if (typeof s.title !== "string" || !Array.isArray(s.items)) {
+      throw new Error(`form schema screens[${sIdx}] missing title or items`);
+    }
+    for (const [iIdx, item] of s.items.entries()) {
+      if (!item || typeof item !== "object") {
+        throw new Error(
+          `form schema screens[${sIdx}].items[${iIdx}] is not an object`,
+        );
+      }
+      const it = item as { name?: unknown; type?: unknown; label?: unknown; options?: unknown };
+      if (typeof it.name !== "string" || typeof it.type !== "string" ||
+          typeof it.label !== "string") {
+        throw new Error(
+          `form schema screens[${sIdx}].items[${iIdx}] missing name/type/label`,
+        );
+      }
+      if (!FORM_ITEM_TYPES.has(it.type as FormItemType)) {
+        throw new Error(
+          `form schema screens[${sIdx}].items[${iIdx}] has unknown type "${it.type}". ` +
+            `Update the validator (lib/reader.ts) AND the renderer (components/form-runner.tsx) ` +
+            `AND the import job (scripts/import-content.ts) to handle this type.`,
+        );
+      }
+      if ((it.type === "single_choice" || it.type === "multiple_choice") &&
+          !Array.isArray(it.options)) {
+        throw new Error(
+          `form schema screens[${sIdx}].items[${iIdx}] (${it.type}) missing options array`,
+        );
+      }
+    }
+  }
+  return d as unknown as FormSchema;
+}
+
+// All forms for a language. Returns a flat summary list ordered by
+// title; forms don't belong to a topic category, so there's no
+// category grouping.
+export async function getAllForms(lang: string): Promise<FormSummary[]> {
+  assertLocale(lang);
+  const rows = await prisma.form.findMany({
+    where: { languageId: lang },
+    orderBy: { title: "asc" },
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      schema: true,
+    },
+  });
+  return rows.map((r) => {
+    const schema = assertValidFormSchema(r.schema);
+    const itemCount = schema.screens.reduce(
+      (acc, s) =>
+        acc + s.items.filter((it) => it.type !== "label").length,
+      0,
+    );
+    return {
+      id: String(r.id),
+      slug: r.slug,
+      title: r.title,
+      screenCount: schema.screens.length,
+      itemCount,
+    };
+  });
+}
+
+// One form with its full schema. Returns null if the slug doesn't
+// exist for the language. Throws if the schema is malformed (see
+// assertValidFormSchema for the error shape).
+export async function getForm(
+  lang: string,
+  slug: string,
+): Promise<FormDetail | null> {
+  assertLocale(lang);
+  const row = await prisma.form.findUnique({
+    where: { languageId_slug: { languageId: lang, slug } },
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      schema: true,
+    },
+  });
+  if (!row) return null;
+  const schema = assertValidFormSchema(row.schema);
+  const itemCount = schema.screens.reduce(
+    (acc, s) =>
+      acc + s.items.filter((it) => it.type !== "label").length,
+    0,
+  );
+  return {
+    id: String(row.id),
+    slug: row.slug,
+    title: row.title,
+    screenCount: schema.screens.length,
+    itemCount,
+    schema,
+  };
+}
