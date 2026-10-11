@@ -116,6 +116,28 @@ tables: `session`, `account`, `verification`. Full DDL in
   - Session TTL is left at the better-auth default and is **not** a
     substitute for invalidation. A short TTL is belt-and-braces; the
     primary contract is "sign out deletes the row, immediately."
+
+  ## Operational note: rotating BETTER_AUTH_SECRET
+
+  When `BETTER_AUTH_SECRET` is rotated (scheduled rotation,
+  multi-instance deploy with per-host secrets, post-leak), existing
+  signed cookies no longer match HMAC signatures. better-auth's
+  sign-out endpoint validates the cookie signature before looking
+  up the `session` row, so existing rows become un-deletable via
+  the normal sign-out path. They will persist until the session
+  TTL expires.
+
+  **Required migration step on every secret rotation:**
+
+  1. Rotate the secret in env / secrets manager.
+  2. `TRUNCATE "session";` (or `DELETE FROM "session";`) before
+     redeploy.
+  3. Force all users to sign in again. This is the only way to
+     invalidate rows that the new secret's HMAC cannot validate.
+
+  If step 2 is skipped, the privacy statement's "session record
+  is deleted immediately on sign-out" promise is silently false
+  for any user who signed out with a stale-cookie session row.
 - Library: [`better-auth`](https://www.better-auth.com) v1.7.7 with the
   Prisma adapter, `magicLink` plugin, and `nextCookies` plugin.
 - Server-side import: `nextCookies` is imported from `better-auth/next-js`
