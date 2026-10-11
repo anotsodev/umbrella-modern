@@ -63,7 +63,7 @@ tables: `session`, `account`, `verification`. Full DDL in
 | Phase | Scope | Status |
 |---|---|---|
 | 0 | Spec + ops (Docker, schema stub, i18n skeleton, **better-auth scaffolded**) | **complete** |
-| 1 | Reader surface + `umbrella-content` import job + checklist/forms | **reader + FTS shipped**; checklists/forms in flight |
+| 1 | Reader surface + `umbrella-content` import job + checklist/forms | **reader + FTS + pathways shipped**; forms in flight |
 | 2 | Real SMTP/Resend/Postmark for magic-link delivery + per-user progress persistence | not started |
 | 3 | Read-only migration aids (Android user data export) | not started |
 | 4 | PWA / offline mode | not started |
@@ -148,5 +148,35 @@ i18n + header search box.
   prefixes each term with `:*` for partial-word matching, strips
   tsquery metacharacters, orders by `ts_rank_cd`.
 - Smoke: every locale × `?q=…` returns 200 with hits.
+
+## Pathways (Phase 1, partial)
+
+Shipped: `app/[lang]/pathways/page.tsx` + `app/[lang]/pathways/[slug]/page.tsx`
++ `components/checklist-runner.tsx` + `lib/reader.getAllChecklists` /
+`getChecklist` + header nav link + per-locale i18n + smoke coverage.
+
+- `getAllChecklists(lang)` returns one row per checklist for the
+  language, ordered by `categoryId, position, slug`. The reader UI
+  groups the result by `categorySlug` so the index mirrors the
+  category tree.
+- `getChecklist(lang, slug)` walks the items once, attaching the
+  most recent `kind: "section"` item's label to each subsequent
+  item as `sectionTitle` (so the reader can render section headings
+  inline) and capturing the first `kind: "umbrella"` body as the
+  optional `intro`.
+- IDs are `BigInt` in Postgres; the helper stringifies them so client
+  components can use them as React keys and localStorage keys without
+  per-access coercion.
+- `ChecklistRunner` is a client component. Item tick state lives in
+  `localStorage` under `umbrella.pathway.<slug>.checked`; the
+  progress bar derives from the in-memory map (no re-hydration
+  during SSR). `markAll` / `clearAll` buttons are pure client state
+  for now.
+- Phase 2 swap: per-user server-side progress (better-auth is
+  already wired in Phase 0), keyed off `user_checklist_progress`.
+  Tables already exist in the schema.
+- Smoke: 200 for `/<lang>/pathways` across all 7 locales, 200/404
+  for `/<lang>/pathways/<slug>` (404 acceptable when a checklist
+  hasn't been translated into that locale yet).
 
 ## Next 16 `cacheComponents` rules confirmed
