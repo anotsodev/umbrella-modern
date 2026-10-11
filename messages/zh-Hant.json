@@ -114,6 +114,12 @@
     "accept": "是，移過去",
     "decline": "現在不要"
   },
+  "sync": {
+    "synced": "已同步到您的帳號",
+    "local": "僅本機",
+    "syncedTooltip": "已儲存到您的帳號",
+    "localTooltip": "僅儲存於此裝置 — 登入以跨裝置同步"
+  },
   "notFound": {
     "title": "此頁面不存在",
     "body": "您要查找的頁面不在這裡。請嘗試搜尋、瀏覽類別，或返回首頁。",

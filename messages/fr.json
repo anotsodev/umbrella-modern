@@ -114,6 +114,12 @@
     "accept": "Oui, transférer",
     "decline": "Pas maintenant"
   },
+  "sync": {
+    "synced": "Synchronisé avec votre compte",
+    "local": "Local uniquement",
+    "syncedTooltip": "Enregistré sur votre compte",
+    "localTooltip": "Enregistré uniquement sur cet appareil — connectez-vous pour synchroniser entre appareils"
+  },
   "notFound": {
     "title": "Cette page n'existe pas",
     "body": "La page que vous cherchez n'est pas ici. Essayez de rechercher, parcourez une catégorie ou revenez à l'accueil.",

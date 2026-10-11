@@ -120,6 +120,12 @@
     "accept": "Yes, move it",
     "decline": "Not now"
   },
+  "sync": {
+    "synced": "Synced to your account",
+    "local": "Local only",
+    "syncedTooltip": "Saved to your account",
+    "localTooltip": "Saved on this device only — sign in to sync across devices"
+  },
   "notFound": {
     "title": "This page doesn't exist",
     "body": "The page you were looking for isn't here. Try searching, browse a category, or return to the home page.",
