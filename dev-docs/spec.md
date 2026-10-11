@@ -41,6 +41,16 @@ activists, diplomats, and business travelers. Content sourced from
 tables: `session`, `account`, `verification`. Full DDL in
 `prisma/schema.prisma`.
 
+> **Slug strategy.** Category slugs are the path-joined segments from
+> `umbrella-content/<lang>/<top>/<...>`. This guarantees uniqueness when
+> multiple categories share a final segment (e.g. multiple `expert` folders
+> under different parents — `expert/network`, `expert/travel`, ...) — each
+> gets a unique row and a unique URL. The same rule applies to checklists
+> whose directory path ends in a shared leaf (e.g. many `c_checklist.yml`
+> files). Do not "simplify" to the final segment only; collisions are real
+> and the `@@unique([languageId, slug])` constraint will reject duplicates
+> during the import.
+
 ## Out of scope
 
 - Android / iOS — explicitly deferred by the user
