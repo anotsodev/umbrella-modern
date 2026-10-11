@@ -64,10 +64,10 @@ start:
 	npm start
 
 migrate:
-	npx prisma migrate deploy
+	@bash bin/migrate
 
 seed:
-	npx prisma db seed
+	@echo "  ⚠ no seed yet — Phase 1 work"
 
 # --- Quality ---
 test:
