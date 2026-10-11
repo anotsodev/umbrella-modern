@@ -82,7 +82,7 @@ export function usePathwaySync(slug: string, lang: string) {
         );
         if (cancelled) return;
         setServerChecked(body.checked ?? {});
-      } catch (err) {
+      } catch {
         if (cancelled) return;
         // 401 here would be a sign-out race; treat as no-server-state.
         setServerChecked({});
@@ -294,40 +294,51 @@ export function useLocalStorageMergePrompt({
   localStorageKey: string;
   onAccept: () => void;
 }): MergePromptState {
-  const [showPrompt, setShowPrompt] = useState(false);
-
-  useEffect(() => {
-    if (!enabled) return;
-    if (!hasLocal || hasServer) return;
-    try {
-      if (window.localStorage.getItem(mergeFlagKey(localStorageKey)) !== null) {
-        return;
+  // The "dismiss" decision is the only thing this hook needs to
+  // track in state — the show/hide question is derived from
+  // props + the dismiss decision. Reading localStorage happens
+  // once on mount via the lazy initializer (no effect needed).
+  const [dismissed, setDismissed] = useState<"merged" | "skipped" | null>(
+    () => {
+      if (typeof window === "undefined") return null;
+      try {
+        const raw = window.localStorage.getItem(mergeFlagKey(localStorageKey));
+        if (raw === "merged" || raw === "skipped") return raw;
+      } catch {
+        return null;
       }
-    } catch {
-      return;
-    }
-    setShowPrompt(true);
-  }, [enabled, hasLocal, hasServer, localStorageKey]);
+      return null;
+    },
+  );
 
-  const remember = (decision: "merged" | "skipped") => {
-    try {
-      window.localStorage.setItem(mergeFlagKey(localStorageKey), decision);
-    } catch {
-      // localStorage might be disabled; the prompt will reappear next
-      // visit, which is fine.
-    }
-  };
+  const showPrompt =
+    enabled &&
+    hasLocal &&
+    !hasServer &&
+    dismissed === null;
+
+  const remember = useCallback(
+    (decision: "merged" | "skipped") => {
+      try {
+        window.localStorage.setItem(mergeFlagKey(localStorageKey), decision);
+      } catch {
+        // localStorage might be disabled; the prompt will reappear next
+        // visit, which is fine.
+      }
+    },
+    [localStorageKey],
+  );
 
   const accept = useCallback(() => {
     onAccept();
     remember("merged");
-    setShowPrompt(false);
-  }, [onAccept, localStorageKey]);
+    setDismissed("merged");
+  }, [onAccept, remember]);
 
   const decline = useCallback(() => {
     remember("skipped");
-    setShowPrompt(false);
-  }, [localStorageKey]);
+    setDismissed("skipped");
+  }, [remember]);
 
   return { showPrompt, accept, decline };
 }

@@ -187,8 +187,14 @@ ${screens}
 
 export function FormRunner({ slug, title, schema, lang, labels }: Props) {
   const t = useTranslations("forms");
-  const [answers, setAnswers] = useState<Record<string, AnswerValue>>({});
-  const [hydrated, setHydrated] = useState(false);
+  // Lazy init for localStorage answers and screen index. Same
+  // rationale as ChecklistRunner: the slug is known synchronously
+  // and we want the first client render to already include the
+  // persisted state, instead of a flash-of-empty followed by an
+  // effect-driven update.
+  const [answers, setAnswers] = useState<Record<string, AnswerValue>>(() =>
+    loadAnswers(slug),
+  );
   const [screenIndex, setScreenIndex] = useState(0);
   const [savedAt, setSavedAt] = useState<string | null>(null);
 
@@ -200,40 +206,41 @@ export function FormRunner({ slug, title, schema, lang, labels }: Props) {
     scheduleSync,
   } = useFormSync(slug, lang);
 
-  // Hydration. Order:
+  // Hydration step 2: when the server data arrives, mirror it
+  // into local state. Order:
   //   1. localStorage (always — anonymous fallback + merge source)
   //   2. server (when signed in) — server wins on conflict
   useEffect(() => {
-    setAnswers(loadAnswers(slug));
-    setHydrated(true);
-  }, [slug]);
-
-  useEffect(() => {
-    if (!hydrated) return;
     if (!isSignedIn) return;
     if (!hydratedFromServer) return;
     if (serverAnswers === null) return;
     const hasLocalEntries = Object.keys(loadAnswers(slug)).length > 0;
     if (Object.keys(serverAnswers).length > 0 && !hasLocalEntries) {
+      // Server data arrived after mount; this is the legitimate
+      // "react to async external data" case that the lint rule
+      // is over-zealous about.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setAnswers(serverAnswers);
     }
-  }, [hydrated, isSignedIn, hydratedFromServer, serverAnswers, slug]);
+  }, [isSignedIn, hydratedFromServer, serverAnswers, slug]);
 
-  // Persist on every change after hydration, surface a "Draft
-  // saved" timestamp for the UI, and (when signed in) debounce
-  // a server sync.
+  // Persist on every change, surface a "Draft saved" timestamp
+  // for the UI, and (when signed in) debounce a server sync.
   useEffect(() => {
-    if (!hydrated) return;
     saveAnswers(slug, answers);
+    // Surface a "Draft saved" timestamp. This is the legitimate
+    // "derive UI state from a side-effecty operation" case
+    // (Date.now formatting doesn't belong in a render).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSavedAt(new Date().toLocaleTimeString());
     if (isSignedIn) scheduleSync(answers, title);
-  }, [slug, answers, hydrated, isSignedIn, scheduleSync, title]);
+  }, [slug, answers, isSignedIn, scheduleSync, title]);
 
   // One-shot prompt to migrate local answers into the signed-in
   // account. Fires the first time a signed-in user visits a form
   // that has localStorage entries but no server state.
   const merge = useLocalStorageMergePrompt({
-    enabled: hydrated && isSignedIn && hydratedFromServer,
+    enabled: isSignedIn && hydratedFromServer,
     hasLocal: Object.keys(answers).length > 0,
     hasServer: serverAnswers !== null && Object.keys(serverAnswers).length > 0,
     localStorageKey: localStorageKeys.form(slug),

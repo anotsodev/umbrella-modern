@@ -59,8 +59,15 @@ function saveLocal(slug: string, value: Record<string, boolean>): void {
 
 export function ChecklistRunner({ slug, lang, items, labels }: Props) {
   const t = useTranslations("pathways");
-  const [checked, setChecked] = useState<Record<string, boolean>>({});
-  const [hydrated, setHydrated] = useState(false);
+  // Read localStorage on the first client render, not in an
+  // effect. The slug is the only thing that affects what we
+  // read, and it's known synchronously, so a lazy useState
+  // initializer is the right tool. SSR returns the default
+  // empty object; the first client render after hydration
+  // returns the same value the effect used to compute.
+  const [checked, setChecked] = useState<Record<string, boolean>>(() =>
+    loadLocal(slug),
+  );
 
   const {
     isSignedIn,
@@ -70,17 +77,11 @@ export function ChecklistRunner({ slug, lang, items, labels }: Props) {
     scheduleSync,
   } = usePathwaySync(slug, lang);
 
-  // Hydration. Order:
+  // Hydration step 2: when the server data arrives, mirror it
+  // into local state. Order:
   //   1. localStorage (always — anonymous fallback + merge source)
   //   2. server (when signed in) — server wins on conflict
   useEffect(() => {
-    const fromLocal = loadLocal(slug);
-    setChecked(fromLocal);
-    setHydrated(true);
-  }, [slug]);
-
-  useEffect(() => {
-    if (!hydrated) return;
     if (!isSignedIn) return;
     if (!hydratedFromServer) return;
     if (serverChecked === null) return;
@@ -89,25 +90,28 @@ export function ChecklistRunner({ slug, lang, items, labels }: Props) {
     // retains progress on this device.
     const hasLocalEntries = Object.keys(loadLocal(slug)).length > 0;
     if (Object.keys(serverChecked).length > 0 && !hasLocalEntries) {
+      // Server data arrived after mount; this is the legitimate
+      // "react to async external data" case that the lint rule
+      // is over-zealous about.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setChecked(serverChecked);
     }
     // If server has nothing and we have local entries, those will
     // get scheduled for sync by the next effect — but only after
     // the user accepts the one-shot merge prompt below.
-  }, [hydrated, isSignedIn, hydratedFromServer, serverChecked, slug]);
+  }, [isSignedIn, hydratedFromServer, serverChecked, slug]);
 
-  // Persist on every change after hydration.
+  // Persist on every change.
   useEffect(() => {
-    if (!hydrated) return;
     saveLocal(slug, checked);
     if (isSignedIn) scheduleSync(checked);
-  }, [slug, checked, hydrated, isSignedIn, scheduleSync]);
+  }, [slug, checked, isSignedIn, scheduleSync]);
 
   // One-shot prompt to migrate local progress into the signed-in
   // account. Fires the first time a signed-in user visits a
   // pathway that has localStorage entries but no server state.
   const merge = useLocalStorageMergePrompt({
-    enabled: hydrated && isSignedIn && hydratedFromServer,
+    enabled: isSignedIn && hydratedFromServer,
     hasLocal: Object.keys(checked).length > 0,
     hasServer: serverChecked !== null && Object.keys(serverChecked).length > 0,
     localStorageKey: localStorageKeys.pathway(slug),

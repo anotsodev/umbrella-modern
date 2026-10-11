@@ -10,7 +10,7 @@
 // users have no account to attach state to) but we do make it
 // dismissable once, since it would get old fast on repeat visits.
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 
@@ -40,17 +40,21 @@ type Props = {
 
 export function LocalStorageNotice({ lang }: Props) {
   const t = useTranslations("notice");
-  const [visible, setVisible] = useState(false);
-  const [hydrated, setHydrated] = useState(false);
-
-  useEffect(() => {
-    setVisible(!loadDismissed());
-    setHydrated(true);
-  }, []);
+  // Read the dismiss flag at mount time, not in an effect, so the
+  // banner's visibility is decided synchronously on the first
+  // client render. SSR returns null (visible defaults to false);
+  // the first client render after hydration returns the same
+  // null, then if the flag isn't set the second render shows
+  // the banner. Avoiding the effect keeps the React 19 lint
+  // rules happy and removes one render.
+  const [visible, setVisible] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return !loadDismissed();
+  });
 
   // Render nothing during SSR / before the dismiss flag is
   // read. The banner is purely a client-side affordance.
-  if (!hydrated || !visible) return null;
+  if (!visible) return null;
 
   return (
     <div
