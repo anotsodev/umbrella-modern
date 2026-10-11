@@ -81,8 +81,12 @@ model Content {
   frontmatter Json // YAML frontmatter as a JSON blob
   position    Int         @default(0)
   type        ContentType @default(topic)
-  createdAt   DateTime    @default(now()) @map("created_at")
-  updatedAt   DateTime    @updatedAt @map("updated_at")
+  // Populated by the trigger defined in bin/migrate-fts. Prisma can't
+  // model tsvector natively, so we declare it as Unsupported and manage
+  // the GIN index + trigger via raw SQL in that helper.
+  searchVector Unsupported("tsvector")? @map("search_vector")
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt @map("updated_at")
 
   language Language @relation(fields: [languageId], references: [code], onDelete: Cascade)
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)

@@ -44,6 +44,7 @@ next-env.d.ts
 *.sql
 *.sql.gz
 *.dump
+!prisma/migrations/*.sql
 
 # umbrella-content clone lives in a Docker volume (umbrella-modern-content)
 /public/content
