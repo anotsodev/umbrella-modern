@@ -64,7 +64,13 @@
     "progress": "{percent}% terminé",
     "markAllDone": "Tout marquer comme fait",
     "clearAll": "Tout effacer",
-    "back": "Retour aux parcours"
+    "back": "Retour aux parcours",
+    "sync": {
+      "synced": "Synchronisé avec votre compte",
+      "local": "Local uniquement",
+      "syncedTooltip": "Enregistré sur votre compte",
+      "localTooltip": "Enregistré uniquement sur cet appareil — connectez-vous pour synchroniser entre appareils"
+    }
   },
   "forms": {
     "title": "Formulaires",

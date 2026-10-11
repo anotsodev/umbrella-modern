@@ -1,12 +1,17 @@
 "use client";
 
 // ChecklistRunner — renders a pathway's items with checkboxes and
-// persists per-item completion to localStorage. v1 is anonymous
-// (no account required); Phase 2 swaps localStorage for per-user
-// server state when accounts land.
+// persists per-item completion.
+//
+// v1: localStorage only. Phase 2: signed-in users sync to the
+// server via /api/me/pathway/[slug]/sync, debounced. localStorage
+// remains the source of truth for anonymous users and a fallback
+// for signed-in users (a failed server write doesn't lose state).
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import type { ChecklistItem } from "@/lib/reader";
+import { usePathwaySync } from "@/lib/server-state";
 
 type Labels = {
   progress: string;
@@ -18,18 +23,15 @@ type Labels = {
 
 type Props = {
   slug: string;
+  lang: string;
   items: ChecklistItem[];
   labels: Labels;
 };
 
-function storageKey(slug: string): string {
-  return `umbrella.pathway.${slug}.checked`;
-}
-
-function loadChecked(slug: string): Record<string, boolean> {
+function loadLocal(slug: string): Record<string, boolean> {
   if (typeof window === "undefined") return {};
   try {
-    const raw = window.localStorage.getItem(storageKey(slug));
+    const raw = window.localStorage.getItem(`umbrella.pathway.${slug}.checked`);
     if (!raw) return {};
     const parsed: unknown = JSON.parse(raw);
     if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
@@ -41,33 +43,63 @@ function loadChecked(slug: string): Record<string, boolean> {
   }
 }
 
-function saveChecked(slug: string, value: Record<string, boolean>): void {
+function saveLocal(slug: string, value: Record<string, boolean>): void {
   if (typeof window === "undefined") return;
   try {
-    window.localStorage.setItem(storageKey(slug), JSON.stringify(value));
+    window.localStorage.setItem(
+      `umbrella.pathway.${slug}.checked`,
+      JSON.stringify(value),
+    );
   } catch {
     // localStorage can throw in private-mode / quota scenarios; we
     // don't want progress tracking to break the page render.
   }
 }
 
-export function ChecklistRunner({ slug, items, labels }: Props) {
+export function ChecklistRunner({ slug, lang, items, labels }: Props) {
+  const t = useTranslations("pathways");
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [hydrated, setHydrated] = useState(false);
 
-  // Load persisted state on mount. We intentionally don't read
-  // localStorage during SSR — the rendered HTML uses an empty map,
-  // then a useEffect hydrates the real state on the client.
+  const {
+    isSignedIn,
+    serverChecked,
+    hydratedFromServer,
+    synced,
+    scheduleSync,
+  } = usePathwaySync(slug, lang);
+
+  // Hydration. Order:
+  //   1. localStorage (always — anonymous fallback + merge source)
+  //   2. server (when signed in) — server wins on conflict
   useEffect(() => {
-    setChecked(loadChecked(slug));
+    const fromLocal = loadLocal(slug);
+    setChecked(fromLocal);
     setHydrated(true);
   }, [slug]);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    if (!isSignedIn) return;
+    if (!hydratedFromServer) return;
+    if (serverChecked === null) return;
+    // Server wins on conflict. We use the server's state as-is
+    // and mirror it back into localStorage so a future sign-out
+    // retains progress on this device.
+    const hasLocalEntries = Object.keys(loadLocal(slug)).length > 0;
+    if (Object.keys(serverChecked).length > 0 && !hasLocalEntries) {
+      setChecked(serverChecked);
+    }
+    // If server has nothing and we have local entries, those will
+    // get scheduled for sync by the next effect.
+  }, [hydrated, isSignedIn, hydratedFromServer, serverChecked, slug]);
 
   // Persist on every change after hydration.
   useEffect(() => {
     if (!hydrated) return;
-    saveChecked(slug, checked);
-  }, [slug, checked, hydrated]);
+    saveLocal(slug, checked);
+    if (isSignedIn) scheduleSync(checked);
+  }, [slug, checked, hydrated, isSignedIn, scheduleSync]);
 
   // Only "check" and "umbrella" items are user-actionable. The
   // helper has already attached a sectionTitle to each item by
@@ -145,7 +177,7 @@ export function ChecklistRunner({ slug, items, labels }: Props) {
           style={{ width: `${percent}%` }}
         />
       </div>
-      <div className="mt-3 flex gap-2 text-xs">
+      <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
         <button
           type="button"
           onClick={markAll}
@@ -160,6 +192,29 @@ export function ChecklistRunner({ slug, items, labels }: Props) {
         >
           {labels.clearAll}
         </button>
+        <span
+          className={
+            "ml-auto inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium " +
+            (isSignedIn
+              ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"
+              : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400")
+          }
+          title={
+            synced.lastSyncError ?? (isSignedIn ? t("sync.syncedTooltip") : t("sync.localTooltip"))
+          }
+        >
+          <span
+            className={
+              "inline-block h-1.5 w-1.5 rounded-full " +
+              (synced.status === "synced"
+                ? "bg-emerald-500"
+                : isSignedIn
+                  ? "bg-amber-500"
+                  : "bg-zinc-400")
+            }
+          />
+          {isSignedIn ? t("sync.synced") : t("sync.local")}
+        </span>
       </div>
 
       <div className="mt-6 space-y-8">

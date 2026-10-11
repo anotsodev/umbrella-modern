@@ -50,6 +50,7 @@ export default async function ChecklistPage({ params }: Props) {
 
       <ChecklistRunner
         slug={checklist.slug}
+        lang={lang}
         items={checklist.items}
         labels={{
           progress: t("progress"),

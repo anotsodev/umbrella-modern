@@ -64,7 +64,13 @@
     "progress": "{percent}% completado",
     "markAllDone": "Marcar todo como hecho",
     "clearAll": "Borrar todo",
-    "back": "Volver a rutas"
+    "back": "Volver a rutas",
+    "sync": {
+      "synced": "Sincronizado con tu cuenta",
+      "local": "Solo local",
+      "syncedTooltip": "Guardado en tu cuenta",
+      "localTooltip": "Guardado solo en este dispositivo — inicia sesión para sincronizar entre dispositivos"
+    }
   },
   "forms": {
     "title": "Formularios",

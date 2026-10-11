@@ -64,7 +64,13 @@
     "progress": "已完成 {percent}%",
     "markAllDone": "全部標示為完成",
     "clearAll": "全部清除",
-    "back": "返回行動路徑"
+    "back": "返回行動路徑",
+    "sync": {
+      "synced": "已同步到您的帳號",
+      "local": "僅本機",
+      "syncedTooltip": "已儲存到您的帳號",
+      "localTooltip": "僅儲存於此裝置 — 登入以跨裝置同步"
+    }
   },
   "forms": {
     "title": "表單",
