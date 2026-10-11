@@ -14,7 +14,7 @@ import { remark } from "remark";
 import remarkGfm from "remark-gfm";
 import remarkHtml from "remark-html";
 
-const PENDING_REVIEW = true;
+const PENDING_REVIEW = false;
 const PRIVACY_PATH = join(
   process.cwd(),
   "dev-docs",
