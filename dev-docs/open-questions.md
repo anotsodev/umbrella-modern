@@ -4,6 +4,24 @@ Things the PM agent (or the dev agent when blocked) should surface back
 to the user. Format: short title, the actual question, why it matters,
 and a recommended default if the user wants to defer.
 
+## Resolved by Phase 2
+
+- **Magic-link email transport** → Resend. Rationale documented in
+  `dev-docs/spec.md` under "Auth / Magic-link transport (Phase 2)".
+  The transport is abstracted behind `lib/email.ts → sendMagicLink()`,
+  so swapping to Postmark or self-hosted SMTP later is a single-file
+  change. If the user prefers self-hosted SMTP for privacy reasons
+  (Umbrella is a security app), call it and swap.
+- **Per-user progress sync** → shipped. localStorage is the anonymous
+  fallback; signed-in users get per-user server rows. One-shot merge
+  prompt fires on first sign-in for users with pre-existing local
+  state. See `dev-docs/spec.md` "Per-user progress sync (Phase 2)".
+- **localStorage disclosure banner** → shipped
+  (`components/local-storage-notice.tsx`). The banner text still
+  says "sign in to sync across devices (coming soon)" — Phase 2
+  delivered the sync, but the banner text wasn't updated. Worth a
+  30-second edit before v1 ships.
+
 ## Resolved by Phase 1 (kept for context)
 
 - **Form field types** → shipped the 4 upstream types
