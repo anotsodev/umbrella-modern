@@ -4,6 +4,25 @@ Things the PM agent (or the dev agent when blocked) should surface back
 to the user. Format: short title, the actual question, why it matters,
 and a recommended default if the user wants to defer.
 
+## Resolved by Phase 3
+
+- **Privacy statement content** → v1 copy written and committed
+  (`dev-docs/privacy-statement-v1.md` is the source of truth;
+  `app/[lang]/terms/page.tsx` renders it). The page shows a
+  yellow "Pending review" banner gated on a `PENDING_REVIEW`
+  constant — user must review and flip the constant before it
+  ships. The previous "we don't take your data" wording is gone;
+  the new stance explicitly allows the email + per-user progress
+  rows that Phase 2 actually collects.
+- **Header sign-in discoverability** → shipped
+  (`components/header-auth.tsx`). Anonymous users see a "Sign in"
+  link; signed-in users see their email + a dropdown with
+  "Account" and "Sign out". RTL-safe. The phase-2 banner text
+  ("sign in to sync across devices (coming soon)") was
+  replaced with a `dataNote` in the footer:
+  "No analytics · anonymous by default · sign in to sync",
+  which surfaces the new stance on every page.
+
 ## Resolved by Phase 2
 
 - **Magic-link email transport** → Resend. Rationale documented in
@@ -17,10 +36,12 @@ and a recommended default if the user wants to defer.
   prompt fires on first sign-in for users with pre-existing local
   state. See `dev-docs/spec.md` "Per-user progress sync (Phase 2)".
 - **localStorage disclosure banner** → shipped
-  (`components/local-storage-notice.tsx`). The banner text still
-  says "sign in to sync across devices (coming soon)" — Phase 2
-  delivered the sync, but the banner text wasn't updated. Worth a
-  30-second edit before v1 ships.
+  (`components/local-storage-notice.tsx`). Banner text
+  ("Your progress is saved on this device only. Sign in to
+  sync across devices (coming soon).") has been *superseded*
+  by Phase 3's footer `dataNote` line — the banner is still
+  shown on first visit as a per-page affordance, but the
+  global stance is now in the footer.
 
 ## Resolved by Phase 1 (kept for context)
 
