@@ -7,7 +7,6 @@
 
 set -euo pipefail
 
-VOLUME_NAME="umbrella-modern-pgdata"
 DUMP_VOLUME_NAME="umbrella-modern-pgdumps"
 DUMP_DIR="/dumps"
 TIMESTAMP=$(date -u +"%Y%m%dT%H%M%SZ")
@@ -19,15 +18,14 @@ echo "▶ dumping Postgres → ${DUMP_FILE} (volume: ${DUMP_VOLUME_NAME})"
 # `docker run --rm -v ${DUMP_VOLUME_NAME}:/dumps busybox` and read it.
 docker volume create "${DUMP_VOLUME_NAME}" >/dev/null
 
-# Pick up the compose-defined network so pg_dump can reach the `db` host.
-# (Defaults to <project>_default; umbrella-modern uses umbrella-modern_default.)
-NETWORK="${COMPOSE_PROJECT_NAME:-umbrella-modern}_default"
-
-docker run --rm \
-  --network "${NETWORK}" \
+# Use `docker compose run` (not a plain `docker run`) so the dump container
+# auto-attaches to the compose network where `db` resolves. This works
+# regardless of the directory's project name (which is what controls the
+# actual network name under the hood).
+docker compose run --rm \
   -v "${DUMP_VOLUME_NAME}:${DUMP_DIR}" \
   -e PGPASSWORD=app \
-  postgres:16-alpine \
+  db \
   pg_dump -h db -U app -d app --format=custom --compress=9 \
     -f "${DUMP_FILE}"
 
