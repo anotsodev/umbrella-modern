@@ -63,7 +63,7 @@ tables: `session`, `account`, `verification`. Full DDL in
 | Phase | Scope | Status |
 |---|---|---|
 | 0 | Spec + ops (Docker, schema stub, i18n skeleton, **better-auth scaffolded**) | **complete** |
-| 1 | Reader surface + `umbrella-content` import job + checklist/forms | **reader + import shipped**; FTS, checklist browse, forms in flight |
+| 1 | Reader surface + `umbrella-content` import job + checklist/forms | **reader + FTS shipped**; checklists/forms in flight |
 | 2 | Real SMTP/Resend/Postmark for magic-link delivery + per-user progress persistence | not started |
 | 3 | Read-only migration aids (Android user data export) | not started |
 | 4 | PWA / offline mode | not started |
@@ -131,3 +131,22 @@ images rewrite to `/content/<lang>/...` on the local volume;
 - `usePathname()` in a client component must be inside a `<Suspense>`
   boundary in the parent — the layout's header wraps the
   `LocalePicker` in `<Suspense fallback={null}>` for that reason.
+
+## FTS (Phase 1, partial)
+
+Shipped: `prisma/migrations/fts.sql` + `bin/migrate-fts` + `lib/reader.searchContent`
++ `app/[lang]/search/page.tsx` + `components/search-form.tsx` + per-locale
+i18n + header search box.
+
+- Postgres `tsvector` column `contents.search_vector`, populated by a
+  `BEFORE INSERT OR UPDATE` trigger (`contents_search_vector_update`).
+  Weights: title and frontmatter title = A, stripped HTML body = B.
+- GIN index `contents_search_vector_idx` on the column.
+- Uses the `simple` text-search config so it works across all 7
+  languages without English stemmers mangling Arabic/Persian/Chinese.
+- Search query in `lib/reader.ts` is parameterised Prisma `$queryRaw`:
+  prefixes each term with `:*` for partial-word matching, strips
+  tsquery metacharacters, orders by `ts_rank_cd`.
+- Smoke: every locale × `?q=…` returns 200 with hits.
+
+## Next 16 `cacheComponents` rules confirmed
