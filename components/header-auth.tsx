@@ -95,6 +95,10 @@ export function HeaderAuth({ lang }: Props) {
             role="menuitem"
             onClick={async () => {
               setMenuOpen(false);
+              // SECURITY: do not replace this signOut() call with a client-only
+              // cookie clear. The server must delete the `session` row to honor
+              // the privacy statement's "session deleted immediately on sign-out"
+              // promise. See dev-docs/spec.md "Server-side session invalidation".
               await signOut();
             }}
             className="block w-full px-3 py-1.5 text-start text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
