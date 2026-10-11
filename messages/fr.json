@@ -7,7 +7,8 @@
     "home": "Accueil",
     "categories": "Catégories",
     "search": "Rechercher",
-    "searchPlaceholder": "Rechercher…"
+    "searchPlaceholder": "Rechercher…",
+    "pathways": "Parcours"
   },
   "home": {
     "phase": "Lecteur Phase 1",
@@ -49,5 +50,15 @@
     "hint": "Tapez une requête et appuyez sur Rechercher.",
     "noResults": "Aucun sujet ne correspond à « {query} ».",
     "resultsCount": "{count, plural, =0 {Aucun résultat} one {1 résultat} other {{count} résultats}} pour « {query} »"
+  },
+  "pathways": {
+    "title": "Parcours",
+    "intro": "Listes de vérification étape par étape pour les situations à haut risque. Cochez les éléments au fur et à mesure ; votre progression est enregistrée sur cet appareil.",
+    "itemCount": "{count, plural, =0 {Aucun élément} one {1 élément} other {{count} éléments}}",
+    "empty": "Ce parcours n'a pas encore d'éléments.",
+    "progress": "{percent}% terminé",
+    "markAllDone": "Tout marquer comme fait",
+    "clearAll": "Tout effacer",
+    "back": "Retour aux parcours"
   }
 }

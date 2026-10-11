@@ -7,7 +7,8 @@
     "home": "Inicio",
     "categories": "Categorías",
     "search": "Buscar",
-    "searchPlaceholder": "Buscar…"
+    "searchPlaceholder": "Buscar…",
+    "pathways": "Rutas"
   },
   "home": {
     "phase": "Lector Fase 1",
@@ -49,5 +50,15 @@
     "hint": "Escribe una consulta y pulsa Buscar.",
     "noResults": "No hay temas que coincidan con «{query}».",
     "resultsCount": "{count, plural, =0 {Sin resultados} one {1 resultado} other {{count} resultados}} para «{query}»"
+  },
+  "pathways": {
+    "title": "Rutas",
+    "intro": "Listas de verificación paso a paso para situaciones de alto riesgo. Marca los elementos a medida que avanzas; tu progreso se guarda en este dispositivo.",
+    "itemCount": "{count, plural, =0 {Sin elementos} one {1 elemento} other {{count} elementos}}",
+    "empty": "Esta ruta aún no tiene elementos.",
+    "progress": "{percent}% completado",
+    "markAllDone": "Marcar todo como hecho",
+    "clearAll": "Borrar todo",
+    "back": "Volver a rutas"
   }
 }
