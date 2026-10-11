@@ -42,6 +42,11 @@ export const auth = betterAuth({
       sendMagicLink: async ({ email, url }) => {
         // Dev sender: print the link. In production, swap this for
         // a real Resend / Postmark / SMTP call.
+        if (process.env.NODE_ENV === "production") {
+          throw new Error(
+            "sendMagicLink is not configured for production. Wire Resend/Postmark/SMTP in lib/auth.ts before deploying.",
+          );
+        }
         console.log(`[magic-link] ${email} → ${url}`);
       },
     }),
