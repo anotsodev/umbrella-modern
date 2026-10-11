@@ -8,6 +8,7 @@ import {
   getCategory,
   getCategoryContents,
 } from "@/lib/reader";
+import { LinkCard } from "@/components/card";
 
 // Next 16 `cacheComponents: true` rejects `export const dynamic = "force-dynamic"`.
 // Use `instant = false` instead, per Next.js 16 docs.
@@ -41,7 +42,7 @@ export default async function CategoryPage({ params }: Props) {
 
   return (
     <main className="mx-auto w-full max-w-5xl px-6 py-12">
-      <nav className="mb-6 text-sm text-zinc-500" aria-label="Breadcrumb">
+      <nav className="mb-6 text-sm text-fg-muted" aria-label="Breadcrumb">
         <Link href={`/${lang}`} className="hover:underline">
           {tBread("home")}
         </Link>
@@ -82,12 +83,11 @@ export default async function CategoryPage({ params }: Props) {
           <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {children.map((c) => (
               <li key={String(c.id)}>
-                <Link
+                <LinkCard
                   href={`/${lang}/categories/${c.slug}`}
-                  className="block rounded-lg border border-zinc-200 p-4 hover:border-zinc-400 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:border-zinc-600 dark:hover:bg-zinc-900"
-                >
-                  <h3 className="text-base font-medium">{c.title}</h3>
-                </Link>
+                  title={c.title}
+                  titleSize="sm"
+                />
               </li>
             ))}
           </ul>
@@ -97,14 +97,14 @@ export default async function CategoryPage({ params }: Props) {
       <section>
         <h2 className="mb-4 text-xl font-semibold">{t("browseTopics")}</h2>
         {topics.length === 0 ? (
-          <p className="text-zinc-500">—</p>
+          <p className="text-fg-muted">—</p>
         ) : (
-          <ul className="divide-y divide-zinc-200 dark:divide-zinc-800">
+          <ul className="divide-y divide-line">
             {topics.map((topic) => (
               <li key={String(topic.id)}>
                 <Link
                   href={`/${lang}/categories/${categorySlug}/${topic.slug}`}
-                  className="block py-3 hover:bg-zinc-50 dark:hover:bg-zinc-900"
+                  className="block py-3 hover:bg-surface-sunken"
                 >
                   {topic.title}
                 </Link>

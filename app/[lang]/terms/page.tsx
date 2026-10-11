@@ -33,7 +33,7 @@ async function readPrivacyMarkdown(): Promise<string> {
     const file = await remark().use(remarkGfm).use(remarkHtml).process(cleaned);
     return String(file);
   } catch (err) {
-    return `<p class="text-red-700 dark:text-red-300">Failed to load privacy statement: ${(err as Error).message}</p>`;
+    return `<p class="text-warn-soft-fg">Failed to load privacy statement: ${(err as Error).message}</p>`;
   }
 }
 
@@ -43,7 +43,7 @@ export default async function TermsPage() {
     <main className="mx-auto w-full max-w-3xl px-6 py-10">
       {PENDING_REVIEW ? <PendingReviewBanner /> : null}
       <article
-        className="prose prose-zinc max-w-none dark:prose-invert"
+        className="prose-umbrella max-w-none"
         // The HTML comes from a controlled file in our own repo
         // (dev-docs/privacy-statement-v1.md). It's not user input.
         dangerouslySetInnerHTML={{ __html: html }}
@@ -56,7 +56,7 @@ function PendingReviewBanner() {
   return (
     <div
       role="status"
-      className="mb-6 rounded-md border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-100"
+      className="mb-6 rounded-md border border-warn-soft-border bg-warn-soft-bg p-4 text-sm text-warn-soft-fg"
     >
       <p className="font-medium">Pending review</p>
       <p className="mt-1 text-xs">

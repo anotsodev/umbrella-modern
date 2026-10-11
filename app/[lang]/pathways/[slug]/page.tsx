@@ -31,7 +31,7 @@ export default async function ChecklistPage({ params }: Props) {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-6 py-12">
-      <nav className="text-sm text-zinc-500">
+      <nav className="text-sm text-fg-muted">
         <Link href={backHref} className="hover:underline">
           ← {backLabel}
         </Link>
@@ -40,10 +40,10 @@ export default async function ChecklistPage({ params }: Props) {
       <h1 className="mt-4 text-3xl font-semibold tracking-tight">
         {checklist.title}
       </h1>
-      <p className="mt-1 text-sm text-zinc-500">{checklist.categoryTitle}</p>
+      <p className="mt-1 text-sm text-fg-muted">{checklist.categoryTitle}</p>
       {checklist.intro ? (
         <div
-          className="prose prose-zinc mt-4 max-w-none dark:prose-invert"
+          className="prose-umbrella mt-4 max-w-none"
           dangerouslySetInnerHTML={{ __html: checklist.intro }}
         />
       ) : null}

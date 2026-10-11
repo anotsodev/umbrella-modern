@@ -9,10 +9,10 @@
 // for signed-in users (a failed server write doesn't lose state).
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
 import type { ChecklistItem } from "@/lib/reader";
 import { usePathwaySync, useLocalStorageMergePrompt, localStorageKeys } from "@/lib/server-state";
 import { MergePrompt } from "./merge-prompt";
+import { SyncStatusPill, type SyncStatus } from "./sync-status-pill";
 
 type Labels = {
   progress: string;
@@ -58,7 +58,6 @@ function saveLocal(slug: string, value: Record<string, boolean>): void {
 }
 
 export function ChecklistRunner({ slug, lang, items, labels }: Props) {
-  const t = useTranslations("pathways");
   // Read localStorage on the first client render, not in an
   // effect. The slug is the only thing that affects what we
   // read, and it's known synchronously, so a lazy useState
@@ -76,6 +75,17 @@ export function ChecklistRunner({ slug, lang, items, labels }: Props) {
     synced,
     scheduleSync,
   } = usePathwaySync(slug, lang);
+
+  // Map the runner's tracked sync state to the pill's three
+  // shapes. "synced" wins; a non-null lastSyncError means the
+  // most recent server write failed; anything else is a
+  // pending/in-flight state.
+  const pillStatus: SyncStatus =
+    synced.status === "synced"
+      ? "synced"
+      : synced.lastSyncError
+        ? "error"
+        : "pending";
 
   // Hydration step 2: when the server data arrives, mirror it
   // into local state. Order:
@@ -183,22 +193,20 @@ export function ChecklistRunner({ slug, lang, items, labels }: Props) {
         kind="pathway"
       />
       <div className="flex items-center justify-between gap-3 text-sm">
-        <span className="text-zinc-600 dark:text-zinc-400">
-          {labels.itemCount}
-        </span>
-        <span className="font-medium text-zinc-700 dark:text-zinc-300">
+        <span className="text-fg-muted">{labels.itemCount}</span>
+        <span className="font-medium text-fg">
           {labels.progress.replace("{percent}", String(percent))}
         </span>
       </div>
       <div
-        className="mt-2 h-2 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800"
+        className="mt-2 h-2 w-full overflow-hidden rounded-full bg-progress-track"
         role="progressbar"
         aria-valuenow={percent}
         aria-valuemin={0}
         aria-valuemax={100}
       >
         <div
-          className="h-full bg-emerald-500 transition-[width] duration-200"
+          className="h-full bg-success transition-[width] duration-200"
           style={{ width: `${percent}%` }}
         />
       </div>
@@ -206,39 +214,23 @@ export function ChecklistRunner({ slug, lang, items, labels }: Props) {
         <button
           type="button"
           onClick={markAll}
-          className="rounded border border-zinc-300 px-2 py-1 hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
+          className="rounded border border-line-strong px-2 py-1 hover:bg-surface-sunken"
         >
           {labels.markAllDone}
         </button>
         <button
           type="button"
           onClick={clearAll}
-          className="rounded border border-zinc-300 px-2 py-1 hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
+          className="rounded border border-line-strong px-2 py-1 text-xs hover:bg-surface-sunken"
         >
           {labels.clearAll}
         </button>
-        <span
-          className={
-            "ml-auto inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium " +
-            (isSignedIn
-              ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"
-              : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400")
-          }
-          title={
-            synced.lastSyncError ?? (isSignedIn ? t("sync.syncedTooltip") : t("sync.localTooltip"))
-          }
-        >
-          <span
-            className={
-              "inline-block h-1.5 w-1.5 rounded-full " +
-              (synced.status === "synced"
-                ? "bg-emerald-500"
-                : isSignedIn
-                  ? "bg-amber-500"
-                  : "bg-zinc-400")
-            }
+        <span className="ms-auto">
+          <SyncStatusPill
+            isSignedIn={isSignedIn}
+            status={pillStatus}
+            errorMessage={synced.lastSyncError}
           />
-          {isSignedIn ? t("sync.synced") : t("sync.local")}
         </span>
       </div>
 
@@ -246,9 +238,7 @@ export function ChecklistRunner({ slug, lang, items, labels }: Props) {
         {groups.map((g, gi) => (
           <div key={`${g.title ?? "_root"}-${gi}`}>
             {g.title ? (
-              <h2 className="text-lg font-medium text-zinc-900 dark:text-zinc-100">
-                {g.title}
-              </h2>
+              <h2 className="text-lg font-medium text-fg">{g.title}</h2>
             ) : null}
             <ul className="mt-3 space-y-2">
               {g.items.map((it) => {
@@ -256,19 +246,19 @@ export function ChecklistRunner({ slug, lang, items, labels }: Props) {
                 const isChecked = !!checked[id];
                 return (
                   <li key={id}>
-                    <label className="flex cursor-pointer items-start gap-3 rounded-md border border-zinc-200 bg-white p-3 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700">
+                    <label className="flex cursor-pointer items-start gap-3 rounded-md border border-line bg-surface p-3 hover:border-line-strong">
                       <input
                         type="checkbox"
                         checked={isChecked}
                         onChange={() => toggle(id)}
-                        className="mt-1 h-4 w-4 rounded border-zinc-300 text-emerald-600 focus:ring-emerald-500"
+                        className="mt-1 h-4 w-4 rounded border-line-strong text-success focus:ring-success"
                       />
                       <span
                         className={
                           "text-sm leading-relaxed " +
                           (isChecked
-                            ? "text-zinc-400 line-through dark:text-zinc-500"
-                            : "text-zinc-800 dark:text-zinc-200")
+                            ? "text-fg-subtle line-through"
+                            : "text-fg")
                         }
                       >
                         {it.label}

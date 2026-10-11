@@ -14,6 +14,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { isLocale } from "@/i18n";
 import { LocalePicker } from "@/components/locale-picker";
+import { Button } from "@/components/button";
 
 export default async function NotFound() {
   const cookieStore = await cookies();
@@ -27,15 +28,9 @@ export default async function NotFound() {
       <body>
         <NextIntlClientProvider locale={lang} messages={messages}>
           <main className="mx-auto w-full max-w-2xl px-6 py-16">
-            <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-              404
-            </p>
-            <h1 className="mt-2 text-3xl font-semibold text-zinc-900 dark:text-zinc-100">
-              {t("title")}
-            </h1>
-            <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
-              {t("body")}
-            </p>
+            <p className="text-sm font-medium text-fg-muted">404</p>
+            <h1 className="mt-2 text-3xl font-semibold text-fg">{t("title")}</h1>
+            <p className="mt-3 text-sm text-fg-muted">{t("body")}</p>
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <form
                 action={`/${lang}/search`}
@@ -49,22 +44,19 @@ export default async function NotFound() {
                   defaultValue=""
                   placeholder={t("searchPlaceholder")}
                   aria-label="Search"
-                  className="w-56 rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-500"
+                  className="w-56 rounded-md border border-line-strong bg-surface px-3 py-1.5 text-sm text-fg placeholder:text-fg-subtle focus:border-accent focus:outline-none"
                 />
-                <button
-                  type="submit"
-                  className="rounded-md bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
-                >
+                <Button type="submit" variant="primary" size="sm">
                   {t("searchButton")}
-                </button>
+                </Button>
               </form>
               <Link
                 href={`/${lang}`}
-                className="text-sm text-zinc-600 underline hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                className="text-sm text-fg-muted underline hover:text-fg"
               >
                 {t("home")}
               </Link>
-              <span className="text-zinc-300 dark:text-zinc-700">|</span>
+              <span className="text-fg-subtle">|</span>
               <LocalePicker current={lang} />
             </div>
           </main>

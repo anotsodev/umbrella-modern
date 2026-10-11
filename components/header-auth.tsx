@@ -44,7 +44,7 @@ export function HeaderAuth({ lang }: Props) {
 
   if (isPending) {
     return (
-      <span className="text-sm text-zinc-400" aria-hidden="true">
+      <span className="text-sm text-fg-subtle" aria-hidden="true">
         …
       </span>
     );
@@ -54,7 +54,7 @@ export function HeaderAuth({ lang }: Props) {
     return (
       <Link
         href={`/${lang}/sign-in`}
-        className="rounded-md border border-zinc-300 px-3 py-1 text-xs font-medium text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+        className="rounded-md border border-line-strong px-3 py-1 text-xs font-medium text-fg hover:bg-surface-sunken"
       >
         {t("headerSignIn")}
       </Link>
@@ -68,7 +68,7 @@ export function HeaderAuth({ lang }: Props) {
       <button
         type="button"
         onClick={() => setMenuOpen((v) => !v)}
-        className="flex items-center gap-2 rounded-md border border-zinc-300 px-3 py-1 text-xs font-medium text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+        className="flex items-center gap-2 rounded-md border border-line-strong px-3 py-1 text-xs font-medium text-fg hover:bg-surface-sunken"
         aria-haspopup="menu"
         aria-expanded={menuOpen}
       >
@@ -80,12 +80,12 @@ export function HeaderAuth({ lang }: Props) {
       {menuOpen ? (
         <div
           role="menu"
-          className="absolute end-0 z-20 mt-1 min-w-[10rem] rounded-md border border-zinc-200 bg-white py-1 text-xs shadow-md dark:border-zinc-700 dark:bg-zinc-900"
+          className="absolute end-0 z-20 mt-1 min-w-[10rem] rounded-md border border-line bg-surface py-1 text-xs shadow-md"
         >
           <Link
             href={`/${lang}/account`}
             role="menuitem"
-            className="block w-full px-3 py-1.5 text-start text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            className="block w-full px-3 py-1.5 text-start text-fg hover:bg-surface-sunken"
             onClick={() => setMenuOpen(false)}
           >
             {t("account")}
@@ -101,7 +101,7 @@ export function HeaderAuth({ lang }: Props) {
               // promise. See dev-docs/spec.md "Server-side session invalidation".
               await signOut();
             }}
-            className="block w-full px-3 py-1.5 text-start text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            className="block w-full px-3 py-1.5 text-start text-fg hover:bg-surface-sunken"
           >
             {t("signOut")}
           </button>

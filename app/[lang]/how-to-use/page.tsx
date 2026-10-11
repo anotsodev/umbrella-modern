@@ -99,15 +99,9 @@ export default async function HowToUsePage({
 
   return (
     <main className="mx-auto w-full max-w-3xl px-6 py-12">
-      <h1 className="text-3xl font-semibold text-zinc-900 dark:text-zinc-100">
-        {t("title")}
-      </h1>
-      <p className="mt-3 text-base text-zinc-600 dark:text-zinc-400">
-        {t("intro")}
-      </p>
-      <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-500">
-        {t("audience")}
-      </p>
+      <h1 className="text-3xl font-semibold text-fg">{t("title")}</h1>
+      <p className="mt-3 text-base text-fg-muted">{t("intro")}</p>
+      <p className="mt-2 text-sm text-fg-muted">{t("audience")}</p>
 
       <ol className="mt-10 space-y-12">
         {STEPS.map((step, i) => (
@@ -115,15 +109,13 @@ export default async function HowToUsePage({
             <div className="flex items-baseline gap-3">
               <span
                 aria-hidden="true"
-                className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-zinc-900 text-sm font-medium text-white dark:bg-zinc-100 dark:text-zinc-900"
+                className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-medium text-accent-fg"
               >
                 {i + 1}
               </span>
-              <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
-                {step.title}
-              </h2>
+              <h2 className="text-xl font-semibold text-fg">{step.title}</h2>
             </div>
-            <div className="overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900">
+            <div className="overflow-hidden rounded-lg border border-line bg-surface-sunken">
               {/* Screenshots are PNGs from the Android build, sized
                   for narrow mobile screens. Using <img> rather than
                   next/image so the browser picks the right src
@@ -136,14 +128,12 @@ export default async function HowToUsePage({
                 loading="lazy"
               />
             </div>
-            <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
-              {step.body}
-            </p>
+            <p className="text-sm leading-relaxed text-fg">{step.body}</p>
           </li>
         ))}
       </ol>
 
-      <div className="mt-16 rounded-lg border border-zinc-200 bg-zinc-50 p-6 text-sm text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+      <div className="mt-16 rounded-lg border border-line bg-surface-sunken p-6 text-sm text-fg-muted">
         {t("footer")}
       </div>
     </main>

@@ -59,7 +59,7 @@ export default async function LocaleLayout({
       dir={dir}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-bg text-fg">
         <NextIntlClientProvider locale={lang} messages={messages}>
           {/* Suspense required: LocalStorageNotice uses useEffect +
               useTranslations which need a client boundary; under
@@ -68,42 +68,42 @@ export default async function LocaleLayout({
           <Suspense fallback={null}>
             <LocalStorageNotice lang={lang} />
           </Suspense>
-          <header className="border-b border-zinc-200 dark:border-zinc-800">
-            <nav className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-4">
-              <div className="flex items-center gap-6">
+          <header className="border-b border-line">
+            <nav className="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-6 py-4">
+              <div className="flex flex-wrap items-center gap-6">
                 <Link
                   href={`/${lang}`}
-                  className="text-sm font-medium text-zinc-900 dark:text-zinc-100"
+                  className="text-sm font-medium text-fg"
                 >
                   Umbrella
                 </Link>
                 <Link
                   href={`/${lang}`}
-                  className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                  className="text-sm text-fg-muted hover:text-fg"
                 >
                   {tNav("home")}
                 </Link>
                 <Link
                   href={`/${lang}/categories`}
-                  className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                  className="text-sm text-fg-muted hover:text-fg"
                 >
                   {tNav("categories")}
                 </Link>
                 <Link
                   href={`/${lang}/pathways`}
-                  className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                  className="text-sm text-fg-muted hover:text-fg"
                 >
                   {tNav("pathways")}
                 </Link>
                 <Link
                   href={`/${lang}/forms`}
-                  className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                  className="text-sm text-fg-muted hover:text-fg"
                 >
                   {tNav("forms")}
                 </Link>
                 <Link
                   href={`/${lang}/how-to-use`}
-                  className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                  className="text-sm text-fg-muted hover:text-fg"
                 >
                   {tNav("howToUse")}
                 </Link>
@@ -119,7 +119,7 @@ export default async function LocaleLayout({
                     defaultValue=""
                     placeholder={tNav("searchPlaceholder")}
                     aria-label="Search"
-                    className="w-40 rounded-md border border-zinc-300 bg-white px-2 py-1 text-xs text-zinc-900 placeholder-zinc-400 focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-500"
+                    className="w-40 rounded-md border border-line-strong bg-surface px-2 py-1 text-xs text-fg placeholder:text-fg-subtle focus:border-accent focus:outline-none"
                   />
                 </form>
               </div>
@@ -129,7 +129,7 @@ export default async function LocaleLayout({
               </Suspense>
               <Suspense
                 fallback={
-                  <span className="text-sm text-zinc-400" aria-hidden="true">
+                  <span className="text-sm text-fg-subtle" aria-hidden="true">
                     …
                   </span>
                 }
@@ -139,8 +139,8 @@ export default async function LocaleLayout({
             </nav>
           </header>
           <div className="flex-1">{children}</div>
-          <footer className="border-t border-zinc-200 dark:border-zinc-800">
-            <div className="mx-auto flex w-full max-w-5xl flex-col gap-2 px-6 py-6 text-xs text-zinc-500 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+          <footer className="border-t border-line">
+            <div className="mx-auto flex w-full max-w-5xl flex-col gap-2 px-6 py-6 text-xs text-fg-muted sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
               <div className="flex flex-wrap items-center gap-3">
                 <span>© Umbrella · {tFoot("license")}</span>
                 <span aria-hidden="true">·</span>

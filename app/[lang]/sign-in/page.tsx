@@ -12,6 +12,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { signIn } from "@/lib/auth-client";
+import { Button } from "@/components/button";
 
 export default function SignInPage() {
   const t = useTranslations("auth");
@@ -38,26 +39,35 @@ export default function SignInPage() {
   };
 
   return (
-    <main style={{ maxWidth: 420, margin: "4rem auto", padding: "0 1rem" }}>
-      <h1>{t("title")}</h1>
-      <p>{t("magicLinkExplainer")}</p>
-      <form onSubmit={onSubmit}>
-        <label htmlFor="email">{t("emailLabel")}</label>
+    <main className="mx-auto w-full max-w-md px-6 py-16">
+      <h1 className="text-3xl font-semibold text-fg">{t("title")}</h1>
+      <p className="mt-2 text-sm text-fg-muted">{t("magicLinkExplainer")}</p>
+      <form onSubmit={onSubmit} className="mt-6">
+        <label htmlFor="email" className="block text-sm font-medium text-fg">
+          {t("emailLabel")}
+        </label>
         <input
           id="email"
           type="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={{ display: "block", width: "100%", margin: "0.5rem 0 1rem" }}
+          className="mt-1 block w-full rounded-md border border-line-strong bg-surface px-3 py-2 text-sm text-fg focus:border-accent focus:outline-none"
         />
-        <button type="submit" disabled={status.kind === "sending"}>
+        <Button
+          type="submit"
+          variant="primary"
+          className="mt-3"
+          disabled={status.kind === "sending"}
+        >
           {status.kind === "sending" ? t("sending") : t("sendLink")}
-        </button>
+        </Button>
       </form>
-      {status.kind === "sent" && <p>{t("checkYourEmail")}</p>}
+      {status.kind === "sent" && (
+        <p className="mt-4 text-sm text-fg-muted">{t("checkYourEmail")}</p>
+      )}
       {status.kind === "error" && (
-        <p role="alert" style={{ color: "crimson" }}>
+        <p role="alert" className="mt-4 text-sm text-warn-soft-fg">
           {status.message}
         </p>
       )}

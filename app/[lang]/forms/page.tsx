@@ -4,11 +4,11 @@
 // localStorage; Phase 2 swaps for per-user server state when
 // accounts land (the user_forms table is already in the schema).
 
-import Link from "next/link";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n";
 import { getAllForms } from "@/lib/reader";
+import { LinkCard } from "@/components/card";
 
 // Next 16 `cacheComponents: true` rejects `export const dynamic = "force-dynamic"`.
 // Use `instant = false` instead, per Next.js 16 docs.
@@ -29,26 +29,20 @@ export default async function FormsIndex({ params }: Props) {
   return (
     <main className="mx-auto w-full max-w-4xl px-6 py-12">
       <h1 className="text-3xl font-semibold tracking-tight">{t("title")}</h1>
-      <p className="mt-2 text-zinc-600 dark:text-zinc-400">{t("intro")}</p>
+      <p className="mt-2 text-fg-muted">{t("intro")}</p>
 
       {forms.length === 0 ? (
-        <p className="mt-8 text-sm text-zinc-500">{t("empty")}</p>
+        <p className="mt-8 text-sm text-fg-muted">{t("empty")}</p>
       ) : (
         <ul className="mt-8 grid gap-3 sm:grid-cols-2">
           {forms.map((f) => (
             <li key={f.id}>
-              <Link
+              <LinkCard
                 href={`/${lang}/forms/${f.slug}`}
-                className="block rounded-lg border border-zinc-200 bg-white p-4 transition hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-600"
-              >
-                <span className="block text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                  {f.title}
-                </span>
-                <span className="mt-1 block text-xs text-zinc-500">
-                  {t("screenCount", { count: f.screenCount })} ·{" "}
-                  {t("itemCount", { count: f.itemCount })}
-                </span>
-              </Link>
+                title={f.title}
+                subtitle={`${t("screenCount", { count: f.screenCount })} · ${t("itemCount", { count: f.itemCount })}`}
+                titleSize="sm"
+              />
             </li>
           ))}
         </ul>
