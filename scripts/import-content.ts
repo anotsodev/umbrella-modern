@@ -227,6 +227,14 @@ async function importTopics(lang: string, catMap: Map<string, CatRow>) {
 
 // ---- Form import -------------------------------------------------------------
 
+const FORM_ITEM_TYPES = new Set([
+  "text_input",
+  "text_area",
+  "label",
+  "single_choice",
+  "multiple_choice",
+]);
+
 type FormItem = {
   name: string;
   type: "text_input" | "text_area" | "label" | "single_choice" | "multiple_choice";
@@ -235,6 +243,31 @@ type FormItem = {
 };
 type FormScreen = { title: string; items: FormItem[] };
 type FormDoc = { title: string; screens: FormScreen[] };
+
+// Walk the schema once and surface every unsupported item type.
+// The web renderer only knows the five known types; silently
+// accepting an unknown type would round-trip fine in the DB but
+// render as a blank field in the UI, which is the worst failure
+// mode. Fail loud at import time instead.
+function validateFormSchema(doc: FormDoc, relPath: string): void {
+  const seen = new Set<string>();
+  for (const [sIdx, screen] of doc.screens.entries()) {
+    for (const [iIdx, item] of screen.items.entries()) {
+      if (!FORM_ITEM_TYPES.has(item.type)) {
+        seen.add(item.type);
+        console.error(
+          `[import]   ✘ ${relPath}: screens[${sIdx}].items[${iIdx}] has unknown type "${item.type}"`,
+        );
+      }
+    }
+  }
+  if (seen.size > 0) {
+    throw new Error(
+      `[import] ${relPath} contains unknown form item types: ${[...seen].join(", ")}. ` +
+        `Update the import validator AND the web renderer to handle these types.`,
+    );
+  }
+}
 
 async function importForms(lang: string, catMap: Map<string, CatRow>) {
   const root = join(CONTENT_DIR, lang, "forms");
@@ -258,6 +291,7 @@ async function importForms(lang: string, catMap: Map<string, CatRow>) {
       console.warn(`[import]   (skip) malformed form ${file.relPath}`);
       continue;
     }
+    validateFormSchema(doc, file.relPath);
     await prisma.form.upsert({
       where: { languageId_slug: { languageId: lang, slug } },
       create: {
