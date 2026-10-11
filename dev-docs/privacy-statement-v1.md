@@ -129,14 +129,14 @@ window — once you confirm, the data is gone.
   reaches the application.
 - **Email delivery:** [Resend](https://resend.com) — used only
   to send magic-link sign-in emails.
-- **Region:** TBD before public launch.
+- **Region:** us-east.
 
 ## Where data is hosted
 
 - **Database** (Postgres) — the project maintainers' VPS, in a
-  single EU region (TBD before public launch). Daily encrypted
-  backups are kept for 30 days. Backups are deleted on account
-  deletion as part of the purge.
+  single US-east region (us-east). Daily encrypted backups are
+  kept for 30 days. Backups are deleted on account deletion as
+  part of the purge.
 - **Email** — Resend (US). Used only for sign-in links.
 - **Application code and content** — open-source on GitHub. The
   content itself (`securityfirst/umbrella-content`) is mirrored
