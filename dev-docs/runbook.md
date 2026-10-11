@@ -25,3 +25,13 @@ make backup         # pg_dump → umbrella-modern-pgdumps volume
   a local clone of `https://github.com/securityfirst/umbrella-content`
   to `/app/public/content`.
 - No deploy target. `compose.yml` is local-only.
+
+### Adding host-installed dependencies
+
+Anything installed on the host (`npm install <pkg>` from the repo root)
+does NOT exist in the Docker image. After adding a host dependency, run
+`docker compose build web --no-cache` before `make up`, or `make up`
+will boot an image missing the new dep. The cause is `npm ci` in the
+Dockerfile deps stage vs. `npm install` on the host.
+
+**Phase 0 follow-up:** automate a `bin/doctor` warning for this drift.
