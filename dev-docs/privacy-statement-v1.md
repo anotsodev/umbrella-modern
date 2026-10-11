@@ -113,6 +113,15 @@ From the account page, signed-in users can:
 Requests are processed immediately. There is no "soft delete"
 window — once you confirm, the data is gone.
 
+## Hosting
+
+- **Application:** self-hosted Docker on a single VPS, operated
+  by the project maintainers.
+- **Database:** Postgres, on the same VPS as the application.
+- **Email delivery:** [Resend](https://resend.com) — used only
+  to send magic-link sign-in emails.
+- **Region:** TBD before public launch.
+
 ## Where data is hosted
 
 - **Database** (Postgres) — the project maintainers' VPS, in a
