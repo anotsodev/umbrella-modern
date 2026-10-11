@@ -67,3 +67,36 @@ for loc in ar es fa fr ru zh-Hant; do
     exit 1
   fi
 done
+
+# Pathways (checklists) — index plus one per-locale detail page
+for loc in en ar es fa fr ru zh-Hant; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000/$loc/pathways" || echo "000")
+  if [ "$code" = "200" ]; then
+    ok "/$loc/pathways -> 200"
+  else
+    echo "  ✘ /$loc/pathways -> $code (expected 200)"
+    docker compose logs web
+    exit 1
+  fi
+done
+
+# Pick a slug from the en pathways index, then probe a few
+# locales for the same slug. We tolerate 404 if the locale
+# hasn't shipped a translation of this checklist yet.
+slug=$(curl -sL "http://localhost:3000/en/pathways" \
+  | grep -oE 'href="/en/pathways/[^"]+"' \
+  | head -1 \
+  | sed -E 's|.*/pathways/([^"]+)".*|\1|')
+if [ -n "$slug" ]; then
+  ok "probing checklist slug: $slug"
+  for loc in en ar fr; do
+    code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000/$loc/pathways/$slug" || echo "000")
+    if [ "$code" = "200" ] || [ "$code" = "404" ]; then
+      ok "/$loc/pathways/$slug -> $code (404 OK if not yet translated)"
+    else
+      echo "  ✘ /$loc/pathways/$slug -> $code (expected 200 or 404)"
+      docker compose logs web
+      exit 1
+    fi
+  done
+fi
