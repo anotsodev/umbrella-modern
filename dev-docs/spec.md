@@ -179,4 +179,23 @@ Shipped: `app/[lang]/pathways/page.tsx` + `app/[lang]/pathways/[slug]/page.tsx`
   for `/<lang>/pathways/<slug>` (404 acceptable when a checklist
   hasn't been translated into that locale yet).
 
+## i18n
+
+- Library: [`next-intl`](https://next-intl.dev) v4 with App Router.
+- Routing: locale is a URL segment (`/[lang]/...`); middleware 307s
+  bare `/` to the request's preferred locale.
+- Locales: `en`, `ar`, `es`, `fa`, `fr`, `ru`, `zh-Hant`. RTL is
+  applied via the layout's `dir` attribute for `ar` and `fa`.
+- Message files: `messages/<locale>.json`. New keys must be added
+  to all 7 files — the reader is the only fallback, and a missing
+  key surfaces as a runtime error in dev.
+- **Plural rules**: next-intl ICU plurals verified for `ru`
+  (`one` / `few` / `many`) and `ar` (`zero` / `one` / `two` /
+  `few` / `many`). English falls back to `one` / `other` and
+  Chinese to `other` only, which is correct. **New locales must
+  match their CLDR ICU rules — silent bugs otherwise.** When
+  adding a locale, write a smoke probe that exercises each plural
+  branch (0, 1, 2, 5, 11) and read the rendered output to confirm
+  the right rule fires.
+
 ## Next 16 `cacheComponents` rules confirmed
