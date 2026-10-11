@@ -268,3 +268,71 @@ i18n + smoke coverage.
   similarly monolithic; same rule applies.
 
 ## Next 16 `cacheComponents` rules confirmed
+
+- `export const dynamic = "force-dynamic"` is rejected outright
+  when `cacheComponents: true` in `next.config.ts`. The
+  replacement is `export const instant = false` on each route
+  that touches the DB. This applies to the forms index, forms
+  detail, pathways index, pathways detail, search, and every
+  reader page. If a new route 500s with a `cacheComponents`
+  error, check for the missing `instant = false`.
+- `usePathname()` in a client component must be inside a
+  `<Suspense>` boundary in the parent — the layout's header
+  wraps the `LocalePicker` in `<Suspense fallback={null}>` for
+  that reason.
+
+## Other Next 16 / next-intl 4 / React 19 rough edges
+
+- **next-intl placeholder behavior.** `t("key")` errors at call
+  time as `FORMATTING_ERROR` when the message has
+  `{placeholder}`s but no values were passed. Two ways to deal
+  with it: (1) call `t("key", { value })` and let next-intl do
+  the substitution; (2) call `t.raw("key")` to get the raw
+  template, then do plain JS `.replace()` client-side. Option
+  (2) is the right call when the component lives on the client
+  and the values are dynamic (form runner uses it for the
+  "Screen {current} of {total}" header). ICU
+  `{count, plural, …}` is fine to call as
+  `t("screenCount", { count: 5 })` because the count is known
+  at call time.
+- **React 19 `setState` in effect is a lint error.** The
+  hydrate-from-localStorage pattern (`useEffect(() =>
+  setAnswers(loadAnswers(slug)), [slug])`) trips the
+  `react-hooks/set-state-in-effect` rule. It's not breaking
+  (lint only, not a runtime check), and the pattern is
+  correct for the SSR/client boundary — `loadAnswers` would
+  crash on the server. Phase 1 ships with this lint error in
+  both `checklist-runner.tsx:62` and `form-runner.tsx:204,213`
+  because the alternative (a `useSyncExternalStore`-shaped
+  read) is more code for a Phase 1 detail. Phase 2 cleanup
+  candidate.
+- **Turbopack.** Stable, no surprises. The web container
+  builds and serves in dev mode without the Turbopack opt-out.
+  The dev experience is fast and HMR works on every page type
+  tested (server components, client components, route
+  handlers, server actions).
+- **better-auth + Next 16.** No peer warnings; the
+  `legacy-peer-deps` pin in `.npmrc` is a defensive guard
+  against future minor bumps, not a workaround for an active
+  mismatch.
+
+## What's still loading-bearable for v1 deploy
+
+- **localStorage is the only progress layer in Phase 1.** Both
+  pathways and forms write to `localStorage` keys. A user on
+  a different device (or in a private window) starts from
+  zero. Phase 2 (after better-auth ships the per-user
+  `user_forms` and `user_checklist_progress` rows) fixes
+  this. Until then, the app is "device-local personal
+  notebook" semantics, not "account-bound notebook"
+  semantics. **Worth saying in the v1 footer or onboarding
+  page so users don't assume the cloud has their state.**
+- **No 404 page yet.** The reader surface returns 404 for
+  nonexistent slugs but the layout shows the default Next.js
+  404. A custom 404 with the locale picker + a search prompt
+  is a small Phase 1.x polish item.
+- **The umbrella-content volume is mounted empty in
+  compose.yml.** The import job clones the repo into the
+  volume on first run (`make import-content`); the volume
+  persists across container restarts. A pre-baked image
+  would be faster on cold deploys but isn't necessary.
