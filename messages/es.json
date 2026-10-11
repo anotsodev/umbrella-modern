@@ -44,6 +44,10 @@
   "footer": {
     "license": "Licenciado bajo GPLv3"
   },
+  "notice": {
+    "localStorageOnly": "Tu progreso se guarda solo en este dispositivo. <signInLink>Inicia sesión</signInLink> para sincronizar entre dispositivos.",
+    "gotIt": "Entendido"
+  },
   "auth": {},
   "search": {
     "title": "Buscar",

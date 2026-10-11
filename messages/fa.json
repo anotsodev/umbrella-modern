@@ -44,6 +44,10 @@
   "footer": {
     "license": "تحت مجوز GPLv3"
   },
+  "notice": {
+    "localStorageOnly": "پیشرفت شما فقط در این دستگاه ذخیره می‌شود. برای همگام‌سازی بین دستگاه‌ها <signInLink>وارد شوید</signInLink>.",
+    "gotIt": "متوجه شدم"
+  },
   "auth": {},
   "search": {
     "title": "جستجو",

@@ -44,6 +44,10 @@
   "footer": {
     "license": "Sous licence GPLv3"
   },
+  "notice": {
+    "localStorageOnly": "Votre progression est enregistrée uniquement sur cet appareil. <signInLink>Connectez-vous</signInLink> pour la synchroniser entre vos appareils.",
+    "gotIt": "Compris"
+  },
   "auth": {},
   "search": {
     "title": "Rechercher",

@@ -44,6 +44,10 @@
   "footer": {
     "license": "Licensed under GPLv3"
   },
+  "notice": {
+    "localStorageOnly": "Your progress is saved on this device only. <signInLink>Sign in</signInLink> to sync across devices.",
+    "gotIt": "Got it"
+  },
   "auth": {
     "title": "Sign in",
     "magicLinkExplainer": "Enter your email and we'll send you a sign-in link.",

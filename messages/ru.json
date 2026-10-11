@@ -44,6 +44,10 @@
   "footer": {
     "license": "Лицензия GPLv3"
   },
+  "notice": {
+    "localStorageOnly": "Ваш прогресс сохраняется только на этом устройстве. <signInLink>Войдите</signInLink>, чтобы синхронизировать между устройствами.",
+    "gotIt": "Понятно"
+  },
   "auth": {},
   "search": {
     "title": "Поиск",

@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { locales, isLocale, rtlLocales } from "@/i18n";
 import { LocalePicker } from "@/components/locale-picker";
+import { LocalStorageNotice } from "@/components/local-storage-notice";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -59,6 +60,13 @@ export default async function LocaleLayout({
     >
       <body className="min-h-full flex flex-col">
         <NextIntlClientProvider locale={lang} messages={messages}>
+          {/* Suspense required: LocalStorageNotice uses useEffect +
+              useTranslations which need a client boundary; under
+              Next 16 cacheComponents, any client component that
+              reads state on mount must be wrapped. */}
+          <Suspense fallback={null}>
+            <LocalStorageNotice lang={lang} />
+          </Suspense>
           <header className="border-b border-zinc-200 dark:border-zinc-800">
             <nav className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-4">
               <div className="flex items-center gap-6">

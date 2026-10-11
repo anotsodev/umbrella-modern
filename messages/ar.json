@@ -44,6 +44,10 @@
   "footer": {
     "license": "مرخصة بموجب GPLv3"
   },
+  "notice": {
+    "localStorageOnly": "يتم حفظ تقدمك على هذا الجهاز فقط. <signInLink>سجّل الدخول</signInLink> للمزامنة عبر الأجهزة.",
+    "gotIt": "حسناً"
+  },
   "auth": {},
   "search": {
     "title": "بحث",
