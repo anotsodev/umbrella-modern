@@ -63,7 +63,7 @@ tables: `session`, `account`, `verification`. Full DDL in
 | Phase | Scope | Status |
 |---|---|---|
 | 0 | Spec + ops (Docker, schema stub, i18n skeleton, **better-auth scaffolded**) | **complete** |
-| 1 | Reader surface + `umbrella-content` import job + checklist/forms | in progress |
+| 1 | Reader surface + `umbrella-content` import job + checklist/forms | **reader + import shipped**; FTS, checklist browse, forms in flight |
 | 2 | Real SMTP/Resend/Postmark for magic-link delivery + per-user progress persistence | not started |
 | 3 | Read-only migration aids (Android user data export) | not started |
 | 4 | PWA / offline mode | not started |
@@ -86,3 +86,48 @@ tables: `session`, `account`, `verification`. Full DDL in
 - Docker note: the Dockerfile uses `npm ci`; after a `--legacy-peer-deps`
   install you must `docker compose build web --no-cache` for the container
   to see the new dep.
+
+## Reader surface (Phase 1, partial)
+
+Shipped on `anotsodev-umbrella-modern-web-bootstrap`:
+
+- `lib/reader.ts` — read-side Prisma helpers (`getTopLevelCategories`,
+  `getAllCategories`, `getCategory`, `getCategoryContents`,
+  `getContent`, `getBreadcrumbs`, `getNeighbours`) keyed off the
+  `@@unique([languageId, slug])` index.
+- `app/[lang]/page.tsx` — homepage: tagline, intro, CTA, grid of
+  top-level categories.
+- `app/[lang]/categories/page.tsx` — flat index of all top-level
+  categories.
+- `app/[lang]/categories/[category]/page.tsx` — per-category page;
+  shows children (if any) + topics. Single dynamic segment encodes
+  the full path-joined hierarchy (e.g. `communications-censorship-beginner`).
+- `app/[lang]/categories/[category]/[slug]/page.tsx` — topic detail;
+  renders `Content.html` inside `.prose-umbrella` via
+  `dangerouslySetInnerHTML` (HTML is produced by the import job from
+  the trusted upstream `umbrella-content` repo, not user input).
+- `app/[lang]/search/page.tsx` — placeholder until FTS lands.
+- `components/locale-picker.tsx` — client component that swaps the
+  `[lang]` URL segment and refreshes the RSC tree, wrapped in
+  `<Suspense>` to satisfy the Next 16 prerender rules.
+- `app/[lang]/layout.tsx` — header (`Umbrella` brand + Home / Categories
+  / Search + locale picker) and footer (GPLv3 attribution + source).
+- `app/globals.css` — `.prose-umbrella` block; dark mode included;
+  no new deps (skipping `@tailwindcss/typography`).
+- `messages/{en,ar,es,fa,fr,ru,zh-Hant}.json` — `nav`, `categories`,
+  `topic`, `breadcrumb`, `localePicker`, `footer` keys for all 7
+  locales.
+
+Verified end-to-end: every route shape returns 200 across all 7
+locales; 404 for nonexistent categories; RTL on `/ar` and `/fa`;
+images rewrite to `/content/<lang>/...` on the local volume;
+`npx tsc --noEmit` clean; `make smoke` green.
+
+### Next 16 `cacheComponents` notes
+
+- `export const dynamic = "force-dynamic"` is rejected outright when
+  `cacheComponents: true` in `next.config.ts`. The replacement is
+  `export const instant = false` on each route that touches the DB.
+- `usePathname()` in a client component must be inside a `<Suspense>`
+  boundary in the parent — the layout's header wraps the
+  `LocalePicker` in `<Suspense fallback={null}>` for that reason.
