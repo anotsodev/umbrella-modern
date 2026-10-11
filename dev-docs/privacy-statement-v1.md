@@ -123,6 +123,10 @@ window — once you confirm, the data is gone.
 - **Application:** self-hosted Docker on a single VPS, operated
   by the project maintainers.
 - **Database:** Postgres, on the same VPS as the application.
+- **Access layer:** Cloudflare Zero Trust, in front of the
+  application. Only authorized users can reach the site. We do
+  not see the user's IP address; Cloudflare's edge IP is what
+  reaches the application.
 - **Email delivery:** [Resend](https://resend.com) — used only
   to send magic-link sign-in emails.
 - **Region:** TBD before public launch.
