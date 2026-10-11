@@ -175,7 +175,7 @@ which is also GPLv3-licensed.
 To report a privacy concern, request data export or deletion, or
 ask a question:
 
-- Email: `umbrella@example.com` (placeholder until launch)
+- Email: `privacy@anotsodev.me`
 - GitHub issues: `https://github.com/anotsodev/umbrella-modern/issues`
 
 ---
