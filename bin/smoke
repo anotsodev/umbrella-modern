@@ -32,3 +32,38 @@ else
   docker compose logs web
   exit 1
 fi
+
+# Reader surface (Phase 1)
+for url in /en /en/categories /en/categories/communications /en/search; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000$url" || echo "000")
+  if [ "$code" = "200" ]; then
+    ok "$url -> 200"
+  else
+    echo "  ✘ $url -> $code (expected 200)"
+    docker compose logs web
+    exit 1
+  fi
+done
+
+# FTS search returns 200 with results. Don't assert on a count
+# because the corpus drifts with re-imports; just confirm 200.
+search_code=$(curl -s -o /dev/null -w "%{http_code}" --get --data-urlencode "q=encryption" "http://localhost:3000/en/search" || echo "000")
+if [ "$search_code" = "200" ]; then
+  ok "/en/search?q=encryption -> 200"
+else
+  echo "  ✘ /en/search?q=encryption -> $search_code (expected 200)"
+  docker compose logs web
+  exit 1
+fi
+
+# Per-locale search smoke across all 7 languages
+for loc in ar es fa fr ru zh-Hant; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" --get --data-urlencode "q=internet" "http://localhost:3000/$loc/search" || echo "000")
+  if [ "$code" = "200" ]; then
+    ok "/$loc/search?q=internet -> 200"
+  else
+    echo "  ✘ /$loc/search?q=internet -> $code (expected 200)"
+    docker compose logs web
+    exit 1
+  fi
+done
