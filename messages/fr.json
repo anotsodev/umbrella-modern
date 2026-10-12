@@ -171,6 +171,25 @@
     "title": "Comment utiliser Umbrella",
     "intro": "Umbrella est un ensemble de guides pratiques et courts pour les personnes qui doivent réfléchir à leur sécurité — au travail, à la maison ou en déplacement. Les guides sont rédigés par des formateurs et des praticiens qui ont utilisé ces techniques sur le terrain.",
     "audience": "Si vous êtes journaliste, militant, travailleur humanitaire, diplomate ou voyageur d'affaires dans un environnement à haut risque, l'application est conçue pour vous. Toute autre personne est également la bienvenue — les conseils sont généralement de bonnes pratiques.",
-    "footer": "Ces captures d'écran proviennent de la version Android d'Umbrella. La version web est fonctionnellement équivalente : le même contenu, les mêmes parcours, les mêmes formulaires. Les différences que vous pouvez remarquer sont intentionnelles — la version web a un écran plus large et une navigation au clavier."
+    "footer": "Ces captures d'écran proviennent de la version Android d'Umbrella. La version web est fonctionnellement équivalente : le même contenu, les mêmes parcours, les mêmes formulaires. Les différences que vous pouvez remarquer sont intentionnelles — la version web a un écran plus large et une navigation au clavier.",
+    "web": {
+      "feeds": {
+        "title": "Feeds : une veille sélectionnée",
+        "body": "L'onglet Feeds vous tient au courant des risques dans votre zone. Parcourez les avis de sécurité et les rapports d'incidents sans quitter Umbrella."
+      },
+      "lessons": {
+        "title": "Leçons : apprentissage guidé",
+        "body": "Parcourez les sujets dans un ordre guidé. Chaque leçon renvoie au sujet, à la checklist et aux formulaires que vous pouvez utiliser sur le terrain."
+      },
+      "checklists": {
+        "title": "Checklists : suivez ce que vous avez fait",
+        "body": "Les checklists sont des étapes ordonnées pour les situations où l'ordre des décisions compte. Cochez chaque étape au fur et à mesure ; votre progression est sauvegardée sur cet appareil."
+      },
+      "forms": {
+        "title": "Formulaires : saisissez des notes sensibles",
+        "body": "Des formulaires à remplir pour les réponses aux incidents, les voyages et les preuves de vie. Vos réponses restent sur cet appareil jusqu'à ce que vous les exportiez en un fichier HTML imprimable que vous contrôlez."
+      }
+    },
+    "screenshotCredit": "Captures d'écran de securityfirst/Umbrella_web (GPLv3)."
   }
 }

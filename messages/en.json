@@ -177,6 +177,25 @@
     "title": "How to use Umbrella",
     "intro": "Umbrella is a set of short, practical guides for people who need to think about their security — at work, at home, or on the move. The guides are written by trainers and practitioners who have used these techniques in the field.",
     "audience": "If you are a journalist, activist, aid worker, diplomat, or business traveller in a high-risk environment, the app is designed for you. Everyone else is welcome too — the advice is generally good practice.",
-    "footer": "These screenshots come from the Android build of Umbrella. The web build is functionally equivalent: the same content, the same pathways, the same forms. Differences you may notice are intentional — the web build has a wider screen and keyboard-driven navigation."
+    "footer": "These screenshots come from the Android build of Umbrella. The web build is functionally equivalent: the same content, the same pathways, the same forms. Differences you may notice are intentional — the web build has a wider screen and keyboard-driven navigation.",
+    "web": {
+      "feeds": {
+        "title": "Feeds: a curated briefing",
+        "body": "The Feeds tab keeps you current on risks in your area. Browse curated security advisories and incident reports without leaving Umbrella."
+      },
+      "lessons": {
+        "title": "Lessons: structured learning",
+        "body": "Work through topics in a guided order. Each lesson links to the underlying topic content, the relevant checklist, and the forms you can use in the field."
+      },
+      "checklists": {
+        "title": "Checklists: track what you've done",
+        "body": "Pathways are step-by-step checklists for situations where the order of decisions matters. Tick each step as you finish it; your progress is saved on this device."
+      },
+      "forms": {
+        "title": "Forms: capture sensitive notes",
+        "body": "Fillable forms for incident response, travel, and proof of life. Your answers stay on this device until you export them to a printable HTML file you control."
+      }
+    },
+    "screenshotCredit": "Screenshots from securityfirst/Umbrella_web (GPLv3)."
   }
 }

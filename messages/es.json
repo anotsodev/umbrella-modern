@@ -171,6 +171,25 @@
     "title": "Cómo usar Umbrella",
     "intro": "Umbrella es un conjunto de guías prácticas y breves para personas que necesitan pensar en su seguridad — en el trabajo, en casa o en movimiento. Las guías están escritas por formadores y profesionales que han usado estas técnicas sobre el terreno.",
     "audience": "Si eres periodista, activista, trabajador humanitario, diplomático o viajero de negocios en un entorno de alto riesgo, esta aplicación está pensada para ti. Cualquier otra persona también es bienvenida — los consejos son generalmente buenas prácticas.",
-    "footer": "Estas capturas provienen de la versión Android de Umbrella. La versión web es funcionalmente equivalente: el mismo contenido, las mismas rutas, los mismos formularios. Las diferencias que notes son intencionadas — la versión web tiene una pantalla más amplia y navegación con teclado."
+    "footer": "Estas capturas provienen de la versión Android de Umbrella. La versión web es funcionalmente equivalente: el mismo contenido, las mismas rutas, los mismos formularios. Las diferencias que notes son intencionadas — la versión web tiene una pantalla más amplia y navegación con teclado.",
+    "web": {
+      "feeds": {
+        "title": "Feeds: un resumen seleccionado",
+        "body": "La pestaña Feeds te mantiene al día sobre los riesgos en tu zona. Explora avisos de seguridad e informes de incidentes sin salir de Umbrella."
+      },
+      "lessons": {
+        "title": "Lecciones: aprendizaje guiado",
+        "body": "Avanza por los temas en un orden guiado. Cada lección enlaza con el tema, la lista de verificación y los formularios que puedes usar en el terreno."
+      },
+      "checklists": {
+        "title": "Listas: registra lo que has hecho",
+        "body": "Las listas son pasos ordenados para situaciones donde importa el orden de las decisiones. Marca cada paso al terminarlo; tu progreso se guarda en este dispositivo."
+      },
+      "forms": {
+        "title": "Formularios: captura notas sensibles",
+        "body": "Formularios rellenables para respuesta a incidentes, viajes y prueba de vida. Tus respuestas se quedan en este dispositivo hasta que las exportes a un archivo HTML imprimible que tú controlas."
+      }
+    },
+    "screenshotCredit": "Capturas de pantalla de securityfirst/Umbrella_web (GPLv3)."
   }
 }
