@@ -11,7 +11,7 @@ chase the source file.
 
 ## What we're building
 
-A web-only rebuild of [Umbrella](https://github.com/securityfirst/Umbrella_android) —
+A web-only rebuild of [Umbrella](https://github.com/securityfirst/Umbrella_web) —
 open-source digital and physical security guides used by journalists,
 activists, diplomats, and business travelers. Content sourced from
 [securityfirst/umbrella-content](https://github.com/securityfirst/umbrella-content)

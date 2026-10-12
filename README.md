@@ -1,11 +1,10 @@
 # umbrella-modern
 
-Web rebuild of [Umbrella](https://github.com/securityfirst/Umbrella_android) — open-source
+Web rebuild of [Umbrella](https://github.com/securityfirst/Umbrella_web) — open-source
 guides for digital and physical security, used daily by journalists, activists, diplomats, and
 business travelers working in high-risk contexts.
 
-- **Status:** Phase 0 bootstrap. Next.js + Postgres stack, no reader surface yet.
-- **Source of truth (Android):** [anotsodev/Umbrella_android](https://github.com/anotsodev/Umbrella_android) (private, read-only)
+- **Status:** v1 shipped. Reader surface, FTS search, pathways, forms, accounts (magic-link via Resend), and the UI/UX + stock-photo pass are live. Phase 4 (PWA / offline) deferred.
 - **Content source (umbrella-content):** [securityfirst/umbrella-content](https://github.com/securityfirst/umbrella-content) (public)
 - **License:** GPLv3 — see `LICENSE`
 

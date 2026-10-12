@@ -36,7 +36,7 @@ export function Footer({
             {privacy}
           </Link>
           <a
-            href="https://github.com/anotsodev/Umbrella_android"
+            href="https://github.com/securityfirst/Umbrella_web"
             className="hover:underline"
           >
             Source
