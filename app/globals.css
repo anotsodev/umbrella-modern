@@ -1,35 +1,179 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Design tokens. The role-based names below are referenced by
+   components via Tailwind utilities (e.g. bg-surface, text-fg,
+   border-line). The raw zinc/amber/emerald values stay in the
+   "palette" section so individual pages can still reach for them
+   in narrow cases, but the rule of thumb is: if it's a recurring
+   surface, ink, divider, or accent, it goes through a token. */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root {
+  /* --- Palette (raw values) --- */
+  --zinc-50: #fafafa;
+  --zinc-100: #f4f4f5;
+  --zinc-200: #e4e4e7;
+  --zinc-300: #d4d4d8;
+  --zinc-400: #a1a1aa;
+  --zinc-500: #71717a;
+  --zinc-600: #52525b;
+  --zinc-700: #3f3f46;
+  --zinc-800: #27272a;
+  --zinc-900: #18181b;
+  --zinc-950: #09090b;
+  --emerald-50: #ecfdf5;
+  --emerald-300: #6ee7b7;
+  --emerald-500: #10b981;
+  --emerald-600: #059669;
+  --emerald-700: #047857;
+  --emerald-900: #064e3b;
+  --emerald-950: #022c22;
+  --amber-50: #fffbeb;
+  --amber-200: #fde68a;
+  --amber-300: #fcd34d;
+  --amber-600: #d97706;
+  --amber-700: #b45309;
+  --amber-800: #92400e;
+  --amber-900: #78350f;
+  --amber-950: #451a03;
+  --crimson: #dc2626;
+  --red-300: #fca5a5;
+  --red-600: #dc2626;
+  --red-700: #b91c1c;
+
+  /* --- Semantic roles (light) --- */
+  --bg: #ffffff;
+  --fg: var(--zinc-900);
+  --fg-muted: var(--zinc-600);
+  --fg-subtle: var(--zinc-500);
+  --fg-inverse: #ffffff;
+
+  --surface: #ffffff;
+  --surface-sunken: var(--zinc-50);
+  --surface-raised: #ffffff;
+  --surface-inverse: var(--zinc-900);
+
+  --line: var(--zinc-200);
+  --line-strong: var(--zinc-300);
+  --line-inverse: var(--zinc-700);
+
+  --accent: var(--zinc-900);
+  --accent-fg: #ffffff;
+  --accent-hover: var(--zinc-700);
+
+  --success: var(--emerald-600);
+  --success-fg: #ffffff;
+  --success-hover: var(--emerald-700);
+  --success-soft-bg: var(--emerald-50);
+  --success-soft-fg: var(--emerald-700);
+  --success-soft-bg-dark: var(--emerald-950);
+  --success-soft-fg-dark: var(--emerald-300);
+
+  --warn: var(--amber-600);
+  --warn-soft-bg: var(--amber-50);
+  --warn-soft-border: var(--amber-200);
+  --warn-soft-fg: var(--amber-900);
+  --warn-soft-bg-dark: #451a03;
+  --warn-soft-border-dark: #78350f;
+  --warn-soft-fg-dark: #fde68a;
+
+  --danger: var(--red-600);
+  --danger-soft-fg: var(--red-700);
+  --danger-soft-fg-dark: var(--red-300);
+
+  --focus-ring: var(--zinc-500);
+  --progress-track: var(--zinc-200);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg: #0a0a0a;
+    --fg: #ededed;
+    --fg-muted: var(--zinc-400);
+    --fg-subtle: var(--zinc-500);
+    --fg-inverse: var(--zinc-900);
+
+    --surface: var(--zinc-900);
+    --surface-sunken: var(--zinc-950);
+    --surface-raised: var(--zinc-800);
+    --surface-inverse: #fafafa;
+
+    --line: var(--zinc-800);
+    --line-strong: var(--zinc-700);
+    --line-inverse: var(--zinc-300);
+
+    --accent: #fafafa;
+    --accent-fg: var(--zinc-900);
+    --accent-hover: var(--zinc-300);
+
+    --progress-track: var(--zinc-800);
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Token utility classes. Use sparingly — most styling should go
+   through Tailwind classes that already use these tokens. */
+.bg-bg { background: var(--bg); }
+.text-fg { color: var(--fg); }
+.text-fg-muted { color: var(--fg-muted); }
+.text-fg-subtle { color: var(--fg-subtle); }
+.bg-surface { background: var(--surface); }
+.bg-surface-sunken { background: var(--surface-sunken); }
+.border-line { border-color: var(--line); }
+.border-line-strong { border-color: var(--line-strong); }
+
+/* Tailwind theme bridge. Maps the semantic role names above
+   into Tailwind's `bg-*` / `text-*` color space so JSX can
+   reach for `bg-bg`, `text-fg-muted`, `border-line`, etc.
+   without re-declaring classes. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-fg-inverse: var(--fg-inverse);
+  --color-surface: var(--surface);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-inverse: var(--surface-inverse);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-line-inverse: var(--line-inverse);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-hover: var(--accent-hover);
+  --color-success: var(--success);
+  --color-success-fg: var(--success-fg);
+  --color-success-hover: var(--success-hover);
+  --color-success-soft-bg: var(--success-soft-bg);
+  --color-success-soft-fg: var(--success-soft-fg);
+  --color-success-soft-bg-dark: var(--success-soft-bg-dark);
+  --color-success-soft-fg-dark: var(--success-soft-fg-dark);
+  --color-warn: var(--warn);
+  --color-warn-soft-bg: var(--warn-soft-bg);
+  --color-warn-soft-border: var(--warn-soft-border);
+  --color-warn-soft-fg: var(--warn-soft-fg);
+  --color-warn-soft-bg-dark: var(--warn-soft-bg-dark);
+  --color-warn-soft-border-dark: var(--warn-soft-border-dark);
+  --color-warn-soft-fg-dark: var(--warn-soft-fg-dark);
+  --color-danger: var(--danger);
+  --color-danger-soft-fg: var(--danger-soft-fg);
+  --color-danger-soft-fg-dark: var(--danger-soft-fg-dark);
+  --color-focus-ring: var(--focus-ring);
+  --color-progress-track: var(--progress-track);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 /* Minimal article-body styles. We avoid @tailwindcss/typography
    to keep the dep tree small; the rendered content is headings,
    paragraphs, lists, links, and images. */
 .prose-umbrella {
-  color: var(--foreground);
+  color: var(--fg);
   line-height: 1.7;
   font-size: 1.0625rem;
 }
@@ -89,21 +233,21 @@ body {
   margin: 1.5rem 0;
 }
 .prose-umbrella blockquote {
-  border-inline-start: 3px solid #d4d4d8;
+  border-inline-start: 3px solid var(--line);
   padding-inline-start: 1rem;
-  color: #52525b;
+  color: var(--fg-muted);
   font-style: italic;
   margin: 1.25rem 0;
 }
 .prose-umbrella code {
-  background: #f4f4f5;
+  background: var(--surface-sunken);
   padding: 0.1rem 0.3rem;
   border-radius: 0.25rem;
   font-family: var(--font-geist-mono), ui-monospace, monospace;
   font-size: 0.9em;
 }
 .prose-umbrella pre {
-  background: #f4f4f5;
+  background: var(--surface-sunken);
   padding: 1rem;
   border-radius: 0.5rem;
   overflow-x: auto;
@@ -118,7 +262,7 @@ body {
 }
 .prose-umbrella hr {
   border: 0;
-  border-top: 1px solid #e4e4e7;
+  border-top: 1px solid var(--line);
   margin: 2rem 0;
 }
 @media (prefers-color-scheme: dark) {
@@ -126,14 +270,14 @@ body {
     color: #93c5fd;
   }
   .prose-umbrella blockquote {
-    border-inline-start-color: #3f3f46;
-    color: #a1a1aa;
+    border-inline-start-color: var(--line);
+    color: var(--fg-muted);
   }
   .prose-umbrella code,
   .prose-umbrella pre {
-    background: #18181b;
+    background: var(--surface-raised);
   }
   .prose-umbrella hr {
-    border-top-color: #27272a;
+    border-top-color: var(--line);
   }
 }

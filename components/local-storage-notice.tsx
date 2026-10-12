@@ -59,7 +59,7 @@ export function LocalStorageNotice({ lang }: Props) {
   return (
     <div
       role="status"
-      className="border-b border-amber-300 bg-amber-50 px-4 py-2 text-sm text-amber-900 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-100"
+      className="border-b border-warn-soft-border bg-warn-soft-bg px-4 py-2 text-sm text-warn-soft-fg"
     >
       <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3">
         <p className="flex-1 min-w-0">
@@ -80,7 +80,7 @@ export function LocalStorageNotice({ lang }: Props) {
             setDismissed();
             setVisible(false);
           }}
-          className="rounded border border-amber-400 px-2 py-0.5 text-xs hover:bg-amber-100 dark:border-amber-700 dark:hover:bg-amber-900"
+          className="rounded border border-warn-soft-border px-2 py-0.5 text-xs hover:bg-warn-soft-bg/70"
         >
           {t("gotIt")}
         </button>

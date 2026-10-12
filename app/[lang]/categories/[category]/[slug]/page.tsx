@@ -8,6 +8,7 @@ import {
   getContent,
   getNeighbours,
 } from "@/lib/reader";
+import { TopicFigure } from "@/components/topic-figure";
 
 // Next 16 `cacheComponents: true` rejects `export const dynamic = "force-dynamic"`.
 // Use `instant = false` instead, per Next.js 16 docs.
@@ -38,7 +39,7 @@ export default async function TopicPage({ params }: Props) {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-6 py-12">
-      <nav className="mb-6 text-sm text-zinc-500" aria-label="Breadcrumb">
+      <nav className="mb-6 text-sm text-fg-muted" aria-label="Breadcrumb">
         <Link href={`/${lang}`} className="hover:underline">
           {tBread("home")}
         </Link>
@@ -70,9 +71,14 @@ export default async function TopicPage({ params }: Props) {
         <h1 className="mb-2 text-4xl font-semibold tracking-tight">
           {topic.title}
         </h1>
-        <p className="mb-8 text-sm text-zinc-500">
+        <p className="mb-6 text-sm text-fg-muted">
           {t("updated")}: {new Date(topic.updatedAt).toISOString().slice(0, 10)}
         </p>
+
+        <TopicFigure
+          categorySlug={categorySlug}
+          topicSlug={slug}
+        />
 
         <div
           className="prose-umbrella"
@@ -84,13 +90,13 @@ export default async function TopicPage({ params }: Props) {
       </article>
 
       <nav
-        className="mt-12 flex items-center justify-between border-t border-zinc-200 pt-6 dark:border-zinc-800"
+        className="mt-12 flex items-center justify-between border-t border-line pt-6"
         aria-label="Topic navigation"
       >
         {neighbours.prev ? (
           <Link
             href={`/${lang}/categories/${categorySlug}/${neighbours.prev.slug}`}
-            className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+            className="text-sm text-fg-muted hover:text-fg"
           >
             ← {t("prev")}: {neighbours.prev.title}
           </Link>
@@ -100,7 +106,7 @@ export default async function TopicPage({ params }: Props) {
         {neighbours.next ? (
           <Link
             href={`/${lang}/categories/${categorySlug}/${neighbours.next.slug}`}
-            className="text-end text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+            className="text-end text-sm text-fg-muted hover:text-fg"
           >
             {t("next")}: {neighbours.next.title} →
           </Link>

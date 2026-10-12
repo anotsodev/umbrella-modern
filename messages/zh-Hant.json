@@ -10,15 +10,40 @@
     "searchPlaceholder": "搜尋…",
     "pathways": "行動路徑",
     "forms": "表單",
-    "howToUse": "使用說明"
+    "howToUse": "使用說明",
+    "credits": "圖片來源",
+    "account": "帳號"
   },
   "home": {
-    "phase": "第一階段閱讀介面",
-    "title": "Umbrella, 搬到網頁上",
-    "subtitle": "為記者、活動人士、外交官與旅客提供的開源資訊安全指南。",
-    "intro": "依主題瀏覽目錄，或進入檢核清單按部就班地擬定安全計畫。",
-    "exploreCategories": "瀏覽類別",
-    "footer": "以 GPLv3 授權開放原始碼。來源：github.com/anotsodev/Umbrella_android。"
+    "hero": {
+      "eyebrow": "階段 1 閱讀版",
+      "title": "Umbrella, 在網頁上",
+      "subtitle": "為記者、社運人士、外交人員與旅行者準備的開源安全指南。",
+      "intro": "依主題瀏覽目錄,或直接進入檢查清單,逐步完成一套安全計畫。",
+      "primaryCta": "瀏覽分類",
+      "secondaryCta": "搜尋",
+      "photoCredit": "Pexels"
+    },
+    "welcome": {
+      "eyebrow": "使用 Umbrella 的三種方式",
+      "read": {
+        "eyebrow": "閱讀",
+        "title": "瀏覽目錄",
+        "body": "所有 Umbrella 主題集中一處,依領域與程度分類。"
+      },
+      "plan": {
+        "eyebrow": "規劃",
+        "title": "走完一份檢查清單",
+        "body": "可逐步執行的安全計畫,儲存在本機,任何時候都能接著做。"
+      },
+      "capture": {
+        "eyebrow": "記錄",
+        "title": "儲存筆記與聯絡人",
+        "body": "為敏感筆記設計的離線表單。除非自行匯出,否則資料不會離開裝置。"
+      }
+    },
+    "topCategoriesTitle": "頂層分類",
+    "browseFooter": "以 GPLv3 開源。來源:github.com/anotsodev/Umbrella_android."
   },
   "categories": {
     "title": "所有類別",
@@ -32,7 +57,8 @@
     "notFound": "找不到主題。",
     "prev": "上一頁",
     "next": "下一頁",
-    "inCategory": "於"
+    "inCategory": "於",
+    "imageAlt": "「{topic}」的示意圖片"
   },
   "breadcrumb": {
     "home": "首頁",
@@ -55,7 +81,15 @@
     "headerSignIn": "登入",
     "signedInFallback": "帳號",
     "account": "帳號",
-    "signOut": "登出"
+    "signOut": "登出",
+    "eyebrow": "您的帳號,您的裝置",
+    "trustPanel": {
+      "title": "我們不做的事",
+      "noTracking": "除了工作階段 cookie 之外,我們不會追蹤您的登入。",
+      "noEmailStorage": "您的電子郵件僅用於寄送登入連結,不會保存在伺服器上。",
+      "localProgress": "您的檢查清單與表單進度預設僅保留在本機。登入後即可跨裝置同步。",
+      "openSource": "Umbrella 以 GPLv3 開源。可閱讀源碼、自行部署。"
+    }
   },
   "search": {
     "title": "搜尋",
@@ -78,6 +112,10 @@
       "local": "僅本機",
       "syncedTooltip": "已儲存到您的帳號",
       "localTooltip": "僅儲存於此裝置 — 登入以跨裝置同步"
+    },
+    "emptyState": {
+      "title": "尚無檢查清單",
+      "body": "當此語言的檢查清單發佈後,將會顯示於此。您的進度僅儲存在本機。"
     }
   },
   "forms": {
@@ -105,6 +143,10 @@
       "local": "僅本機",
       "syncedTooltip": "已儲存到您的帳號",
       "localTooltip": "僅儲存於此裝置 — 登入以跨裝置同步"
+    },
+    "emptyState": {
+      "title": "尚無表單",
+      "body": "當此語言的表單發佈後,將會顯示於此。表單答案僅保留於本機,直到您自行匯出。"
     }
   },
   "merge": {
@@ -113,6 +155,12 @@
     "form": "我們在此裝置上找到此表單的已儲存答案。要將它們移到您的帳號以便跨裝置同步嗎？",
     "accept": "是，移過去",
     "decline": "現在不要"
+  },
+  "sync": {
+    "synced": "已同步到您的帳號",
+    "local": "僅本機",
+    "syncedTooltip": "已儲存到您的帳號",
+    "localTooltip": "僅儲存於此裝置 — 登入以跨裝置同步"
   },
   "notFound": {
     "title": "此頁面不存在",
@@ -125,6 +173,44 @@
     "title": "如何使用 Umbrella",
     "intro": "Umbrella 是一組簡短、實用的指南，適合需要思考自身安全的人——無論是在工作、居家還是旅途中。指南由曾在實地運用這些技術的培訓者與從業者撰寫。",
     "audience": "如果你是記者、活動人士、人道工作者、外交官，或身處高風險環境的商務旅客，這個應用程式就是為你設計的。其他朋友也歡迎——這些建議基本上都是良好的做法。",
-    "footer": "這些截圖來自 Umbrella 的 Android 版本。網頁版在功能上相同：相同的內容、相同的步驟路徑、相同的表單。你可能注意到的差異是有意為之——網頁版擁有更寬的螢幕與鍵盤導航。"
+    "footer": "這些截圖來自 Umbrella 的網頁版。它們刻意忠實呈現你在網頁上會看到的畫面——摘要、課程、清單與表單——讓每一步都對應到你實際會使用的介面。",
+    "web": {
+      "feeds": {
+        "title": "Feeds:策展式資訊",
+        "body": "Feeds 分頁讓您隨時掌握所在區域的風險。無需離開 Umbrella 即可瀏覽策畫好的安全公告與事件報告。"
+      },
+      "lessons": {
+        "title": "Lessons:結構化學習",
+        "body": "依引導順序完成主題。每一課都連結到對應的主題內容、相關檢查清單,以及可在現場使用的表單。"
+      },
+      "checklists": {
+        "title": "Checklists:追蹤已完成項目",
+        "body": "檢查清單是為「決策順序很重要」的情境所設計的步驟清單。每完成一步就打勾;進度僅儲存在本機。"
+      },
+      "forms": {
+        "title": "Forms:擷取敏感筆記",
+        "body": "可用於事件回應、旅遊與生存證明的可填寫表單。您的答案會保留於本機,直到您自行匯出為可列印的 HTML 檔。"
+      }
+    },
+    "screenshotCredit": "螢幕擷圖取自 securityfirst/Umbrella_web (GPLv3)。"
+  },
+  "credits": {
+    "title": "圖片來源",
+    "intro": "本網站所有圖片均為 Pexels 的免版稅照片，採用 Pexels 授權（免費商用，無需標示作者）。我們在此列出它們，是因為本站的其餘部分建立於透明的承諾之上——標註一聲是該做的事。",
+    "sectionHero": "主視覺與插圖",
+    "sectionHome": "首頁與歡迎區",
+    "sectionTopics": "主題與分類頁面",
+    "sectionFallback": "備用圖片",
+    "sectionPathway": "步驟路徑",
+    "sectionForms": "表單",
+    "sectionEmpty": "空狀態",
+    "thankYou": "感謝上方攝影師分享他們的作品。"
+  },
+  "account": {
+    "title": "帳號",
+    "eyebrow": "即將推出",
+    "headline": "你的帳號頁面即將上線",
+    "body": "登入與同步功能已可使用——你的步驟路徑與表單會儲存在這部裝置上，登入後即可在瀏覽器之間同步。未來版本將推出專屬的帳號頁面（讓你能管理裝置、查看已同步的內容，並撤銷存取權限）。",
+    "backLink": "返回首頁"
   }
 }

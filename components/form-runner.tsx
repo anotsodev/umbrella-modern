@@ -13,10 +13,11 @@
 // assets) that opens in a browser and prints cleanly.
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
 import type { FormItem, FormSchema } from "@/lib/reader";
 import { useFormSync, useLocalStorageMergePrompt, localStorageKeys } from "@/lib/server-state";
 import { MergePrompt } from "./merge-prompt";
+import { Button } from "./button";
+import { SyncStatusPill, type SyncStatus } from "./sync-status-pill";
 
 type Labels = {
   saveDraft: string;
@@ -186,7 +187,6 @@ ${screens}
 }
 
 export function FormRunner({ slug, title, schema, lang, labels }: Props) {
-  const t = useTranslations("forms");
   // Lazy init for localStorage answers and screen index. Same
   // rationale as ChecklistRunner: the slug is known synchronously
   // and we want the first client render to already include the
@@ -205,6 +205,17 @@ export function FormRunner({ slug, title, schema, lang, labels }: Props) {
     synced,
     scheduleSync,
   } = useFormSync(slug, lang);
+
+  // Map the runner's tracked sync state to the pill's three
+  // shapes. Same logic as ChecklistRunner: "synced" wins; a
+  // non-null lastSyncError means the most recent server write
+  // failed; anything else is a pending/in-flight state.
+  const pillStatus: SyncStatus =
+    synced.status === "synced"
+      ? "synced"
+      : synced.lastSyncError
+        ? "error"
+        : "pending";
 
   // Hydration step 2: when the server data arrives, mirror it
   // into local state. Order:
@@ -286,7 +297,7 @@ export function FormRunner({ slug, title, schema, lang, labels }: Props) {
 
   if (!currentScreen) {
     return (
-      <p className="mt-8 text-sm text-zinc-500">
+      <p className="mt-8 text-sm text-fg-muted">
         This form has no screens.
       </p>
     );
@@ -302,61 +313,40 @@ export function FormRunner({ slug, title, schema, lang, labels }: Props) {
       />
       {/* Wizard nav */}
       <div className="flex items-center justify-between gap-3 text-sm">
-        <span className="text-zinc-600 dark:text-zinc-400">
+        <span className="text-fg-muted">
           {labels.screenOf
             .replace("{current}", String(screenIndex + 1))
             .replace("{total}", String(totalScreens))}
         </span>
         <div className="flex items-center gap-3">
           {savedAt ? (
-            <span className="text-xs text-zinc-500">
+            <span className="text-xs text-fg-subtle">
               {labels.savedLocally} ({savedAt})
             </span>
           ) : null}
-          <span
-            className={
-              "inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium " +
-              (isSignedIn
-                ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"
-                : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400")
-            }
-            title={
-              synced.lastSyncError ??
-              (isSignedIn ? t("sync.syncedTooltip") : t("sync.localTooltip"))
-            }
-          >
-            <span
-              className={
-                "inline-block h-1.5 w-1.5 rounded-full " +
-                (synced.status === "synced"
-                  ? "bg-emerald-500"
-                  : isSignedIn
-                    ? "bg-amber-500"
-                    : "bg-zinc-400")
-              }
-            />
-            {isSignedIn ? t("sync.synced") : t("sync.local")}
-          </span>
+          <SyncStatusPill
+            isSignedIn={isSignedIn}
+            status={pillStatus}
+            errorMessage={synced.lastSyncError}
+          />
         </div>
       </div>
       <div
-        className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800"
+        className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-progress-track"
         role="progressbar"
         aria-valuenow={screenIndex + 1}
         aria-valuemin={1}
         aria-valuemax={totalScreens}
       >
         <div
-          className="h-full bg-emerald-500 transition-[width] duration-200"
+          className="h-full bg-success transition-[width] duration-200"
           style={{ width: `${((screenIndex + 1) / totalScreens) * 100}%` }}
         />
       </div>
 
       {/* Current screen */}
-      <div className="mt-8 rounded-lg border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
-        <h2 className="text-lg font-medium text-zinc-900 dark:text-zinc-100">
-          {currentScreen.title}
-        </h2>
+      <div className="mt-8 rounded-lg border border-line bg-surface p-6">
+        <h2 className="text-lg font-medium text-fg">{currentScreen.title}</h2>
         <div className="mt-4 space-y-5">
           {currentScreen.items.map((item) => (
             <Field
@@ -368,7 +358,7 @@ export function FormRunner({ slug, title, schema, lang, labels }: Props) {
           ))}
         </div>
         {inputItems.length === 0 ? (
-          <p className="mt-4 text-sm text-zinc-500">
+          <p className="mt-4 text-sm text-fg-muted">
             {labels.fieldEmptyText}
           </p>
         ) : null}
@@ -377,47 +367,39 @@ export function FormRunner({ slug, title, schema, lang, labels }: Props) {
       {/* Wizard buttons */}
       <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
         <div className="flex gap-2">
-          <button
-            type="button"
+          <Button
+            variant="secondary"
+            size="sm"
             disabled={screenIndex === 0}
             onClick={() => setScreenIndex((i) => Math.max(0, i - 1))}
-            className="rounded border border-zinc-300 px-3 py-1.5 text-sm hover:bg-zinc-100 disabled:opacity-40 dark:border-zinc-700 dark:hover:bg-zinc-800"
           >
             {labels.prev}
-          </button>
+          </Button>
           {screenIndex < totalScreens - 1 ? (
-            <button
-              type="button"
+            <Button
+              variant="primary"
+              size="sm"
               onClick={() => setScreenIndex((i) => Math.min(totalScreens - 1, i + 1))}
-              className="rounded border border-zinc-300 px-3 py-1.5 text-sm hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
             >
               {labels.next}
-            </button>
+            </Button>
           ) : (
-            <button
-              type="button"
+            <Button
+              variant="success"
+              size="sm"
               onClick={exportHtml}
-              className="rounded border border-emerald-600 bg-emerald-600 px-3 py-1.5 text-sm text-white hover:bg-emerald-700"
             >
               {labels.finish}
-            </button>
+            </Button>
           )}
         </div>
         <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={exportHtml}
-            className="rounded border border-zinc-300 px-3 py-1.5 text-sm hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
-          >
+          <Button variant="secondary" size="sm" onClick={exportHtml}>
             {labels.exportHtml}
-          </button>
-          <button
-            type="button"
-            onClick={clearAll}
-            className="rounded border border-zinc-300 px-3 py-1.5 text-sm hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
-          >
+          </Button>
+          <Button variant="ghost" size="sm" onClick={clearAll}>
             {labels.clearAll}
-          </button>
+          </Button>
         </div>
       </div>
     </section>
@@ -432,20 +414,20 @@ type FieldProps = {
 
 function Field({ item, value, onChange }: FieldProps) {
   if (item.type === "label") {
-    return <p className="text-sm text-zinc-500">{displayLabel(item)}</p>;
+    return <p className="text-sm text-fg-muted">{displayLabel(item)}</p>;
   }
 
   if (item.type === "text_input") {
     return (
       <label className="block">
-        <span className="block text-sm font-medium text-zinc-800 dark:text-zinc-200">
+        <span className="block text-sm font-medium text-fg">
           {displayLabel(item)}
         </span>
         <input
           type="text"
           value={typeof value === "string" ? value : ""}
           onChange={(e) => onChange(e.target.value)}
-          className="mt-1 w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+          className="mt-1 w-full rounded-md border border-line-strong bg-surface px-3 py-2 text-sm text-fg focus:border-accent focus:outline-none"
         />
       </label>
     );
@@ -454,14 +436,14 @@ function Field({ item, value, onChange }: FieldProps) {
   if (item.type === "text_area") {
     return (
       <label className="block">
-        <span className="block text-sm font-medium text-zinc-800 dark:text-zinc-200">
+        <span className="block text-sm font-medium text-fg">
           {displayLabel(item)}
         </span>
         <textarea
           rows={4}
           value={typeof value === "string" ? value : ""}
           onChange={(e) => onChange(e.target.value)}
-          className="mt-1 w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-zinc-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+          className="mt-1 w-full rounded-md border border-line-strong bg-surface px-3 py-2 text-sm text-fg focus:border-accent focus:outline-none"
         />
       </label>
     );
@@ -471,7 +453,7 @@ function Field({ item, value, onChange }: FieldProps) {
     const current = typeof value === "string" ? value : "";
     return (
       <fieldset>
-        <legend className="block text-sm font-medium text-zinc-800 dark:text-zinc-200">
+        <legend className="block text-sm font-medium text-fg">
           {displayLabel(item)}
         </legend>
         <div className="mt-2 space-y-1.5">
@@ -486,9 +468,9 @@ function Field({ item, value, onChange }: FieldProps) {
                 value={o.value}
                 checked={current === o.value}
                 onChange={() => onChange(o.value)}
-                className="mt-0.5 h-4 w-4 border-zinc-300 text-emerald-600 focus:ring-emerald-500"
+                className="mt-0.5 h-4 w-4 border-line-strong text-success focus:ring-success"
               />
-              <span className="text-zinc-700 dark:text-zinc-300">{o.label}</span>
+              <span className="text-fg">{o.label}</span>
             </label>
           ))}
         </div>
@@ -500,7 +482,7 @@ function Field({ item, value, onChange }: FieldProps) {
     const current = Array.isArray(value) ? value : [];
     return (
       <fieldset>
-        <legend className="block text-sm font-medium text-zinc-800 dark:text-zinc-200">
+        <legend className="block text-sm font-medium text-fg">
           {displayLabel(item)}
         </legend>
         <div className="mt-2 space-y-1.5">
@@ -521,9 +503,9 @@ function Field({ item, value, onChange }: FieldProps) {
                       onChange([...current, o.value]);
                     }
                   }}
-                  className="mt-0.5 h-4 w-4 rounded border-zinc-300 text-emerald-600 focus:ring-emerald-500"
+                  className="mt-0.5 h-4 w-4 rounded border-line-strong text-success focus:ring-success"
                 />
-                <span className="text-zinc-700 dark:text-zinc-300">{o.label}</span>
+                <span className="text-fg">{o.label}</span>
               </label>
             );
           })}
@@ -534,7 +516,7 @@ function Field({ item, value, onChange }: FieldProps) {
 
   // Should be unreachable: getForm's validator rejects unknown types.
   return (
-    <p className="text-sm text-red-600">
+    <p className="text-sm text-warn-soft-fg">
       Unsupported form field type: {String((item as { type: unknown }).type)}
     </p>
   );

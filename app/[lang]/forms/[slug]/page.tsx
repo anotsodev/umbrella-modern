@@ -38,7 +38,7 @@ export default async function FormPage({ params }: Props) {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-6 py-12">
-      <nav className="text-sm text-zinc-500">
+      <nav className="text-sm text-fg-muted">
         <Link href={backHref} className="hover:underline">
           ← {backLabel}
         </Link>
@@ -47,7 +47,7 @@ export default async function FormPage({ params }: Props) {
       <h1 className="mt-4 text-3xl font-semibold tracking-tight">
         {form.title}
       </h1>
-      <p className="mt-1 text-sm text-zinc-500">
+      <p className="mt-1 text-sm text-fg-muted">
         {t("screenCount", { count: form.screenCount })} ·{" "}
         {t("itemCount", { count: form.itemCount })}
       </p>

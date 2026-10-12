@@ -210,6 +210,36 @@ for path in how-to-use terms; do
   done
 done
 
+# /credits — Pexels attribution page added in the UI/UX pass.
+# Driven by lib/topic-images.ts (grouped by section). Liveness
+# only per locale — the photographer list is checked manually.
+for loc in en ar es fa fr ru zh-Hant; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000/$loc/credits" || echo "000")
+  if [ "$code" = "200" ]; then
+    ok "/$loc/credits -> 200"
+  else
+    echo "  ✘ /$loc/credits -> $code (expected 200)"
+    docker compose logs web
+    exit 1
+  fi
+done
+
+# /account — stub page added in the UI/UX pass so the header
+# link doesn't 404. A real account page is a v2 feature. The
+# stub is identical across locales (English-only copy for v1,
+# matching the how-to-use step copy) so we just check 200 per
+# locale.
+for loc in en ar es fa fr ru zh-Hant; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000/$loc/account" || echo "000")
+  if [ "$code" = "200" ]; then
+    ok "/$loc/account -> 200"
+  else
+    echo "  ✘ /$loc/account -> $code (expected 200)"
+    docker compose logs web
+    exit 1
+  fi
+done
+
 # Phase 3 404: a non-existent path under each locale should
 # return 404 with the styled body. We assert the status code
 # only; the body content is checked manually in the dev console.

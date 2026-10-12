@@ -50,7 +50,7 @@ export function LocalePicker({ current }: { current: string }) {
         aria-label={t("menu")}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex items-center gap-1 rounded-md border border-zinc-300 px-3 py-1.5 text-sm text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-900"
+        className="inline-flex items-center gap-1 rounded-md border border-line-strong px-3 py-1.5 text-sm text-fg hover:bg-surface-sunken"
       >
         {NATIVE_NAMES[current as keyof typeof NATIVE_NAMES] ?? current}
         <span aria-hidden>▾</span>
@@ -58,7 +58,7 @@ export function LocalePicker({ current }: { current: string }) {
       {open && (
         <ul
           role="menu"
-          className="absolute end-0 z-10 mt-1 min-w-[10rem] overflow-hidden rounded-md border border-zinc-200 bg-white py-1 shadow-lg dark:border-zinc-800 dark:bg-zinc-950"
+          className="absolute end-0 z-10 mt-1 min-w-[10rem] overflow-hidden rounded-md border border-line bg-surface py-1 shadow-lg"
         >
           {locales.map((code) => (
             <li key={code} role="none">
@@ -66,12 +66,12 @@ export function LocalePicker({ current }: { current: string }) {
                 type="button"
                 role="menuitem"
                 onClick={() => pickLocale(code)}
-                className={`flex w-full items-center justify-between px-3 py-1.5 text-start text-sm hover:bg-zinc-100 dark:hover:bg-zinc-900 ${
+                className={`flex w-full items-center justify-between px-3 py-1.5 text-start text-sm hover:bg-surface-sunken ${
                   code === current ? "font-medium" : ""
                 }`}
               >
                 <span>{NATIVE_NAMES[code]}</span>
-                <span className="ms-2 text-xs text-zinc-500">{code}</span>
+                <span className="ms-2 text-xs text-fg-muted">{code}</span>
               </button>
             </li>
           ))}

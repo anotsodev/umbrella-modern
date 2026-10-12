@@ -10,15 +10,40 @@
     "searchPlaceholder": "Buscar…",
     "pathways": "Rutas",
     "forms": "Formularios",
-    "howToUse": "Cómo usar"
+    "howToUse": "Cómo usar",
+    "credits": "Créditos de fotos",
+    "account": "Cuenta"
   },
   "home": {
-    "phase": "Lector Fase 1",
-    "title": "Umbrella, en la web",
-    "subtitle": "Guías de seguridad de código abierto para periodistas, activistas, diplomáticos y viajeros.",
-    "intro": "Explora el catálogo por tema o entra a una lista de verificación para trabajar un plan de seguridad paso a paso.",
-    "exploreCategories": "Explorar categorías",
-    "footer": "Código abierto bajo GPLv3. Fuente: github.com/anotsodev/Umbrella_android."
+    "hero": {
+      "eyebrow": "Lector fase 1",
+      "title": "Umbrella, en la web",
+      "subtitle": "Guías de seguridad de código abierto para periodistas, activistas, diplomáticos y viajeros.",
+      "intro": "Explora el catálogo por tema, o entra a una lista de verificación para trabajar paso a paso en un plan de seguridad.",
+      "primaryCta": "Explorar categorías",
+      "secondaryCta": "Buscar",
+      "photoCredit": "Pexels"
+    },
+    "welcome": {
+      "eyebrow": "Tres formas de usar Umbrella",
+      "read": {
+        "eyebrow": "Leer",
+        "title": "Explora el catálogo",
+        "body": "Todos los temas de Umbrella en un solo lugar, organizados por área y nivel."
+      },
+      "plan": {
+        "eyebrow": "Planificar",
+        "title": "Trabaja con una lista de verificación",
+        "body": "Planes de seguridad paso a paso que puedes guardar localmente y reanudar cuando quieras."
+      },
+      "capture": {
+        "eyebrow": "Capturar",
+        "title": "Guarda notas y contactos",
+        "body": "Formularios sin conexión para notas sensibles. Nada sale de tu dispositivo a menos que lo exportes."
+      }
+    },
+    "topCategoriesTitle": "Categorías principales",
+    "browseFooter": "Código abierto bajo GPLv3. Fuente: github.com/anotsodev/Umbrella_android."
   },
   "categories": {
     "title": "Todas las categorías",
@@ -32,7 +57,8 @@
     "notFound": "Tema no encontrado.",
     "prev": "Anterior",
     "next": "Siguiente",
-    "inCategory": "en"
+    "inCategory": "en",
+    "imageAlt": "Foto que ilustra {topic}"
   },
   "breadcrumb": {
     "home": "Inicio",
@@ -55,7 +81,15 @@
     "headerSignIn": "Iniciar sesión",
     "signedInFallback": "Cuenta",
     "account": "Cuenta",
-    "signOut": "Cerrar sesión"
+    "signOut": "Cerrar sesión",
+    "eyebrow": "Tu cuenta, tu dispositivo",
+    "trustPanel": {
+      "title": "Lo que no hacemos",
+      "noTracking": "No rastreamos tu inicio de sesión más allá de la cookie de sesión.",
+      "noEmailStorage": "Tu correo se usa para enviar el enlace; no lo guardamos en el servidor.",
+      "localProgress": "El progreso de tus listas y formularios está en este dispositivo por defecto. Inicia sesión para sincronizar entre dispositivos.",
+      "openSource": "Umbrella es código abierto bajo GPLv3. Lee el código, ejecuta tu propia copia."
+    }
   },
   "search": {
     "title": "Buscar",
@@ -78,6 +112,10 @@
       "local": "Solo local",
       "syncedTooltip": "Guardado en tu cuenta",
       "localTooltip": "Guardado solo en este dispositivo — inicia sesión para sincronizar entre dispositivos"
+    },
+    "emptyState": {
+      "title": "Aún no hay listas de verificación",
+      "body": "Cuando se publiquen listas de verificación en este idioma, aparecerán aquí. Tu progreso se guarda solo en este dispositivo."
     }
   },
   "forms": {
@@ -105,6 +143,10 @@
       "local": "Solo local",
       "syncedTooltip": "Guardado en tu cuenta",
       "localTooltip": "Guardado solo en este dispositivo — inicia sesión para sincronizar entre dispositivos"
+    },
+    "emptyState": {
+      "title": "Aún no hay formularios",
+      "body": "Cuando se publiquen formularios en este idioma, aparecerán aquí. Las respuestas se quedan en este dispositivo hasta que las exportes."
     }
   },
   "merge": {
@@ -113,6 +155,12 @@
     "form": "Encontramos respuestas guardadas para este formulario en este dispositivo. ¿Moverlas a tu cuenta para que se sincronicen entre dispositivos?",
     "accept": "Sí, mover",
     "decline": "Ahora no"
+  },
+  "sync": {
+    "synced": "Sincronizado con tu cuenta",
+    "local": "Solo local",
+    "syncedTooltip": "Guardado en tu cuenta",
+    "localTooltip": "Guardado solo en este dispositivo — inicia sesión para sincronizar entre dispositivos"
   },
   "notFound": {
     "title": "Esta página no existe",
@@ -125,6 +173,44 @@
     "title": "Cómo usar Umbrella",
     "intro": "Umbrella es un conjunto de guías prácticas y breves para personas que necesitan pensar en su seguridad — en el trabajo, en casa o en movimiento. Las guías están escritas por formadores y profesionales que han usado estas técnicas sobre el terreno.",
     "audience": "Si eres periodista, activista, trabajador humanitario, diplomático o viajero de negocios en un entorno de alto riesgo, esta aplicación está pensada para ti. Cualquier otra persona también es bienvenida — los consejos son generalmente buenas prácticas.",
-    "footer": "Estas capturas provienen de la versión Android de Umbrella. La versión web es funcionalmente equivalente: el mismo contenido, las mismas rutas, los mismos formularios. Las diferencias que notes son intencionadas — la versión web tiene una pantalla más amplia y navegación con teclado."
+    "footer": "Estas capturas provienen de la versión web de Umbrella. Son fieles a lo que verás en la web — feeds, lecciones, listas de verificación y formularios — para que cada paso coincida con la superficie que usarás.",
+    "web": {
+      "feeds": {
+        "title": "Feeds: un resumen seleccionado",
+        "body": "La pestaña Feeds te mantiene al día sobre los riesgos en tu zona. Explora avisos de seguridad e informes de incidentes sin salir de Umbrella."
+      },
+      "lessons": {
+        "title": "Lecciones: aprendizaje guiado",
+        "body": "Avanza por los temas en un orden guiado. Cada lección enlaza con el tema, la lista de verificación y los formularios que puedes usar en el terreno."
+      },
+      "checklists": {
+        "title": "Listas: registra lo que has hecho",
+        "body": "Las listas son pasos ordenados para situaciones donde importa el orden de las decisiones. Marca cada paso al terminarlo; tu progreso se guarda en este dispositivo."
+      },
+      "forms": {
+        "title": "Formularios: captura notas sensibles",
+        "body": "Formularios rellenables para respuesta a incidentes, viajes y prueba de vida. Tus respuestas se quedan en este dispositivo hasta que las exportes a un archivo HTML imprimible que tú controlas."
+      }
+    },
+    "screenshotCredit": "Capturas de pantalla de securityfirst/Umbrella_web (GPLv3)."
+  },
+  "credits": {
+    "title": "Créditos de fotos",
+    "intro": "Todas las imágenes de este sitio son fotografías de stock de Pexels, utilizadas bajo la licencia de Pexels (uso comercial gratuito, sin obligación de atribución). Las enumeramos aquí porque el resto de este sitio se basa en una promesa de transparencia — y un crédito amable es lo correcto.",
+    "sectionHero": "Héroe e ilustraciones",
+    "sectionHome": "Inicio y bienvenida",
+    "sectionTopics": "Páginas de temas y categorías",
+    "sectionFallback": "Imagen de respaldo",
+    "sectionPathway": "Rutas",
+    "sectionForms": "Formularios",
+    "sectionEmpty": "Estados vacíos",
+    "thankYou": "Gracias a los fotógrafos de arriba por compartir su trabajo."
+  },
+  "account": {
+    "title": "Cuenta",
+    "eyebrow": "Próximamente",
+    "headline": "Tu página de cuenta está en camino",
+    "body": "El inicio de sesión y la sincronización ya funcionan — tus rutas y formularios se guardan en este dispositivo y te siguen entre navegadores cuando inicias sesión. Una página de cuenta dedicada (donde podrás gestionar tus dispositivos, ver qué está sincronizado y revocar acceso) está prevista para una versión futura.",
+    "backLink": "Volver al inicio"
   }
 }

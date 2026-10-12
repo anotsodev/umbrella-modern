@@ -48,35 +48,33 @@ export default async function SearchPage({ params, searchParams }: Props) {
 
       {q.trim() ? (
         hits.length > 0 ? (
-          <p className="mt-6 text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="mt-6 text-sm text-fg-muted">
             {t("resultsCount", { count: hits.length, query: q })}
           </p>
         ) : (
-          <p className="mt-6 text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="mt-6 text-sm text-fg-muted">
             {t("noResults", { query: q })}
           </p>
         )
       ) : (
-        <p className="mt-6 text-sm text-zinc-600 dark:text-zinc-400">
-          {t("hint")}
-        </p>
+        <p className="mt-6 text-sm text-fg-muted">{t("hint")}</p>
       )}
 
-      <ul className="mt-6 divide-y divide-zinc-200 dark:divide-zinc-800">
+      <ul className="mt-6 divide-y divide-line">
         {hits.map((hit) => (
           <li key={String(hit.id)} className="py-4">
             <Link
               href={`/${lang}/categories/${hit.categorySlug}/${hit.slug}`}
               className="block group"
             >
-              <span className="text-xs uppercase tracking-wide text-zinc-500">
+              <span className="text-xs uppercase tracking-wide text-fg-muted">
                 {hit.categoryTitle}
               </span>
-              <h2 className="mt-1 text-lg font-medium text-zinc-900 group-hover:underline dark:text-zinc-100">
+              <h2 className="mt-1 text-lg font-medium text-fg group-hover:underline">
                 {hit.title}
               </h2>
               {hit.snippet ? (
-                <p className="mt-1 line-clamp-3 text-sm text-zinc-600 dark:text-zinc-400">
+                <p className="mt-1 line-clamp-3 text-sm text-fg-muted">
                   {hit.snippet}
                 </p>
               ) : null}

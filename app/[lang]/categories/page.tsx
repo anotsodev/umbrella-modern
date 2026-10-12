@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { isLocale, type Locale } from "@/i18n";
 import { getAllCategories } from "@/lib/reader";
+import { LinkCard } from "@/components/card";
 
 // Next 16 `cacheComponents: true` rejects `export const dynamic = "force-dynamic"`.
 // Use `instant = false` instead, per Next.js 16 docs.
@@ -24,7 +25,7 @@ export default async function CategoriesIndex({ params }: Props) {
 
   return (
     <main className="mx-auto w-full max-w-5xl px-6 py-12">
-      <nav className="mb-6 text-sm text-zinc-500" aria-label="Breadcrumb">
+      <nav className="mb-6 text-sm text-fg-muted" aria-label="Breadcrumb">
         <Link href={`/${lang}`} className="hover:underline">
           {tBread("home")}
         </Link>
@@ -34,19 +35,18 @@ export default async function CategoriesIndex({ params }: Props) {
       <h1 className="mb-2 text-3xl font-semibold tracking-tight">
         {t("title")}
       </h1>
-      <p className="mb-8 text-zinc-600 dark:text-zinc-400">{t("intro")}</p>
+      <p className="mb-8 text-fg-muted">{t("intro")}</p>
 
       <section>
         <h2 className="mb-4 text-xl font-semibold">{t("topLevel")}</h2>
         <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {topLevel.map((cat) => (
             <li key={String(cat.id)}>
-              <Link
+              <LinkCard
                 href={`/${lang}/categories/${cat.slug}`}
-                className="block rounded-lg border border-zinc-200 p-4 hover:border-zinc-400 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:border-zinc-600 dark:hover:bg-zinc-900"
-              >
-                <h3 className="text-base font-medium">{cat.title}</h3>
-              </Link>
+                title={cat.title}
+                titleSize="sm"
+              />
             </li>
           ))}
         </ul>
