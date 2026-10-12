@@ -2,7 +2,8 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getTopLevelCategories } from "@/lib/reader";
 import { isLocale, type Locale } from "@/i18n";
 import { notFound } from "next/navigation";
-import { Button } from "@/components/button";
+import { Hero } from "@/components/hero";
+import { WelcomeRow, type WelcomeRowCard } from "@/components/welcome-row";
 import { LinkCard } from "@/components/card";
 
 // Reader is per-request, per-language content from Postgres.
@@ -22,32 +23,58 @@ export default async function HomePage({ params }: Props) {
   setRequestLocale(lang);
 
   const t = await getTranslations("home");
-  const tNav = await getTranslations("nav");
   const tCat = await getTranslations("categories");
   const categories = await getTopLevelCategories(lang as Locale);
 
-  return (
-    <main className="mx-auto w-full max-w-5xl px-6 py-16">
-      <header className="mb-12">
-        <p className="mb-2 text-sm uppercase tracking-widest text-fg-muted">
-          {t("phase")}
-        </p>
-        <h1 className="mb-4 text-4xl font-semibold tracking-tight sm:text-5xl">
-          {t("title")}
-        </h1>
-        <p className="max-w-2xl text-lg text-fg-muted">{t("subtitle")}</p>
-        <p className="mt-4 max-w-2xl text-base text-fg-muted">{t("intro")}</p>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Button as="link" href={`/${lang}/categories`} variant="primary">
-            {t("exploreCategories")}
-          </Button>
-          <Button as="link" href={`/${lang}/search`} variant="secondary">
-            {tNav("search")}
-          </Button>
-        </div>
-      </header>
+  const welcomeCards: [WelcomeRowCard, WelcomeRowCard, WelcomeRowCard] = [
+    {
+      href: `/${lang}/categories`,
+      eyebrow: t("welcome.read.eyebrow"),
+      title: t("welcome.read.title"),
+      body: t("welcome.read.body"),
+      glyph: "📖",
+    },
+    {
+      href: `/${lang}/pathways`,
+      eyebrow: t("welcome.plan.eyebrow"),
+      title: t("welcome.plan.title"),
+      body: t("welcome.plan.body"),
+      glyph: "✓",
+    },
+    {
+      href: `/${lang}/forms`,
+      eyebrow: t("welcome.capture.eyebrow"),
+      title: t("welcome.capture.title"),
+      body: t("welcome.capture.body"),
+      glyph: "✎",
+    },
+  ];
 
-      <section>
+  return (
+    <main className="mx-auto w-full max-w-5xl px-6 py-10 sm:py-16">
+      <Hero
+        eyebrow={t("hero.eyebrow")}
+        title={t("hero.title")}
+        subtitle={t("hero.subtitle")}
+        intro={t("hero.intro")}
+        primaryCta={{
+          label: t("hero.primaryCta"),
+          href: `/${lang}/categories`,
+        }}
+        secondaryCta={{
+          label: t("hero.secondaryCta"),
+          href: `/${lang}/search`,
+        }}
+        image={{
+          src: "/images/work.jpg",
+          credit: t("hero.photoCredit"),
+        }}
+        footer={<span>{t("browseFooter")}</span>}
+      />
+
+      <WelcomeRow cards={welcomeCards} />
+
+      <section className="mt-12">
         <h2 className="mb-6 text-2xl font-semibold tracking-tight">
           {tCat("topLevel")}
         </h2>

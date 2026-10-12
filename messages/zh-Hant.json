@@ -13,12 +13,35 @@
     "howToUse": "使用說明"
   },
   "home": {
-    "phase": "第一階段閱讀介面",
-    "title": "Umbrella, 搬到網頁上",
-    "subtitle": "為記者、活動人士、外交官與旅客提供的開源資訊安全指南。",
-    "intro": "依主題瀏覽目錄，或進入檢核清單按部就班地擬定安全計畫。",
-    "exploreCategories": "瀏覽類別",
-    "footer": "以 GPLv3 授權開放原始碼。來源：github.com/anotsodev/Umbrella_android。"
+    "hero": {
+      "eyebrow": "階段 1 閱讀版",
+      "title": "Umbrella, 在網頁上",
+      "subtitle": "為記者、社運人士、外交人員與旅行者準備的開源安全指南。",
+      "intro": "依主題瀏覽目錄,或直接進入檢查清單,逐步完成一套安全計畫。",
+      "primaryCta": "瀏覽分類",
+      "secondaryCta": "搜尋",
+      "photoCredit": "Pexels"
+    },
+    "welcome": {
+      "eyebrow": "使用 Umbrella 的三種方式",
+      "read": {
+        "eyebrow": "閱讀",
+        "title": "瀏覽目錄",
+        "body": "所有 Umbrella 主題集中一處,依領域與程度分類。"
+      },
+      "plan": {
+        "eyebrow": "規劃",
+        "title": "走完一份檢查清單",
+        "body": "可逐步執行的安全計畫,儲存在本機,任何時候都能接著做。"
+      },
+      "capture": {
+        "eyebrow": "記錄",
+        "title": "儲存筆記與聯絡人",
+        "body": "為敏感筆記設計的離線表單。除非自行匯出,否則資料不會離開裝置。"
+      }
+    },
+    "topCategoriesTitle": "頂層分類",
+    "browseFooter": "以 GPLv3 開源。來源:github.com/anotsodev/Umbrella_android."
   },
   "categories": {
     "title": "所有類別",
@@ -79,6 +102,10 @@
       "local": "僅本機",
       "syncedTooltip": "已儲存到您的帳號",
       "localTooltip": "僅儲存於此裝置 — 登入以跨裝置同步"
+    },
+    "emptyState": {
+      "title": "尚無檢查清單",
+      "body": "當此語言的檢查清單發佈後,將會顯示於此。您的進度僅儲存在本機。"
     }
   },
   "forms": {
@@ -106,6 +133,10 @@
       "local": "僅本機",
       "syncedTooltip": "已儲存到您的帳號",
       "localTooltip": "僅儲存於此裝置 — 登入以跨裝置同步"
+    },
+    "emptyState": {
+      "title": "尚無表單",
+      "body": "當此語言的表單發佈後,將會顯示於此。表單答案僅保留於本機,直到您自行匯出。"
     }
   },
   "merge": {

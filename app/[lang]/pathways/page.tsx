@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n";
 import { getAllChecklists } from "@/lib/reader";
 import { LinkCard } from "@/components/card";
+import { EmptyState } from "@/components/empty-state";
 
 // Next 16 `cacheComponents: true` rejects `export const dynamic = "force-dynamic"`.
 // Use `instant = false` instead, per Next.js 16 docs.
@@ -48,7 +49,13 @@ export default async function PathwaysIndex({ params }: Props) {
       <p className="mt-2 text-fg-muted">{t("intro")}</p>
 
       {groups.length === 0 ? (
-        <p className="mt-8 text-sm text-fg-muted">{t("empty")}</p>
+        <div className="mt-8">
+          <EmptyState
+            variant="pathway"
+            title={t("emptyState.title")}
+            description={t("emptyState.body")}
+          />
+        </div>
       ) : (
         <div className="mt-8 space-y-10">
           {groups.map((g) => (

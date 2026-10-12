@@ -9,6 +9,7 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n";
 import { getAllForms } from "@/lib/reader";
 import { LinkCard } from "@/components/card";
+import { EmptyState } from "@/components/empty-state";
 
 // Next 16 `cacheComponents: true` rejects `export const dynamic = "force-dynamic"`.
 // Use `instant = false` instead, per Next.js 16 docs.
@@ -32,7 +33,13 @@ export default async function FormsIndex({ params }: Props) {
       <p className="mt-2 text-fg-muted">{t("intro")}</p>
 
       {forms.length === 0 ? (
-        <p className="mt-8 text-sm text-fg-muted">{t("empty")}</p>
+        <div className="mt-8">
+          <EmptyState
+            variant="form"
+            title={t("emptyState.title")}
+            description={t("emptyState.body")}
+          />
+        </div>
       ) : (
         <ul className="mt-8 grid gap-3 sm:grid-cols-2">
           {forms.map((f) => (

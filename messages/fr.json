@@ -13,12 +13,35 @@
     "howToUse": "Comment utiliser"
   },
   "home": {
-    "phase": "Lecteur Phase 1",
-    "title": "Umbrella, sur le web",
-    "subtitle": "Guides de sécurité open source pour journalistes, militants, diplomates et voyageurs.",
-    "intro": "Parcourez le catalogue par sujet, ou ouvrez une liste de contrôle pour travailler un plan de sécurité étape par étape.",
-    "exploreCategories": "Explorer les catégories",
-    "footer": "Open source sous GPLv3. Source : github.com/anotsodev/Umbrella_android."
+    "hero": {
+      "eyebrow": "Lecteur phase 1",
+      "title": "Umbrella, sur le web",
+      "subtitle": "Guides de sécurité open source pour journalistes, militants, diplomates et voyageurs.",
+      "intro": "Parcourez le catalogue par thème, ou lancez-vous dans une checklist pour travailler un plan de sécurité étape par étape.",
+      "primaryCta": "Explorer les catégories",
+      "secondaryCta": "Rechercher",
+      "photoCredit": "Pexels"
+    },
+    "welcome": {
+      "eyebrow": "Trois façons d'utiliser Umbrella",
+      "read": {
+        "eyebrow": "Lire",
+        "title": "Parcourir le catalogue",
+        "body": "Tous les sujets d'Umbrella en un seul endroit, organisés par domaine et niveau."
+      },
+      "plan": {
+        "eyebrow": "Planifier",
+        "title": "Suivre une checklist",
+        "body": "Plans de sécurité étape par étape que vous pouvez enregistrer localement et reprendre à tout moment."
+      },
+      "capture": {
+        "eyebrow": "Capturer",
+        "title": "Stocker notes et contacts",
+        "body": "Formulaires hors ligne pour les notes sensibles. Rien ne quitte votre appareil sauf si vous l'exportez."
+      }
+    },
+    "topCategoriesTitle": "Catégories principales",
+    "browseFooter": "Open source sous GPLv3. Source : github.com/anotsodev/Umbrella_android."
   },
   "categories": {
     "title": "Toutes les catégories",
@@ -79,6 +102,10 @@
       "local": "Local uniquement",
       "syncedTooltip": "Enregistré sur votre compte",
       "localTooltip": "Enregistré uniquement sur cet appareil — connectez-vous pour synchroniser entre appareils"
+    },
+    "emptyState": {
+      "title": "Pas encore de checklists",
+      "body": "Dès que des checklists seront publiées dans cette langue, elles apparaîtront ici. Votre progression est sauvegardée uniquement sur cet appareil."
     }
   },
   "forms": {
@@ -106,6 +133,10 @@
       "local": "Local uniquement",
       "syncedTooltip": "Enregistré sur votre compte",
       "localTooltip": "Enregistré uniquement sur cet appareil — connectez-vous pour synchroniser entre appareils"
+    },
+    "emptyState": {
+      "title": "Pas encore de formulaires",
+      "body": "Dès que des formulaires seront publiés dans cette langue, ils apparaîtront ici. Les réponses restent sur cet appareil jusqu'à ce que vous les exportiez."
     }
   },
   "merge": {

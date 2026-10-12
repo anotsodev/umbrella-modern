@@ -13,12 +13,35 @@
     "howToUse": "Cómo usar"
   },
   "home": {
-    "phase": "Lector Fase 1",
-    "title": "Umbrella, en la web",
-    "subtitle": "Guías de seguridad de código abierto para periodistas, activistas, diplomáticos y viajeros.",
-    "intro": "Explora el catálogo por tema o entra a una lista de verificación para trabajar un plan de seguridad paso a paso.",
-    "exploreCategories": "Explorar categorías",
-    "footer": "Código abierto bajo GPLv3. Fuente: github.com/anotsodev/Umbrella_android."
+    "hero": {
+      "eyebrow": "Lector fase 1",
+      "title": "Umbrella, en la web",
+      "subtitle": "Guías de seguridad de código abierto para periodistas, activistas, diplomáticos y viajeros.",
+      "intro": "Explora el catálogo por tema, o entra a una lista de verificación para trabajar paso a paso en un plan de seguridad.",
+      "primaryCta": "Explorar categorías",
+      "secondaryCta": "Buscar",
+      "photoCredit": "Pexels"
+    },
+    "welcome": {
+      "eyebrow": "Tres formas de usar Umbrella",
+      "read": {
+        "eyebrow": "Leer",
+        "title": "Explora el catálogo",
+        "body": "Todos los temas de Umbrella en un solo lugar, organizados por área y nivel."
+      },
+      "plan": {
+        "eyebrow": "Planificar",
+        "title": "Trabaja con una lista de verificación",
+        "body": "Planes de seguridad paso a paso que puedes guardar localmente y reanudar cuando quieras."
+      },
+      "capture": {
+        "eyebrow": "Capturar",
+        "title": "Guarda notas y contactos",
+        "body": "Formularios sin conexión para notas sensibles. Nada sale de tu dispositivo a menos que lo exportes."
+      }
+    },
+    "topCategoriesTitle": "Categorías principales",
+    "browseFooter": "Código abierto bajo GPLv3. Fuente: github.com/anotsodev/Umbrella_android."
   },
   "categories": {
     "title": "Todas las categorías",
@@ -79,6 +102,10 @@
       "local": "Solo local",
       "syncedTooltip": "Guardado en tu cuenta",
       "localTooltip": "Guardado solo en este dispositivo — inicia sesión para sincronizar entre dispositivos"
+    },
+    "emptyState": {
+      "title": "Aún no hay listas de verificación",
+      "body": "Cuando se publiquen listas de verificación en este idioma, aparecerán aquí. Tu progreso se guarda solo en este dispositivo."
     }
   },
   "forms": {
@@ -106,6 +133,10 @@
       "local": "Solo local",
       "syncedTooltip": "Guardado en tu cuenta",
       "localTooltip": "Guardado solo en este dispositivo — inicia sesión para sincronizar entre dispositivos"
+    },
+    "emptyState": {
+      "title": "Aún no hay formularios",
+      "body": "Cuando se publiquen formularios en este idioma, aparecerán aquí. Las respuestas se quedan en este dispositivo hasta que las exportes."
     }
   },
   "merge": {

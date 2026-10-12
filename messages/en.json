@@ -13,12 +13,35 @@
     "howToUse": "How to use"
   },
   "home": {
-    "phase": "Phase 1 reader",
-    "title": "Umbrella, on the web",
-    "subtitle": "Open-source security guides for journalists, activists, diplomats, and travelers.",
-    "intro": "Browse the catalogue by topic, or jump into a checklist to work through a security plan step by step.",
-    "exploreCategories": "Explore categories",
-    "footer": "Open source under GPLv3. Source: github.com/anotsodev/Umbrella_android."
+    "hero": {
+      "eyebrow": "Phase 1 reader",
+      "title": "Umbrella, on the web",
+      "subtitle": "Open-source security guides for journalists, activists, diplomats, and travelers.",
+      "intro": "Browse the catalogue by topic, or jump into a checklist to work through a security plan step by step.",
+      "primaryCta": "Explore categories",
+      "secondaryCta": "Search",
+      "photoCredit": "Pexels"
+    },
+    "welcome": {
+      "eyebrow": "Three ways to use Umbrella",
+      "read": {
+        "eyebrow": "Read",
+        "title": "Browse the catalogue",
+        "body": "Every Umbrella topic in one place, organised by area and level."
+      },
+      "plan": {
+        "eyebrow": "Plan",
+        "title": "Work through a checklist",
+        "body": "Step-by-step security plans you can save locally and resume any time."
+      },
+      "capture": {
+        "eyebrow": "Capture",
+        "title": "Store notes and contacts",
+        "body": "Offline forms for sensitive notes. Nothing leaves your device unless you export it."
+      }
+    },
+    "topCategoriesTitle": "Top-level categories",
+    "browseFooter": "Open source under GPLv3. Source: github.com/anotsodev/Umbrella_android."
   },
   "categories": {
     "title": "All categories",
@@ -85,6 +108,10 @@
       "local": "Local only",
       "syncedTooltip": "Saved to your account",
       "localTooltip": "Saved on this device only — sign in to sync across devices"
+    },
+    "emptyState": {
+      "title": "No pathways yet",
+      "body": "Once checklists are published in this language, they'll show up here. Your progress saves on this device only."
     }
   },
   "forms": {
@@ -112,6 +139,10 @@
       "local": "Local only",
       "syncedTooltip": "Saved to your account",
       "localTooltip": "Saved on this device only — sign in to sync across devices"
+    },
+    "emptyState": {
+      "title": "No forms yet",
+      "body": "Once forms are published in this language, they'll show up here. Form answers stay on this device until you export them."
     }
   },
   "merge": {
