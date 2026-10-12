@@ -10,7 +10,9 @@
     "searchPlaceholder": "Buscar…",
     "pathways": "Rutas",
     "forms": "Formularios",
-    "howToUse": "Cómo usar"
+    "howToUse": "Cómo usar",
+    "credits": "Créditos de fotos",
+    "account": "Cuenta"
   },
   "home": {
     "hero": {
@@ -171,7 +173,7 @@
     "title": "Cómo usar Umbrella",
     "intro": "Umbrella es un conjunto de guías prácticas y breves para personas que necesitan pensar en su seguridad — en el trabajo, en casa o en movimiento. Las guías están escritas por formadores y profesionales que han usado estas técnicas sobre el terreno.",
     "audience": "Si eres periodista, activista, trabajador humanitario, diplomático o viajero de negocios en un entorno de alto riesgo, esta aplicación está pensada para ti. Cualquier otra persona también es bienvenida — los consejos son generalmente buenas prácticas.",
-    "footer": "Estas capturas provienen de la versión Android de Umbrella. La versión web es funcionalmente equivalente: el mismo contenido, las mismas rutas, los mismos formularios. Las diferencias que notes son intencionadas — la versión web tiene una pantalla más amplia y navegación con teclado.",
+    "footer": "Estas capturas provienen de la versión web de Umbrella. Son fieles a lo que verás en la web — feeds, lecciones, listas de verificación y formularios — para que cada paso coincida con la superficie que usarás.",
     "web": {
       "feeds": {
         "title": "Feeds: un resumen seleccionado",
@@ -191,5 +193,24 @@
       }
     },
     "screenshotCredit": "Capturas de pantalla de securityfirst/Umbrella_web (GPLv3)."
+  },
+  "credits": {
+    "title": "Créditos de fotos",
+    "intro": "Todas las imágenes de este sitio son fotografías de stock de Pexels, utilizadas bajo la licencia de Pexels (uso comercial gratuito, sin obligación de atribución). Las enumeramos aquí porque el resto de este sitio se basa en una promesa de transparencia — y un crédito amable es lo correcto.",
+    "sectionHero": "Héroe e ilustraciones",
+    "sectionHome": "Inicio y bienvenida",
+    "sectionTopics": "Páginas de temas y categorías",
+    "sectionFallback": "Imagen de respaldo",
+    "sectionPathway": "Rutas",
+    "sectionForms": "Formularios",
+    "sectionEmpty": "Estados vacíos",
+    "thankYou": "Gracias a los fotógrafos de arriba por compartir su trabajo."
+  },
+  "account": {
+    "title": "Cuenta",
+    "eyebrow": "Próximamente",
+    "headline": "Tu página de cuenta está en camino",
+    "body": "El inicio de sesión y la sincronización ya funcionan — tus rutas y formularios se guardan en este dispositivo y te siguen entre navegadores cuando inicias sesión. Una página de cuenta dedicada (donde podrás gestionar tus dispositivos, ver qué está sincronizado y revocar acceso) está prevista para una versión futura.",
+    "backLink": "Volver al inicio"
   }
 }

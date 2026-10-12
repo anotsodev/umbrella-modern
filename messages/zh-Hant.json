@@ -10,7 +10,9 @@
     "searchPlaceholder": "搜尋…",
     "pathways": "行動路徑",
     "forms": "表單",
-    "howToUse": "使用說明"
+    "howToUse": "使用說明",
+    "credits": "圖片來源",
+    "account": "帳號"
   },
   "home": {
     "hero": {
@@ -171,7 +173,7 @@
     "title": "如何使用 Umbrella",
     "intro": "Umbrella 是一組簡短、實用的指南，適合需要思考自身安全的人——無論是在工作、居家還是旅途中。指南由曾在實地運用這些技術的培訓者與從業者撰寫。",
     "audience": "如果你是記者、活動人士、人道工作者、外交官，或身處高風險環境的商務旅客，這個應用程式就是為你設計的。其他朋友也歡迎——這些建議基本上都是良好的做法。",
-    "footer": "這些截圖來自 Umbrella 的 Android 版本。網頁版在功能上相同：相同的內容、相同的步驟路徑、相同的表單。你可能注意到的差異是有意為之——網頁版擁有更寬的螢幕與鍵盤導航。",
+    "footer": "這些截圖來自 Umbrella 的網頁版。它們刻意忠實呈現你在網頁上會看到的畫面——摘要、課程、清單與表單——讓每一步都對應到你實際會使用的介面。",
     "web": {
       "feeds": {
         "title": "Feeds:策展式資訊",
@@ -191,5 +193,24 @@
       }
     },
     "screenshotCredit": "螢幕擷圖取自 securityfirst/Umbrella_web (GPLv3)。"
+  },
+  "credits": {
+    "title": "圖片來源",
+    "intro": "本網站所有圖片均為 Pexels 的免版稅照片，採用 Pexels 授權（免費商用，無需標示作者）。我們在此列出它們，是因為本站的其餘部分建立於透明的承諾之上——標註一聲是該做的事。",
+    "sectionHero": "主視覺與插圖",
+    "sectionHome": "首頁與歡迎區",
+    "sectionTopics": "主題與分類頁面",
+    "sectionFallback": "備用圖片",
+    "sectionPathway": "步驟路徑",
+    "sectionForms": "表單",
+    "sectionEmpty": "空狀態",
+    "thankYou": "感謝上方攝影師分享他們的作品。"
+  },
+  "account": {
+    "title": "帳號",
+    "eyebrow": "即將推出",
+    "headline": "你的帳號頁面即將上線",
+    "body": "登入與同步功能已可使用——你的步驟路徑與表單會儲存在這部裝置上，登入後即可在瀏覽器之間同步。未來版本將推出專屬的帳號頁面（讓你能管理裝置、查看已同步的內容，並撤銷存取權限）。",
+    "backLink": "返回首頁"
   }
 }

@@ -162,3 +162,9 @@ export function allAttributions(): { src: string; attribution: string }[] {
   for (const img of Object.values(TOPIC)) push(img);
   return out;
 }
+
+// Exported so the /credits page can group entries by section
+// (hero / home / topics / etc) rather than flattening them. The
+// /credits page owns the section assignment; lib/topic-images.ts
+// stays focused on "which photo goes with which category".
+export { CATEGORY, FALLBACK };

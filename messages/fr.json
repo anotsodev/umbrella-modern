@@ -10,7 +10,9 @@
     "searchPlaceholder": "Rechercher…",
     "pathways": "Parcours",
     "forms": "Formulaires",
-    "howToUse": "Comment utiliser"
+    "howToUse": "Comment utiliser",
+    "credits": "Crédits photo",
+    "account": "Compte"
   },
   "home": {
     "hero": {
@@ -171,7 +173,7 @@
     "title": "Comment utiliser Umbrella",
     "intro": "Umbrella est un ensemble de guides pratiques et courts pour les personnes qui doivent réfléchir à leur sécurité — au travail, à la maison ou en déplacement. Les guides sont rédigés par des formateurs et des praticiens qui ont utilisé ces techniques sur le terrain.",
     "audience": "Si vous êtes journaliste, militant, travailleur humanitaire, diplomate ou voyageur d'affaires dans un environnement à haut risque, l'application est conçue pour vous. Toute autre personne est également la bienvenue — les conseils sont généralement de bonnes pratiques.",
-    "footer": "Ces captures d'écran proviennent de la version Android d'Umbrella. La version web est fonctionnellement équivalente : le même contenu, les mêmes parcours, les mêmes formulaires. Les différences que vous pouvez remarquer sont intentionnelles — la version web a un écran plus large et une navigation au clavier.",
+    "footer": "Ces captures d'écran proviennent de la version web d'Umbrella. Elles sont volontairement fidèles à ce que vous verrez sur le web — flux, leçons, listes de contrôle et formulaires — afin que chaque étape corresponde à la surface que vous utiliserez réellement.",
     "web": {
       "feeds": {
         "title": "Feeds : une veille sélectionnée",
@@ -191,5 +193,24 @@
       }
     },
     "screenshotCredit": "Captures d'écran de securityfirst/Umbrella_web (GPLv3)."
+  },
+  "credits": {
+    "title": "Crédits photo",
+    "intro": "Toutes les images de ce site sont des photos libres de droits provenant de Pexels, utilisées sous la licence Pexels (usage commercial gratuit, aucune attribution requise). Nous les listons ici parce que le reste de ce site repose sur une promesse de transparence — et un crédit amical est la bonne chose à faire.",
+    "sectionHero": "Héros et illustrations",
+    "sectionHome": "Accueil et bienvenue",
+    "sectionTopics": "Pages de sujets et catégories",
+    "sectionFallback": "Image de secours",
+    "sectionPathway": "Parcours",
+    "sectionForms": "Formulaires",
+    "sectionEmpty": "États vides",
+    "thankYou": "Merci aux photographes ci-dessus pour le partage de leur travail."
+  },
+  "account": {
+    "title": "Compte",
+    "eyebrow": "Bientôt disponible",
+    "headline": "Votre page de compte est en route",
+    "body": "La connexion et la synchronisation fonctionnent déjà — vos parcours et formulaires sont enregistrés sur cet appareil et vous suivent d'un navigateur à l'autre une fois connecté. Une page de compte dédiée (où vous pourrez gérer vos appareils, voir ce qui est synchronisé et révoquer l'accès) est prévue pour une version future.",
+    "backLink": "Retour à l'accueil"
   }
 }

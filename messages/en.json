@@ -10,7 +10,9 @@
     "searchPlaceholder": "Search…",
     "pathways": "Pathways",
     "forms": "Forms",
-    "howToUse": "How to use"
+    "howToUse": "How to use",
+    "credits": "Photo credits",
+    "account": "Account"
   },
   "home": {
     "hero": {
@@ -177,7 +179,7 @@
     "title": "How to use Umbrella",
     "intro": "Umbrella is a set of short, practical guides for people who need to think about their security — at work, at home, or on the move. The guides are written by trainers and practitioners who have used these techniques in the field.",
     "audience": "If you are a journalist, activist, aid worker, diplomat, or business traveller in a high-risk environment, the app is designed for you. Everyone else is welcome too — the advice is generally good practice.",
-    "footer": "These screenshots come from the Android build of Umbrella. The web build is functionally equivalent: the same content, the same pathways, the same forms. Differences you may notice are intentional — the web build has a wider screen and keyboard-driven navigation.",
+    "footer": "These screenshots come from the Umbrella Web build. They are intentionally faithful to what you see on the web — feeds, lessons, checklists, and forms — so you can match each step to the surface you'll actually use.",
     "web": {
       "feeds": {
         "title": "Feeds: a curated briefing",
@@ -197,5 +199,24 @@
       }
     },
     "screenshotCredit": "Screenshots from securityfirst/Umbrella_web (GPLv3)."
+  },
+  "credits": {
+    "title": "Photo credits",
+    "intro": "Every image on this site is a stock photograph from Pexels, used under the Pexels license (free for commercial use, no attribution required). We list the photographers here because the rest of this site is built on a promise of transparency — and a friendly credit is the right thing to do.",
+    "sectionHero": "Hero & inline illustrations",
+    "sectionHome": "Homepage & welcome",
+    "sectionTopics": "Topic & category pages",
+    "sectionFallback": "Fallback image",
+    "sectionPathway": "Pathways",
+    "sectionForms": "Forms",
+    "sectionEmpty": "Empty states",
+    "thankYou": "Thanks to the photographers above for sharing their work."
+  },
+  "account": {
+    "title": "Account",
+    "eyebrow": "Coming soon",
+    "headline": "Your account page is on the way",
+    "body": "Sign-in and sync already work — your pathways and forms are saved on this device and follow you across browsers once you sign in. A dedicated account page (where you can manage your devices, see what's synced, and revoke access) is planned for a future release.",
+    "backLink": "Back to home"
   }
 }

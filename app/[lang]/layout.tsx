@@ -9,6 +9,7 @@ import { locales, isLocale, rtlLocales } from "@/i18n";
 import { LocalePicker } from "@/components/locale-picker";
 import { LocalStorageNotice } from "@/components/local-storage-notice";
 import { HeaderAuth } from "@/components/header-auth";
+import { Footer } from "@/components/footer";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -107,6 +108,18 @@ export default async function LocaleLayout({
                 >
                   {tNav("howToUse")}
                 </Link>
+                <Link
+                  href={`/${lang}/account`}
+                  className="text-sm text-fg-muted hover:text-fg"
+                >
+                  {tNav("account")}
+                </Link>
+                <Link
+                  href={`/${lang}/credits`}
+                  className="text-sm text-fg-muted hover:text-fg"
+                >
+                  {tNav("credits")}
+                </Link>
                 <form
                   action={`/${lang}/search`}
                   method="get"
@@ -139,26 +152,12 @@ export default async function LocaleLayout({
             </nav>
           </header>
           <div className="flex-1">{children}</div>
-          <footer className="border-t border-line">
-            <div className="mx-auto flex w-full max-w-5xl flex-col gap-2 px-6 py-6 text-xs text-fg-muted sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-              <div className="flex flex-wrap items-center gap-3">
-                <span>© Umbrella · {tFoot("license")}</span>
-                <span aria-hidden="true">·</span>
-                <span>{tFoot("dataNote")}</span>
-              </div>
-              <div className="flex items-center gap-4">
-                <Link href={`/${lang}/terms`} className="hover:underline">
-                  {tFoot("privacy")}
-                </Link>
-                <a
-                  href="https://github.com/anotsodev/Umbrella_android"
-                  className="hover:underline"
-                >
-                  Source
-                </a>
-              </div>
-            </div>
-          </footer>
+          <Footer
+            lang={lang}
+            license={tFoot("license")}
+            dataNote={tFoot("dataNote")}
+            privacy={tFoot("privacy")}
+          />
         </NextIntlClientProvider>
       </body>
     </html>
