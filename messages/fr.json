@@ -79,7 +79,15 @@
     "headerSignIn": "Se connecter",
     "signedInFallback": "Compte",
     "account": "Compte",
-    "signOut": "Se déconnecter"
+    "signOut": "Se déconnecter",
+    "eyebrow": "Votre compte, votre appareil",
+    "trustPanel": {
+      "title": "Ce que nous ne faisons pas",
+      "noTracking": "Nous ne suivons pas votre connexion au-delà du cookie de session.",
+      "noEmailStorage": "Votre e-mail sert à envoyer le lien ; nous ne le stockons pas sur le serveur.",
+      "localProgress": "La progression de vos checklists et formulaires est sur cet appareil par défaut. Connectez-vous pour synchroniser entre appareils.",
+      "openSource": "Umbrella est open source sous GPLv3. Lisez le code, exécutez votre propre copie."
+    }
   },
   "search": {
     "title": "Rechercher",

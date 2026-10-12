@@ -79,7 +79,15 @@
     "headerSignIn": "Iniciar sesión",
     "signedInFallback": "Cuenta",
     "account": "Cuenta",
-    "signOut": "Cerrar sesión"
+    "signOut": "Cerrar sesión",
+    "eyebrow": "Tu cuenta, tu dispositivo",
+    "trustPanel": {
+      "title": "Lo que no hacemos",
+      "noTracking": "No rastreamos tu inicio de sesión más allá de la cookie de sesión.",
+      "noEmailStorage": "Tu correo se usa para enviar el enlace; no lo guardamos en el servidor.",
+      "localProgress": "El progreso de tus listas y formularios está en este dispositivo por defecto. Inicia sesión para sincronizar entre dispositivos.",
+      "openSource": "Umbrella es código abierto bajo GPLv3. Lee el código, ejecuta tu propia copia."
+    }
   },
   "search": {
     "title": "Buscar",

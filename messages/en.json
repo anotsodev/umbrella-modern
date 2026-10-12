@@ -85,7 +85,15 @@
     "headerSignIn": "Sign in",
     "signedInFallback": "Account",
     "account": "Account",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "eyebrow": "Your account, your device",
+    "trustPanel": {
+      "title": "What we don't do",
+      "noTracking": "We don't track your sign-in beyond the session cookie.",
+      "noEmailStorage": "Your email is used to send the link; we don't store it on the server.",
+      "localProgress": "Your pathway and form progress is on this device by default. Sign in to sync across devices.",
+      "openSource": "Umbrella is open source under GPLv3. Read the code, run your own copy."
+    }
   },
   "search": {
     "title": "Search",

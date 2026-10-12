@@ -79,7 +79,15 @@
     "headerSignIn": "登入",
     "signedInFallback": "帳號",
     "account": "帳號",
-    "signOut": "登出"
+    "signOut": "登出",
+    "eyebrow": "您的帳號,您的裝置",
+    "trustPanel": {
+      "title": "我們不做的事",
+      "noTracking": "除了工作階段 cookie 之外,我們不會追蹤您的登入。",
+      "noEmailStorage": "您的電子郵件僅用於寄送登入連結,不會保存在伺服器上。",
+      "localProgress": "您的檢查清單與表單進度預設僅保留在本機。登入後即可跨裝置同步。",
+      "openSource": "Umbrella 以 GPLv3 開源。可閱讀源碼、自行部署。"
+    }
   },
   "search": {
     "title": "搜尋",
