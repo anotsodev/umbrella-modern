@@ -21,6 +21,14 @@ const PRIVACY_PATH = join(
   "privacy-statement-v1.md",
 );
 
+// The terms page reads the privacy-statement file from disk on
+// every request so the maintainer can edit dev-docs and see the
+// change without a rebuild. That filesystem access makes the
+// route uncacheable, so it can't be prerendered — opt out of
+// Cache Components' blocking prerender. The DB-free read keeps
+// the cost negligible.
+export const instant = false;
+
 async function readPrivacyMarkdown(): Promise<string> {
   try {
     const raw = await readFile(PRIVACY_PATH, "utf8");

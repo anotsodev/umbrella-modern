@@ -16,6 +16,13 @@ import { isLocale } from "@/i18n";
 import { LocalePicker } from "@/components/locale-picker";
 import { Button } from "@/components/button";
 
+// 404s are inherently dynamic — the requested path never matched
+// a [lang] segment, so we have to read the active locale from the
+// NEXT_LOCALE cookie that next-intl's middleware sets. Opt out of
+// Cache Components' default-blocking prerender so the route is
+// allowed to read cookies at request time.
+export const instant = false;
+
 export default async function NotFound() {
   const cookieStore = await cookies();
   const cookieLocale = cookieStore.get("NEXT_LOCALE")?.value;
