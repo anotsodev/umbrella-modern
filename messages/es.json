@@ -32,7 +32,8 @@
     "notFound": "Tema no encontrado.",
     "prev": "Anterior",
     "next": "Siguiente",
-    "inCategory": "en"
+    "inCategory": "en",
+    "imageAlt": "Foto que ilustra {topic}"
   },
   "breadcrumb": {
     "home": "Inicio",

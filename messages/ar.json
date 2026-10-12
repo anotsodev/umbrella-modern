@@ -32,7 +32,8 @@
     "notFound": "الموضوع غير موجود.",
     "prev": "السابق",
     "next": "التالي",
-    "inCategory": "في"
+    "inCategory": "في",
+    "imageAlt": "صورة توضيحية لـ {topic}"
   },
   "breadcrumb": {
     "home": "الرئيسية",

@@ -32,7 +32,8 @@
     "notFound": "Тема не найдена.",
     "prev": "Назад",
     "next": "Вперёд",
-    "inCategory": "в"
+    "inCategory": "в",
+    "imageAlt": "Фотография к теме {topic}"
   },
   "breadcrumb": {
     "home": "Главная",

@@ -32,7 +32,8 @@
     "notFound": "Topic not found.",
     "prev": "Previous",
     "next": "Next",
-    "inCategory": "in"
+    "inCategory": "in",
+    "imageAlt": "Photo illustrating {topic}"
   },
   "breadcrumb": {
     "home": "Home",

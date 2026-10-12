@@ -32,7 +32,8 @@
     "notFound": "موضوع یافت نشد.",
     "prev": "قبلی",
     "next": "بعدی",
-    "inCategory": "در"
+    "inCategory": "در",
+    "imageAlt": "تصویری برای {topic}"
   },
   "breadcrumb": {
     "home": "خانه",

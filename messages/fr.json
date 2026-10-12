@@ -32,7 +32,8 @@
     "notFound": "Sujet introuvable.",
     "prev": "Précédent",
     "next": "Suivant",
-    "inCategory": "dans"
+    "inCategory": "dans",
+    "imageAlt": "Photo illustrant {topic}"
   },
   "breadcrumb": {
     "home": "Accueil",

@@ -32,7 +32,8 @@
     "notFound": "找不到主題。",
     "prev": "上一頁",
     "next": "下一頁",
-    "inCategory": "於"
+    "inCategory": "於",
+    "imageAlt": "「{topic}」的示意圖片"
   },
   "breadcrumb": {
     "home": "首頁",

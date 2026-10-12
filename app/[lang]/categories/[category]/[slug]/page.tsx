@@ -8,6 +8,7 @@ import {
   getContent,
   getNeighbours,
 } from "@/lib/reader";
+import { TopicFigure } from "@/components/topic-figure";
 
 // Next 16 `cacheComponents: true` rejects `export const dynamic = "force-dynamic"`.
 // Use `instant = false` instead, per Next.js 16 docs.
@@ -70,9 +71,14 @@ export default async function TopicPage({ params }: Props) {
         <h1 className="mb-2 text-4xl font-semibold tracking-tight">
           {topic.title}
         </h1>
-        <p className="mb-8 text-sm text-fg-muted">
+        <p className="mb-6 text-sm text-fg-muted">
           {t("updated")}: {new Date(topic.updatedAt).toISOString().slice(0, 10)}
         </p>
+
+        <TopicFigure
+          categorySlug={categorySlug}
+          topicSlug={slug}
+        />
 
         <div
           className="prose-umbrella"
