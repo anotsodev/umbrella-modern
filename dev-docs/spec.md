@@ -54,7 +54,7 @@ tables: `session`, `account`, `verification`. Full DDL in
 ## Out of scope
 
 - Android / iOS — explicitly deferred by the user
-- Analytics — see the Android `terms.html` stance on not collecting user data
+- Analytics — Security First's no-collection stance
 - PWA / offline mode — Phase 4
 - Cloud image storage — local volume for now
 
@@ -65,7 +65,7 @@ tables: `session`, `account`, `verification`. Full DDL in
 | 0 | Spec + ops (Docker, schema stub, i18n skeleton, **better-auth scaffolded**) | **complete** |
 | 1 | Reader surface + `umbrella-content` import job + checklist/forms | **complete** (reader + FTS + pathways + forms) |
 | 2 | Real SMTP/Resend/Postmark for magic-link delivery + per-user progress persistence | **complete** (Resend + API + sync) |
-| 3 | Read-only migration aids (Android user data export) | not started |
+| 3 | Read-only migration aids (re-scoping pending — see open-questions) | not started |
 | 4 | PWA / offline mode | not started |
 | 5 | NOT in scope: analytics, custom content uploads | — |
 
@@ -333,9 +333,8 @@ i18n + smoke coverage.
   `umbrella.form.<slug>.answers`. Phase 2 swaps to per-user
   server state keyed off the existing `user_forms` table.
 - **Printable HTML export**: "Export HTML" builds a
-  self-contained document (inline CSS, no external assets)
-  matching the shape of the Android `asHTML()` reference in
-  `data/database/form/entity.kt:149` — h1 form title, h3 per
+  self-contained document (inline CSS, no external assets) —
+  h1 form title, h3 per
   screen, h5 per item, then readonly input/textarea/radio/
   checkbox per type. Browser print preview renders cleanly
   with `body { font-family: … }` and `field { break-inside:

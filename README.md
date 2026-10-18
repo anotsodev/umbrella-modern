@@ -64,7 +64,7 @@ the container at least once (so `node_modules` is populated).
 - `umbrella-content` import job (Phase 1)
 - NextAuth route handlers (Phase 2)
 - PWA / offline mode (Phase 4)
-- Analytics (intentionally — see the Android `terms.html` stance on not collecting data)
+- Analytics (intentionally — Security First's no-collection stance)
 
 ## Conventions
 
