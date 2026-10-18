@@ -120,7 +120,9 @@ export default async function PathwaysIndex({ params }: Props) {
 
   return (
     <main className="mx-auto w-full max-w-4xl px-6 py-12">
-      <h1 className="text-3xl font-semibold tracking-tight">{t("title")}</h1>
+      <h1 className="text-balance text-3xl font-semibold tracking-tight">
+        {t("title")}
+      </h1>
       <p className="mt-2 text-fg-muted">{t("intro")}</p>
 
       {domains.length === 0 ? (

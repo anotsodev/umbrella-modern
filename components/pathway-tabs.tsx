@@ -51,7 +51,9 @@ type Props = {
 };
 
 const TAB_BASE =
-  "rounded-full border px-4 py-1.5 text-sm font-medium transition-colors";
+  "rounded-full border px-4 py-1.5 text-sm font-medium transition-colors " +
+  "touch-manipulation focus:outline-none focus-visible:ring-2 " +
+  "focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg";
 const TAB_SELECTED =
   "border-accent bg-accent text-accent-fg hover:bg-accent-hover";
 const TAB_UNSELECTED =
@@ -67,7 +69,8 @@ export function PathwayTabs({ domains, lang }: Props) {
 
 
   function onKeyDown(e: React.KeyboardEvent<HTMLButtonElement>) {
-    const last = domains.length; // +1 for the "all" tab at index 0
+    // Tab indices: 0 = "All categories", 1..domains.length = domains.
+    const last = domains.length;
     let next: number | null = null;
     if (e.key === "ArrowRight") next = active + 1 > last ? 0 : active + 1;
     else if (e.key === "ArrowLeft") next = active - 1 < 0 ? last : active - 1;
@@ -123,7 +126,7 @@ export function PathwayTabs({ domains, lang }: Props) {
               className={tabClass(selected)}
             >
               {d.title}
-              <span className="ms-1.5 text-xs font-normal opacity-60">
+              <span className="ms-1.5 text-xs font-normal tabular-nums opacity-60">
                 {count}
               </span>
             </button>
@@ -140,7 +143,7 @@ export function PathwayTabs({ domains, lang }: Props) {
         >
           {domains.map((d) => (
             <section key={d.slug}>
-              <h2 className="text-xl font-medium text-fg">{d.title}</h2>
+              <h2 className="text-balance text-xl font-medium text-fg">{d.title}</h2>
               {d.sections.length === 1 && d.sections[0].title === "" ? (
                 <ul className="mt-3 grid gap-3 sm:grid-cols-2">
                   {d.sections[0].items.map((c) => (
@@ -219,7 +222,7 @@ function DomainPanel({
     <div className="mt-8 space-y-8">
       {domain.sections.map((s) => (
         <section key={s.slug}>
-          <h2 className="text-xl font-medium text-fg">{s.title}</h2>
+          <h2 className="text-balance text-xl font-medium text-fg">{s.title}</h2>
           <ul className="mt-3 grid gap-3 sm:grid-cols-2">
             {s.items.map((c) => (
               <li key={c.id}>
