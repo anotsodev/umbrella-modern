@@ -288,9 +288,8 @@ function DomainPanel({
 }
 
 // "All categories" default view: one section per domain with a
-// "Browse N checklists" action that switches to that domain's tab,
-// plus the curated Pathways grid. While filtering, sections collapse
-// to just the matching cards.
+// "Browse N checklists" action that switches to that domain's tab.
+// While filtering, sections collapse to just the matching cards.
 function OverviewPanel({
   domains,
   matches,
@@ -366,62 +365,18 @@ function OverviewPanel({
                   })}
                 </ul>
               ) : (
-                <DomainOverviewBody
-                  domain={domain}
-                  domainIndex={index}
-                  lang={lang}
-                  onOpenDomain={onOpenDomain}
-                />
+                <button
+                  type="button"
+                  onClick={() => onOpenDomain(index)}
+                  className="mt-3 text-sm font-medium text-accent hover:underline"
+                >
+                  {t("browseDomain", { count: checklistCount })}
+                </button>
               )}
             </section>
           );
         })
       )}
     </div>
-  );
-}
-
-// Unfiltered overview body for one domain: a "Browse N checklists"
-// button that switches to the domain tab, or the flat Pathways grid.
-function DomainOverviewBody({
-  domain,
-  domainIndex,
-  lang,
-  onOpenDomain,
-}: {
-  domain: PathwayTabDomain;
-  domainIndex: number;
-  lang: string;
-  onOpenDomain: (index: number) => void;
-}) {
-  const t = useTranslations("pathways");
-
-  if (domain.sections.length === 1 && domain.sections[0].title === "") {
-    return (
-      <ul className="mt-3 grid gap-3 sm:grid-cols-2">
-        {domain.sections[0].items.map((c) => (
-          <li key={c.id}>
-            <LinkCard
-              href={`/${lang}/pathways/${c.slug}`}
-              title={c.title}
-              subtitle={t("itemCount", { count: c.itemCount })}
-              titleSize="sm"
-            />
-          </li>
-        ))}
-      </ul>
-    );
-  }
-
-  return (
-    <button
-      type="button"
-      onClick={() => onOpenDomain(domainIndex)}
-      className="mt-3 text-sm font-medium text-accent hover:underline"
-    >
-      {t("browseDomain", {
-        count: domain.sections.reduce((n, s) => n + s.items.length, 0),
-      })}
-    </button>
   );
 }
