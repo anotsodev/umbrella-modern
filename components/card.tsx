@@ -33,6 +33,7 @@ type LinkCardProps = {
   title: string;
   subtitle?: string;
   meta?: string;
+  badge?: ReactNode;
   imageSrc?: string;
   imageAlt?: string;
   titleSize?: "sm" | "md" | "lg";
@@ -49,6 +50,7 @@ export function LinkCard({
   title,
   subtitle,
   meta,
+  badge,
   imageSrc,
   imageAlt,
   titleSize = "md",
@@ -71,6 +73,7 @@ export function LinkCard({
       {subtitle ? (
         <p className="mt-1 text-sm text-fg-muted">{subtitle}</p>
       ) : null}
+      {badge ? <div className="mt-2">{badge}</div> : null}
       {meta ? (
         <p className="mt-2 text-xs text-fg-subtle">{meta}</p>
       ) : null}

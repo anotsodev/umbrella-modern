@@ -29,6 +29,7 @@ import { useId, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { LinkCard } from "@/components/card";
 import { levelFromSlug } from "@/lib/levels";
+import { ICONS, subtopicIconKey } from "@/lib/subtopic-icons";
 
 export type PathwayTabItem = {
   id: string;
@@ -68,21 +69,52 @@ const FILTER_INPUT_CLASSES =
   "w-full rounded-md border border-line-strong bg-surface px-3 py-2 text-sm " +
   "text-fg placeholder:text-fg-subtle focus:border-accent focus:outline-none";
 
-// Card meta line for a checklist with a level suffix (e.g.
-// "Beginner · Censorship"). Flat-category checklists (curated
-// Pathways) have no level; they render without a meta line. Card
-// titles are pre-composed server-side (subtopic as title), so only
-// the meta needs the section title here.
-function cardMeta(
-  item: PathwayTabItem,
-  sectionTitle: string,
-  levelLabel: (level: string) => string
-): string | undefined {
-  const level = levelFromSlug(item.slug);
-  if (!level) return undefined;
-  return `${levelLabel(level)} · ${sectionTitle}`;
+// Level badge colors follow the app's soft-token scale:
+// Beginner = success (emerald), Advanced = warn (amber),
+// Expert = danger (red). Class strings are written out per level so
+// Tailwind can see every utility name statically.
+const LEVEL_BADGE_CLASSES: Record<string, string> = {
+  beginner:
+    "bg-success-soft-bg text-success-soft-fg dark:bg-success-soft-bg-dark dark:text-success-soft-fg-dark",
+  advanced:
+    "bg-warn-soft-bg text-warn-soft-fg dark:bg-warn-soft-bg-dark dark:text-warn-soft-fg-dark",
+  expert:
+    "bg-danger-soft-bg text-danger-soft-fg dark:bg-danger-soft-bg-dark dark:text-danger-soft-fg-dark",
+};
+
+// Colored level pill for a checklist card. Flat-category checklists
+// (curated Pathways) have no level and render no badge.
+function LevelBadge({
+  slug,
+  label,
+}: {
+  slug: string;
+  label: string;
+}) {
+  const level = levelFromSlug(slug);
+  if (!level) return null;
+  return (
+    <span
+      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium ${LEVEL_BADGE_CLASSES[level] ?? ""}`}
+    >
+      {label}
+    </span>
+  );
 }
 
+// Decorative icon for a subtopic/domain section heading, keyed by
+// the section slug (locale-independent). aria-hidden: the heading
+// text carries the meaning.
+function SectionIcon({ slug }: { slug: string }) {
+  const Icon = ICONS[subtopicIconKey(slug)];
+  return (
+    <Icon
+      aria-hidden="true"
+      className="size-5 shrink-0 text-fg-subtle"
+      strokeWidth={1.75}
+    />
+  );
+}
 export function PathwayTabs({ domains, lang }: Props) {
   const t = useTranslations("pathways");
   const [active, setActive] = useState(-1);
@@ -264,7 +296,8 @@ function DomainPanel({
       {sections.map((s) => (
         <section key={s.slug}>
           {s.title ? (
-            <h2 className="text-balance text-xl font-medium text-fg">
+            <h2 className="flex items-center gap-2 text-balance text-xl font-medium text-fg">
+              <SectionIcon slug={s.slug} />
               {s.title}
             </h2>
           ) : null}
@@ -275,7 +308,9 @@ function DomainPanel({
                   href={`/${lang}/pathways/${item.slug}`}
                   title={item.title}
                   subtitle={t("itemCount", { count: item.itemCount })}
-                  meta={cardMeta(item, s.title, (l) => t(`levels.${l}`))}
+                  badge={
+                    <LevelBadge slug={item.slug} label={t(`levels.${levelFromSlug(item.slug) ?? ""}`)} />
+                  }
                   titleSize="sm"
                 />
               </li>
@@ -333,7 +368,8 @@ function OverviewPanel({
           return (
             <section key={domain.slug}>
               <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h2 className="text-balance text-xl font-medium text-fg">
+                <h2 className="flex items-center gap-2 text-balance text-xl font-medium text-fg">
+                  <SectionIcon slug={domain.slug} />
                   {domain.title}
                 </h2>
                 <p className="text-xs tabular-nums text-fg-subtle">
@@ -346,18 +382,20 @@ function OverviewPanel({
               {hits ? (
                 <ul className="mt-3 grid gap-3 sm:grid-cols-2">
                   {hits.map((item) => {
-                    const section = domain.sections.find((s) =>
-                      s.items.some((i) => i.id === item.id)
-                    )!;
                     return (
                       <li key={item.id}>
                         <LinkCard
                           href={`/${lang}/pathways/${item.slug}`}
                           title={item.title}
                           subtitle={t("itemCount", { count: item.itemCount })}
-                          meta={cardMeta(item, section.title, (l) =>
-                            t(`levels.${l}`)
-                          )}
+                          badge={
+                            <LevelBadge
+                              slug={item.slug}
+                              label={t(
+                                `levels.${levelFromSlug(item.slug) ?? ""}`
+                              )}
+                            />
+                          }
                           titleSize="sm"
                         />
                       </li>
