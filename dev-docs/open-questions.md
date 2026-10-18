@@ -4,7 +4,7 @@ Things the PM agent (or the dev agent when blocked) should surface back
 to the user. Format: short title, the actual question, why it matters,
 and a recommended default if the user wants to defer.
 
-## Resolved by Phase 3
+## Resolved (before Phase 4)
 
 - **Privacy statement content** → v1 copy written and committed
   (`dev-docs/privacy-statement-v1.md` is the source of truth;
@@ -39,7 +39,7 @@ and a recommended default if the user wants to defer.
   (`components/local-storage-notice.tsx`). Banner text
   ("Your progress is saved on this device only. Sign in to
   sync across devices (coming soon).") has been *superseded*
-  by Phase 3's footer `dataNote` line — the banner is still
+  by the footer `dataNote` line — the banner is still
   shown on first visit as a per-page affordance, but the
   global stance is now in the footer.
 
