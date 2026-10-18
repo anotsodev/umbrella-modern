@@ -101,6 +101,7 @@
   "pathways": {
     "title": "Rutas",
     "intro": "Listas de verificación paso a paso para situaciones de alto riesgo. Marca los elementos a medida que avanzas; tu progreso se guarda en este dispositivo.",
+    "allCategories": "Todas las categorías",
     "itemCount": "{count, plural, =0 {Sin elementos} one {1 elemento} other {{count} elementos}}",
     "empty": "Esta ruta aún no tiene elementos.",
     "progress": "{percent}% completado",

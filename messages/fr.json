@@ -101,6 +101,7 @@
   "pathways": {
     "title": "Parcours",
     "intro": "Listes de vérification étape par étape pour les situations à haut risque. Cochez les éléments au fur et à mesure ; votre progression est enregistrée sur cet appareil.",
+    "allCategories": "Toutes les catégories",
     "itemCount": "{count, plural, =0 {Aucun élément} one {1 élément} other {{count} éléments}}",
     "empty": "Ce parcours n'a pas encore d'éléments.",
     "progress": "{percent}% terminé",

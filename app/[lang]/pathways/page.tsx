@@ -7,8 +7,8 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n";
 import { getAllChecklists } from "@/lib/reader";
-import { LinkCard } from "@/components/card";
 import { EmptyState } from "@/components/empty-state";
+import { PathwayTabs } from "@/components/pathway-tabs";
 
 // Next 16 `cacheComponents: true` rejects `export const dynamic = "force-dynamic"`.
 // Use `instant = false` instead, per Next.js 16 docs.
@@ -57,24 +57,8 @@ export default async function PathwaysIndex({ params }: Props) {
           />
         </div>
       ) : (
-        <div className="mt-8 space-y-10">
-          {groups.map((g) => (
-            <section key={g.slug}>
-              <h2 className="text-xl font-medium text-fg">{g.title}</h2>
-              <ul className="mt-3 grid gap-3 sm:grid-cols-2">
-                {g.items.map((c) => (
-                  <li key={c.id}>
-                    <LinkCard
-                      href={`/${lang}/pathways/${c.slug}`}
-                      title={c.title}
-                      subtitle={t("itemCount", { count: c.itemCount })}
-                      titleSize="sm"
-                    />
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
+        <div className="mt-8">
+          <PathwayTabs groups={groups} lang={lang} />
         </div>
       )}
     </main>
