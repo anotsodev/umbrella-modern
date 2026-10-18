@@ -1,14 +1,21 @@
-// Pathways index — list every checklist (pathway) for a language,
-// grouped by category. Each card links to the per-checklist page
-// where users can tick items off; progress is stored in localStorage
-// in v1 (Phase 2 swaps for server-side per-user persistence).
+// Pathways index — list every checklist (pathway) for a language.
+// The upstream data is three-level (curated "Pathways" category plus
+// `Domain / Subtopic / Level` categories), which is too much for one
+// scrolling page or one flat tab row, so the page groups it into
+// domains → subtopics → level-ordered cards and hands the structure
+// to PathwayTabs (client) for tabbed navigation. Progress is stored
+// per checklist as before.
 
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n";
 import { getAllChecklists } from "@/lib/reader";
 import { EmptyState } from "@/components/empty-state";
-import { PathwayTabs } from "@/components/pathway-tabs";
+import {
+  PathwayTabs,
+  type PathwayTabDomain,
+  type PathwayTabItem,
+} from "@/components/pathway-tabs";
 
 // Next 16 `cacheComponents: true` rejects `export const dynamic = "force-dynamic"`.
 // Use `instant = false` instead, per Next.js 16 docs.
@@ -18,6 +25,48 @@ type Props = {
   params: Promise<{ lang: string }>;
 };
 
+// Level rank from the checklist slug suffix. Level names are not
+// localized upstream (every locale shows Beginner/Advanced/Expert),
+// so the slug suffix is a stable ordering key. Unknown suffixes sort
+// last; Array.sort is stable, so DB order is preserved among them.
+const LEVEL_RANK: Record<string, number> = {
+  "-beginner": 0,
+  "-advanced": 1,
+  "-expert": 2,
+};
+
+function levelRank(slug: string): number {
+  for (const suffix of Object.keys(LEVEL_RANK)) {
+    if (slug.endsWith(suffix)) return LEVEL_RANK[suffix];
+  }
+  return 3;
+}
+
+// "Domain / Subtopic / Level" → { domain, subtopic }. Categories
+// without the slash format (Pathways) return null.
+function splitCategory(title: string): {
+  domain: string;
+  subtopic: string;
+} | null {
+  const parts = title.split(" / ");
+  if (parts.length < 3) return null;
+  return { domain: parts[0], subtopic: parts.slice(1, -1).join(" / ") };
+}
+
+function toTabItem(c: {
+  id: string;
+  slug: string;
+  title: string;
+  itemCount: number;
+}): PathwayTabItem {
+  return {
+    id: c.id,
+    slug: c.slug,
+    title: c.title,
+    itemCount: c.itemCount,
+  };
+}
+
 export default async function PathwaysIndex({ params }: Props) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
@@ -26,29 +75,55 @@ export default async function PathwaysIndex({ params }: Props) {
   const t = await getTranslations("pathways");
   const checklists = await getAllChecklists(lang);
 
-  // Group by categorySlug. Maintain the DB's ordering (which is
-  // already grouped via the orderBy in getAllChecklists).
-  const grouped = new Map<
+  // Build domains → subtopics → items. DB order is already grouped
+  // by category (getAllChecklists orders by categoryId), so first-
+  // seen order of domains and subtopics is stable.
+  const domainMap = new Map<
     string,
-    { title: string; slug: string; items: typeof checklists }
-  >();
-  for (const c of checklists) {
-    const key = c.categorySlug;
-    let g = grouped.get(key);
-    if (!g) {
-      g = { title: c.categoryTitle, slug: c.categorySlug, items: [] };
-      grouped.set(key, g);
+    {
+      title: string;
+      // "" subtopic = flat category (no slash format)
+      subs: Map<string, { slug: string; title: string; items: PathwayTabItem[] }>;
     }
-    g.items.push(c);
+  >();
+
+  for (const c of checklists) {
+    const parsed = splitCategory(c.categoryTitle);
+    const domainKey = parsed ? parsed.domain : c.categoryTitle;
+    const subKey = parsed ? parsed.subtopic : "";
+
+    let d = domainMap.get(domainKey);
+    if (!d) {
+      d = { title: domainKey, subs: new Map() };
+      domainMap.set(domainKey, d);
+    }
+    let s = d.subs.get(subKey);
+    if (!s) {
+      s = { slug: c.categorySlug, title: subKey, items: [] };
+      d.subs.set(subKey, s);
+    }
+    s.items.push(toTabItem(c));
   }
-  const groups = Array.from(grouped.values());
+
+  const domains: PathwayTabDomain[] = Array.from(domainMap.values()).map(
+    (d) => ({
+      slug: d.title.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+      title: d.title,
+      sections: Array.from(d.subs.values()).map((s) => ({
+        ...s,
+        items: [...s.items].sort(
+          (a, b) => levelRank(a.slug) - levelRank(b.slug)
+        ),
+      })),
+    })
+  );
 
   return (
     <main className="mx-auto w-full max-w-4xl px-6 py-12">
       <h1 className="text-3xl font-semibold tracking-tight">{t("title")}</h1>
       <p className="mt-2 text-fg-muted">{t("intro")}</p>
 
-      {groups.length === 0 ? (
+      {domains.length === 0 ? (
         <div className="mt-8">
           <EmptyState
             variant="pathway"
@@ -58,7 +133,7 @@ export default async function PathwaysIndex({ params }: Props) {
         </div>
       ) : (
         <div className="mt-8">
-          <PathwayTabs groups={groups} lang={lang} />
+          <PathwayTabs domains={domains} lang={lang} />
         </div>
       )}
     </main>
