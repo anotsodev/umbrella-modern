@@ -103,6 +103,15 @@
     "intro": "Listas de verificación paso a paso para situaciones de alto riesgo. Marca los elementos a medida que avanzas; tu progreso se guarda en este dispositivo.",
     "allCategories": "Todas las categorías",
     "itemCount": "{count, plural, =0 {Sin elementos} one {1 elemento} other {{count} elementos}}",
+    "levels": {
+      "beginner": "Principiante",
+      "advanced": "Avanzado",
+      "expert": "Experto"
+    },
+    "checklistCount": "{count, plural, =0 {Sin listas de verificación} one {1 lista de verificación} other {{count} listas de verificación}}",
+    "subtopicsCount": "{count, plural, =0 {Sin subtemas} one {1 subtema} other {{count} subtemas}}",
+    "filterLabel": "Filtrar listas de verificación",
+    "filterEmpty": "No hay listas de verificación que coincidan con «{query}».",
     "empty": "Esta ruta aún no tiene elementos.",
     "progress": "{percent}% completado",
     "markAllDone": "Marcar todo como hecho",
@@ -117,7 +126,9 @@
     "emptyState": {
       "title": "Aún no hay listas de verificación",
       "body": "Cuando se publiquen listas de verificación en este idioma, aparecerán aquí. Tu progreso se guarda solo en este dispositivo."
-    }
+    },
+    "browseDomain": "{count, plural, one {Ver 1 lista de verificación} other {Ver # listas de verificación}}",
+    "filterResults": "{count, plural, =0 {Sin listas de verificación coincidentes} one {1 lista de verificación coincidente} other {# listas de verificación coincidentes}}"
   },
   "forms": {
     "title": "Formularios",

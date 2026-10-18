@@ -7,6 +7,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n";
 import { getChecklist } from "@/lib/reader";
+import { levelFromSlug } from "@/lib/levels";
 import { ChecklistRunner } from "@/components/checklist-runner";
 
 // Next 16 `cacheComponents: true` rejects `export const dynamic = "force-dynamic"`.
@@ -29,6 +30,20 @@ export default async function ChecklistPage({ params }: Props) {
   const backHref = `/${lang}/pathways`;
   const backLabel = t("back");
 
+  // Slash-category checklists are titled "Beginner"/"Advanced"/"Expert"
+  // upstream — meaningless as a page heading. Compose
+  // "Subtopic — Level" from the category path instead, and show the
+  // domain as the subtitle. Flat categories (curated Pathways) have
+  // real titles; keep them as-is.
+  const parts = checklist.categoryTitle.split(" / ");
+  const level = levelFromSlug(checklist.slug);
+  const heading =
+    parts.length >= 3 && level
+      ? `${parts.slice(1, -1).join(" / ")} — ${t(`levels.${level}`)}`
+      : checklist.title;
+  const subtitle =
+    parts.length >= 3 && level ? parts[0] : checklist.categoryTitle;
+
   return (
     <main className="mx-auto w-full max-w-3xl px-6 py-12">
       <nav className="text-sm text-fg-muted">
@@ -38,9 +53,9 @@ export default async function ChecklistPage({ params }: Props) {
       </nav>
 
       <h1 className="mt-4 text-3xl font-semibold tracking-tight">
-        {checklist.title}
+        {heading}
       </h1>
-      <p className="mt-1 text-sm text-fg-muted">{checklist.categoryTitle}</p>
+      <p className="mt-1 text-sm text-fg-muted">{subtitle}</p>
       {checklist.intro ? (
         <div
           className="prose-umbrella mt-4 max-w-none"

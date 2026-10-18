@@ -10,6 +10,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n";
 import { getAllChecklists } from "@/lib/reader";
+import { levelFromSlug } from "@/lib/levels";
 import { EmptyState } from "@/components/empty-state";
 import {
   PathwayTabs,
@@ -67,6 +68,16 @@ function toTabItem(c: {
   };
 }
 
+// Card title for a checklist. Slash-category checklists are titled
+// "Beginner"/"Advanced"/"Expert" upstream — meaningless without the
+// section heading — so the subtopic becomes the card title and the
+// level is rendered as a localized meta line by PathwayTabs (via
+// levelFromSlug). Flat-category checklists (curated Pathways) have
+// real titles and no level suffix; they render as-is.
+function cardTitle(item: PathwayTabItem, sectionTitle: string): string {
+  return levelFromSlug(item.slug) ? sectionTitle : item.title;
+}
+
 export default async function PathwaysIndex({ params }: Props) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
@@ -111,9 +122,9 @@ export default async function PathwaysIndex({ params }: Props) {
       title: d.title,
       sections: Array.from(d.subs.values()).map((s) => ({
         ...s,
-        items: [...s.items].sort(
-          (a, b) => levelRank(a.slug) - levelRank(b.slug)
-        ),
+        items: [...s.items]
+          .sort((a, b) => levelRank(a.slug) - levelRank(b.slug))
+          .map((item) => ({ ...item, title: cardTitle(item, s.title) })),
       })),
     })
   );
