@@ -53,7 +53,6 @@ export default async function HomePage({ params }: Props) {
   return (
     <main className="mx-auto w-full max-w-5xl px-6 py-10 sm:py-16">
       <Hero
-        eyebrow={t("hero.eyebrow")}
         title={t("hero.title")}
         subtitle={t("hero.subtitle")}
         intro={t("hero.intro")}
