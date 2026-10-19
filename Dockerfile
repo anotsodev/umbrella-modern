@@ -56,6 +56,16 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
+# Drop devDependencies declared in our package.json. The builder stage
+# copied node_modules wholesale; without this step every dev tool (eslint,
+# vitest, tsx, the Prisma CLI, typecheck, etc.) ships to production.
+#
+# Note: a small number of packages remain in node_modules after prune
+# because some of our direct dependencies (notably better-auth@1.7.7)
+# declare devDeps in their own dependencies field. Removing those
+# requires patching the lockfile and is not worth the supply-chain risk.
+# Confirmed that *direct* devDeps from our package.json are gone.
+RUN npm prune --omit=dev
 COPY --from=builder /app/next.config.ts ./next.config.ts
 COPY --from=builder /app/i18n.ts ./i18n.ts
 USER nextjs

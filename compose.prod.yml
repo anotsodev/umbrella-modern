@@ -22,15 +22,28 @@ services:
       db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/en').then(r => { if (!r.ok) process.exit(1) }).catch(() => process.exit(1))"]
+      # Note: this is a process liveness check, not a deep readiness probe.
+      # A 5xx response (e.g. DB unreachable) still counts as "the process
+      # answered", so a transient outage won't loop the container. Swap for
+      # a dedicated /api/health route once one exists; until then, rely on
+      # Cloudflare edge rate limiting and the start_period for bad-schema
+      # protection.
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/en').then(() => process.exit(0)).catch(() => process.exit(1))"]
       interval: 30s
       timeout: 10s
-      start_period: 30s
-      retries: 3
+      start_period: 60s
+      retries: 5
+    # Drop privilege escalation only. read_only=true would require tmpfs
+    # for /app/.next/cache and /tmp (Next + Prisma engine), which is a
+    # bigger change tracked separately. Hardening backlog is in
+    # dev-docs/production.md.
+    security_opt:
+      - "no-new-privileges:true"
     restart: unless-stopped
 
   # Explicit maintenance only: never pushes schema or imports on web startup.
   # Back up first, then run with: ... --profile maintenance run --rm tools
+  # (no `restart:` here — `run --rm` is one-shot, the key is meaningless.)
   tools:
     profiles: ["maintenance"]
     build:

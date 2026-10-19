@@ -46,6 +46,13 @@ A build requires network access for npm dependencies and Google Fonts. No live
 database is needed for the image build. The runtime image retains the Next.js
 configuration and Prisma/OpenSSL runtime support.
 
+**Why does the build need `DATABASE_URL`?** `lib/db.ts` constructs a `PrismaClient`
+at module load, so it is imported transitively while Next.js collects routes
+even though no query is actually executed. The Dockerfile passes a placeholder
+URL (`postgresql://build:build@127.0.0.1:5432/build`) at build time; the real
+`DATABASE_URL` is supplied at runtime via the Compose service. The
+`BETTER_AUTH_SECRET` placeholder works the same way.
+
 ## 3. Back up before switching or changing schema
 
 For the currently running **development** stack:
@@ -124,3 +131,37 @@ docker compose --env-file .env.production -f compose.prod.yml up -d --build --wa
 Do not use `make up`, `make migrate`, or `make reset` for production; those target
 the development Compose file. For rollback, retain a known-good image and backup;
 application rollback alone does not undo schema/data changes.
+
+## Hardening backlog
+
+Small, ordered set of additional hardening steps deferred from the initial
+production rollout. Each is opt-in and tested before flipping the default.
+
+1. **Dedicated `/api/health` route.** Replace the homepage-fetch healthcheck
+   with a route that explicitly answers "process up" (always 200 unless the
+   Node event loop is wedged) and a separate `/api/ready` that touches the DB
+   and Prisma client. Lets Kubernetes/Compose distinguish liveness from
+   readiness and prevents a transient DB outage from restarting the container.
+2. **`read_only: true` on the `web` service.** Requires tmpfs mounts for
+   `/tmp` (Prisma engine) and `/app/.next/cache` (Next.js build cache). Verify
+   the production build has no other writable paths first; some libraries
+   write to `~/.cache` or `/home/nextjs`.
+3. **`cap_drop: [ALL]` plus a tight `cap_add` allowlist.** Node.js needs no
+   special capabilities today, so dropping all is safe in principle. Verify
+   with the healthcheck and a sample sign-in flow before shipping.
+4. **Rootless or non-root Compose project.** The `web` container already runs
+   as `nextjs` (uid 1001); moving the entire stack to rootless Docker is the
+   next step if your host supports it.
+5. **Image provenance.** Add a CI step to push the runner image to a registry
+   with cosign signing and a SLSA provenance attestation. The Dockerfile is
+   already deterministic enough for this; no code change required.
+
+## FAQ
+
+**`public/content` is empty in the image but full at runtime — does the build
+depend on it?** No. All content is rendered from Postgres via `lib/reader.ts`
+at request time, so the build does not read `public/content`. The directory is
+populated at runtime by the `umbrella-modern-content` named volume
+(`compose.prod.yml` mounts it read-only at `/app/public/content`). Excluding
+`public/content` from the build context in `.dockerignore` keeps the image
+small and is intentional.
