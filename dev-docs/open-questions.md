@@ -4,7 +4,7 @@ Things the PM agent (or the dev agent when blocked) should surface back
 to the user. Format: short title, the actual question, why it matters,
 and a recommended default if the user wants to defer.
 
-## Resolved by Phase 3
+## Resolved (before Phase 4)
 
 - **Privacy statement content** → v1 copy written and committed
   (`dev-docs/privacy-statement-v1.md` is the source of truth;
@@ -39,7 +39,7 @@ and a recommended default if the user wants to defer.
   (`components/local-storage-notice.tsx`). Banner text
   ("Your progress is saved on this device only. Sign in to
   sync across devices (coming soon).") has been *superseded*
-  by Phase 3's footer `dataNote` line — the banner is still
+  by the footer `dataNote` line — the banner is still
   shown on first visit as a per-page affordance, but the
   global stance is now in the footer.
 
@@ -101,9 +101,8 @@ and a recommended default if the user wants to defer.
 - **Question:** Do we treat the umbrella-content `glossary` category as
   ordinary markdown topics, or extract `term / definition` pairs into
   a separate `glossary_terms` table for search and linking?
-- **Why it matters:** The Android app shows a "tap any term to jump
-  to its definition" affordance that requires the term/definition
-  split.
+- **Why it matters:** A "tap any term to jump to its definition"
+  affordance requires the term/definition split.
 - **Default if deferred:** Keep as ordinary topics in Phase 1; revisit
   in Phase 2 once the reader surface has real traffic.
 
@@ -138,8 +137,8 @@ and a recommended default if the user wants to defer.
 ### Translation source of truth
 
 - **Question:** Chrome translations (button labels, nav, error
-  messages) — translate in-house, or use the same translation
-  pipeline the Android app uses (Crowdin / Transifex)?
+  messages) — translate in-house, or use a translation platform
+  (Crowdin / Transifex)?
 - **Why it matters:** Affects how we source future locale work.
-- **Default if deferred:** Mirror the Android `strings.xml` files
-  manually in `messages/`. Revisit when we add a 4th language.
+- **Default if deferred:** Translate manually in `messages/`.
+  Revisit when we add a 4th language.

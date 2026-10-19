@@ -12,7 +12,8 @@
     "forms": "表單",
     "howToUse": "使用說明",
     "credits": "圖片來源",
-    "account": "帳號"
+    "account": "帳號",
+    "menu": "選單"
   },
   "home": {
     "hero": {
@@ -101,7 +102,17 @@
   "pathways": {
     "title": "行動路徑",
     "intro": "為高風險情境設計的逐步檢查清單。邊做邊勾選；你的進度會儲存在這部裝置上。",
+    "allCategories": "所有類別",
     "itemCount": "{count, plural, =0 {沒有項目} other {{count} 個項目}}",
+    "levels": {
+      "beginner": "初級",
+      "advanced": "進階",
+      "expert": "專家"
+    },
+    "checklistCount": "{count, plural, =0 {沒有檢查清單} other {{count} 份檢查清單}}",
+    "subtopicsCount": "{count, plural, =0 {沒有子主題} other {{count} 個子主題}}",
+    "filterLabel": "篩選檢查清單",
+    "filterEmpty": "沒有符合「{query}」的檢查清單。",
     "empty": "此路徑尚無項目。",
     "progress": "已完成 {percent}%",
     "markAllDone": "全部標示為完成",
@@ -116,7 +127,9 @@
     "emptyState": {
       "title": "尚無檢查清單",
       "body": "當此語言的檢查清單發佈後,將會顯示於此。您的進度僅儲存在本機。"
-    }
+    },
+    "browseDomain": "{count, plural, other {瀏覽 # 份檢查清單}}",
+    "filterResults": "{count, plural, =0 {沒有符合的檢查清單} other {# 份符合的檢查清單}}"
   },
   "forms": {
     "title": "表單",

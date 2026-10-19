@@ -54,7 +54,7 @@ export function HeaderAuth({ lang }: Props) {
     return (
       <Link
         href={`/${lang}/sign-in`}
-        className="rounded-md border border-line-strong px-3 py-1 text-xs font-medium text-fg hover:bg-surface-sunken"
+        className="shrink-0 whitespace-nowrap rounded-md border border-line-strong px-3 py-1.5 text-sm font-medium text-fg hover:bg-surface-sunken"
       >
         {t("headerSignIn")}
       </Link>
@@ -68,7 +68,7 @@ export function HeaderAuth({ lang }: Props) {
       <button
         type="button"
         onClick={() => setMenuOpen((v) => !v)}
-        className="flex items-center gap-2 rounded-md border border-line-strong px-3 py-1 text-xs font-medium text-fg hover:bg-surface-sunken"
+        className="flex items-center gap-2 rounded-md border border-line-strong px-3 py-1.5 text-sm font-medium text-fg hover:bg-surface-sunken"
         aria-haspopup="menu"
         aria-expanded={menuOpen}
       >

@@ -36,9 +36,11 @@
   --amber-900: #78350f;
   --amber-950: #451a03;
   --crimson: #dc2626;
+  --red-50: #fef2f2;
   --red-300: #fca5a5;
   --red-600: #dc2626;
   --red-700: #b91c1c;
+  --red-950: #450a0a;
 
   /* --- Semantic roles (light) --- */
   --bg: #ffffff;
@@ -77,7 +79,9 @@
   --warn-soft-fg-dark: #fde68a;
 
   --danger: var(--red-600);
+  --danger-soft-bg: var(--red-50);
   --danger-soft-fg: var(--red-700);
+  --danger-soft-bg-dark: var(--red-950);
   --danger-soft-fg-dark: var(--red-300);
 
   --focus-ring: var(--zinc-500);
@@ -161,7 +165,9 @@ body {
   --color-warn-soft-border-dark: var(--warn-soft-border-dark);
   --color-warn-soft-fg-dark: var(--warn-soft-fg-dark);
   --color-danger: var(--danger);
+  --color-danger-soft-bg: var(--danger-soft-bg);
   --color-danger-soft-fg: var(--danger-soft-fg);
+  --color-danger-soft-bg-dark: var(--danger-soft-bg-dark);
   --color-danger-soft-fg-dark: var(--danger-soft-fg-dark);
   --color-focus-ring: var(--focus-ring);
   --color-progress-track: var(--progress-track);

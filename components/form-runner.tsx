@@ -6,11 +6,12 @@
 // v1 is anonymous; Phase 2 swaps for per-user server state when
 // accounts land (the user_forms table is already in the schema).
 //
-// Round-trip parity with the Android FormService.asHTML() export is
-// the design driver: every screen is shown verbatim, every item
-// type is rendered with the matching input shape, and the export
-// emits a self-contained HTML document (inline CSS, no external
-// assets) that opens in a browser and prints cleanly.
+// Design driver: every screen is shown verbatim, every item type
+// is rendered with the matching input shape, and the export emits
+// a self-contained HTML document (inline CSS, no external assets)
+// that opens in a browser and prints cleanly — the same job
+// Security First's Umbrella_web does with `utils/forms.js` +
+// `utils/dom.js`.
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { FormItem, FormSchema } from "@/lib/reader";
@@ -89,10 +90,9 @@ function saveAnswers(slug: string, value: Record<string, AnswerValue>): void {
 }
 
 // HTML export builder. Self-contained document, no external assets,
-// prints cleanly via the browser's print dialog. Mirrors the
-// shape of the Android asHTML() output (h1 form title, h3 per
-// screen, h5 per item name, input/textarea/checkbox/radio per
-// item type) but with print-friendly styling and proper HTML
+// prints cleanly via the browser's print dialog. Shape: h1 form
+// title, h3 per screen, h5 per item name, input/textarea/checkbox/
+// radio per item type, with print-friendly styling and proper HTML
 // escaping.
 function buildExportHtml(
   formTitle: string,

@@ -12,7 +12,8 @@
     "forms": "Forms",
     "howToUse": "How to use",
     "credits": "Photo credits",
-    "account": "Account"
+    "account": "Account",
+    "menu": "Menu"
   },
   "home": {
     "hero": {
@@ -107,7 +108,17 @@
   "pathways": {
     "title": "Pathways",
     "intro": "Step-by-step checklists for high-risk situations. Tick items off as you go; your progress is saved on this device.",
+    "allCategories": "All categories",
     "itemCount": "{count, plural, =0 {No items} one {1 item} other {{count} items}}",
+    "levels": {
+      "beginner": "Beginner",
+      "advanced": "Advanced",
+      "expert": "Expert"
+    },
+    "checklistCount": "{count, plural, =0 {No checklists} one {1 checklist} other {{count} checklists}}",
+    "subtopicsCount": "{count, plural, =0 {No subtopics} one {1 subtopic} other {{count} subtopics}}",
+    "filterLabel": "Filter checklists",
+    "filterEmpty": "No checklists match “{query}”.",
     "empty": "This pathway has no items yet.",
     "progress": "{percent}% complete",
     "markAllDone": "Mark all done",
@@ -122,7 +133,9 @@
     "emptyState": {
       "title": "No pathways yet",
       "body": "Once checklists are published in this language, they'll show up here. Your progress saves on this device only."
-    }
+    },
+    "browseDomain": "{count, plural, one {Browse 1 checklist} other {Browse # checklists}}",
+    "filterResults": "{count, plural, =0 {No matching checklists} one {1 matching checklist} other {# matching checklists}}"
   },
   "forms": {
     "title": "Forms",

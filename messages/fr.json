@@ -12,7 +12,8 @@
     "forms": "Formulaires",
     "howToUse": "Comment utiliser",
     "credits": "Crédits photo",
-    "account": "Compte"
+    "account": "Compte",
+    "menu": "Menu"
   },
   "home": {
     "hero": {
@@ -101,7 +102,17 @@
   "pathways": {
     "title": "Parcours",
     "intro": "Listes de vérification étape par étape pour les situations à haut risque. Cochez les éléments au fur et à mesure ; votre progression est enregistrée sur cet appareil.",
+    "allCategories": "Toutes les catégories",
     "itemCount": "{count, plural, =0 {Aucun élément} one {1 élément} other {{count} éléments}}",
+    "levels": {
+      "beginner": "Débutant",
+      "advanced": "Avancé",
+      "expert": "Expert"
+    },
+    "checklistCount": "{count, plural, =0 {Aucune checklist} one {1 checklist} other {{count} checklists}}",
+    "subtopicsCount": "{count, plural, =0 {Aucun sous-thème} one {1 sous-thème} other {{count} sous-thèmes}}",
+    "filterLabel": "Filtrer les checklists",
+    "filterEmpty": "Aucune checklist ne correspond à « {query} ».",
     "empty": "Ce parcours n'a pas encore d'éléments.",
     "progress": "{percent}% terminé",
     "markAllDone": "Tout marquer comme fait",
@@ -116,7 +127,9 @@
     "emptyState": {
       "title": "Pas encore de checklists",
       "body": "Dès que des checklists seront publiées dans cette langue, elles apparaîtront ici. Votre progression est sauvegardée uniquement sur cet appareil."
-    }
+    },
+    "browseDomain": "{count, plural, one {Parcourir 1 checklist} other {Parcourir # checklists}}",
+    "filterResults": "{count, plural, =0 {Aucune checklist correspondante} one {1 checklist correspondante} other {# checklists correspondantes}}"
   },
   "forms": {
     "title": "Formulaires",

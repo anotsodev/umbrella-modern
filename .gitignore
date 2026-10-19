@@ -48,3 +48,9 @@ next-env.d.ts
 
 # umbrella-content clone lives in a Docker volume (umbrella-modern-content)
 /public/content
+
+# local sqlite (docker-managed)
+prisma/dev.db
+
+# impeccable critique snapshots
+.impeccable/

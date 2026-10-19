@@ -54,7 +54,7 @@ tables: `session`, `account`, `verification`. Full DDL in
 ## Out of scope
 
 - Android / iOS — explicitly deferred by the user
-- Analytics — see the Android `terms.html` stance on not collecting user data
+- Analytics — Security First's no-collection stance
 - PWA / offline mode — Phase 4
 - Cloud image storage — local volume for now
 
@@ -65,9 +65,13 @@ tables: `session`, `account`, `verification`. Full DDL in
 | 0 | Spec + ops (Docker, schema stub, i18n skeleton, **better-auth scaffolded**) | **complete** |
 | 1 | Reader surface + `umbrella-content` import job + checklist/forms | **complete** (reader + FTS + pathways + forms) |
 | 2 | Real SMTP/Resend/Postmark for magic-link delivery + per-user progress persistence | **complete** (Resend + API + sync) |
-| 3 | Read-only migration aids (Android user data export) | not started |
 | 4 | PWA / offline mode | not started |
 | 5 | NOT in scope: analytics, custom content uploads | — |
+
+Phase 3 (read-only Android migration aids) was **dropped** —
+Umbrella_web is the sole upstream reference, the how-to-use page
+shipped with web screenshots, and there is no Android user data
+to migrate.
 
 ## Auth / Magic-link transport (Phase 2)
 
@@ -94,7 +98,7 @@ tables: `session`, `account`, `verification`. Full DDL in
   request this, ignore this email."` Plain-text + HTML variants.
   No social links, no marketing copy — privacy stance consistent
   with the security-app positioning.
-- **Server-side session invalidation on sign-out** (Phase 3 follow-up).
+- **Server-side session invalidation on sign-out** (follow-up).
   The privacy statement promises that the session record in the
   database is deleted immediately when a user clicks "Sign out", and
   that promise is load-bearing. better-auth's default `/sign-out`
@@ -175,7 +179,7 @@ tables: `session`, `account`, `verification`. Full DDL in
   (or upsert the parent + replace children). This keeps the server
   row in lockstep with what the client shows without inventing a
   diff protocol.
-  - **Future contributor note (Phase 3)**: today the "upsert"
+  - **Future contributor note**: today the "upsert"
     pattern is implemented as `findFirst` + `update`/`create`
     because Prisma's `upsert` requires a compound unique key
     and we don't have one on `(userId, formId)` /
@@ -333,9 +337,8 @@ i18n + smoke coverage.
   `umbrella.form.<slug>.answers`. Phase 2 swaps to per-user
   server state keyed off the existing `user_forms` table.
 - **Printable HTML export**: "Export HTML" builds a
-  self-contained document (inline CSS, no external assets)
-  matching the shape of the Android `asHTML()` reference in
-  `data/database/form/entity.kt:149` — h1 form title, h3 per
+  self-contained document (inline CSS, no external assets) —
+  h1 form title, h3 per
   screen, h5 per item, then readonly input/textarea/radio/
   checkbox per type. Browser print preview renders cleanly
   with `body { font-family: … }` and `field { break-inside:
@@ -424,7 +427,7 @@ i18n + smoke coverage.
   the pattern** — the localStorage hydration effect is
   required for the anonymous fallback, and the new
   server-merge effect uses the same shape. Refactor to
-  `useSyncExternalStore` is a Phase 3 candidate.
+  `useSyncExternalStore` is a future-refactor candidate.
 - **Turbopack.** Stable, no surprises. The web container
   builds and serves in dev mode without the Turbopack opt-out.
   The dev experience is fast and HMR works on every page type

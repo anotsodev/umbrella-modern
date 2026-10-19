@@ -10,6 +10,11 @@ lands in follow-up commits on the same branch.
 Branch: `anotsodev-ui-ux-beautification` (renamed from
 `anotsodev-fuzzy-enigma` for this work).
 
+> **Historical note:** references to the Android app below are
+> point-in-time observations from when this audit was written.
+> The project now follows Umbrella_web
+> (`securityfirst/Umbrella_web`) as its sole upstream reference.
+
 ---
 
 ## Constraints carried into the audit

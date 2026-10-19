@@ -2,7 +2,8 @@
 // that captures answers client-side. v1 stores answers in
 // localStorage (`umbrella.form.<slug>.answers`); the runner's
 // "Export HTML" button emits a self-contained printable document
-// that mirrors the Android FormService.asHTML() output.
+// in the spirit of Security First's Umbrella_web export utilities
+// (`utils/forms.js` + `utils/dom.js`).
 
 import Link from "next/link";
 import { getTranslations, setRequestLocale } from "next-intl/server";

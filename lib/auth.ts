@@ -1,8 +1,7 @@
 // better-auth instance for umbrella-modern.
 //
 // We use the magic-link plugin for email-based auth (no passwords —
-// matches Security First's no-collection stance in the Android
-// terms.html). The actual email transport lives in lib/email.ts
+// matches Security First's no-collection stance). The actual email transport lives in lib/email.ts
 // (Resend in production, dev-stub fallback when RESEND_API_KEY is
 // unset and NODE_ENV !== "production").
 //
