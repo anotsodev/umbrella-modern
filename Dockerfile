@@ -26,22 +26,39 @@ EXPOSE 3000
 ENTRYPOINT ["dumb-init", "--"]
 CMD ["npm", "run", "dev"]
 
+# ---------- tools stage: explicit production schema/content maintenance ----------
+FROM dev AS tools
+RUN apk add --no-cache bash
+ENV NODE_ENV=production
+CMD ["bash", "-c", "npx prisma db push --skip-generate && bash bin/import-if-empty"]
+
 # ---------- builder stage: production build ----------
 FROM node:22-alpine AS builder
+RUN apk add --no-cache openssl
 WORKDIR /app
+ENV NODE_ENV=production
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npm run build
+# Auth is imported while Next.js collects routes. Use a build-only placeholder,
+# never a real signing secret; the production secret is supplied at runtime.
+RUN BETTER_AUTH_SECRET=build-only-placeholder-not-for-runtime-000000000000 \
+    DATABASE_URL=postgresql://build:build@127.0.0.1:5432/build \
+    npm run build
 
 # ---------- runner stage: minimal production image ----------
 FROM node:22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
-RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
+RUN apk add --no-cache dumb-init openssl \
+    && addgroup --system --gid 1001 nodejs \
+    && adduser --system --uid 1001 nextjs
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/next.config.ts ./next.config.ts
+COPY --from=builder /app/i18n.ts ./i18n.ts
 USER nextjs
 EXPOSE 3000
+ENTRYPOINT ["dumb-init", "--"]
 CMD ["npm", "start"]
