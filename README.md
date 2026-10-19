@@ -55,6 +55,14 @@ open http://localhost:3000
 Native (non-Docker) dev loop is supported via `make dev` once `npm install` has run inside
 the container at least once (so `node_modules` is populated).
 
+## Production deployment
+
+`make up` starts a **development server**, not a production deployment. Use the
+standalone `compose.prod.yml` to build the production image and run `next start`.
+See [the production deployment guide](dev-docs/production.md) for environment
+setup, backups, switching the existing stack without deleting its volumes, and
+verification. The environment template is `deploy/production.env.example`.
+
 ## Project layout
 
 | Path | Purpose |

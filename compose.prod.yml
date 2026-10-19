@@ -1,0 +1,83 @@
+# Standalone production stack; do NOT layer on top of compose.yml.
+# docker compose --env-file .env.production -f compose.prod.yml up -d --build --wait
+services:
+  web:
+    build:
+      context: .
+      target: runner
+    command: ["npm", "start"]
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://app:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@db:5432/app?schema=public
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?Set a strong BETTER_AUTH_SECRET}
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL:?Set the public HTTPS URL}
+      RESEND_API_KEY: ${RESEND_API_KEY:?Set RESEND_API_KEY for magic-link delivery}
+      EMAIL_FROM: ${EMAIL_FROM:?Set a verified EMAIL_FROM sender}
+    ports:
+      # Host reverse proxy/tunnel only. For a proxy on another host, set WEB_BIND_ADDRESS.
+      - "${WEB_BIND_ADDRESS:-127.0.0.1}:${WEB_PORT:-3000}:3000"
+    volumes:
+      - umbrella-content:/app/public/content:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      # Note: this is a process liveness check, not a deep readiness probe.
+      # A 5xx response (e.g. DB unreachable) still counts as "the process
+      # answered", so a transient outage won't loop the container. Swap for
+      # a dedicated /api/health route once one exists; until then, rely on
+      # Cloudflare edge rate limiting and the start_period for bad-schema
+      # protection.
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/en').then(() => process.exit(0)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 5
+    # Drop privilege escalation only. read_only=true would require tmpfs
+    # for /app/.next/cache and /tmp (Next + Prisma engine), which is a
+    # bigger change tracked separately. Hardening backlog is in
+    # dev-docs/production.md.
+    security_opt:
+      - "no-new-privileges:true"
+    restart: unless-stopped
+
+  # Explicit maintenance only: never pushes schema or imports on web startup.
+  # Back up first, then run with: ... --profile maintenance run --rm tools
+  # (no `restart:` here — `run --rm` is one-shot, the key is meaningless.)
+  tools:
+    profiles: ["maintenance"]
+    build:
+      context: .
+      target: tools
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://app:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@db:5432/app?schema=public
+    volumes:
+      - umbrella-content:/app/public/content
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  db:
+    image: postgres:16-alpine@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+      POSTGRES_DB: app
+    # No host port: Postgres is reachable only on the Compose network.
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d app"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+# Same names as the development stack: switching modes preserves existing data.
+volumes:
+  pgdata:
+    name: umbrella-modern-pgdata
+  umbrella-content:
+    name: umbrella-modern-content

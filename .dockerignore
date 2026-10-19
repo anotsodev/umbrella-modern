@@ -1,0 +1,13 @@
+.git
+.cptr
+node_modules
+.next
+out
+coverage
+.env
+.env.*
+*.pem
+*.sql.gz
+*.dump
+npm-debug.log*
+public/content
