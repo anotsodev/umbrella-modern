@@ -8,6 +8,18 @@ business travelers working in high-risk contexts.
 - **Content source (umbrella-content):** [securityfirst/umbrella-content](https://github.com/securityfirst/umbrella-content) (public)
 - **License:** GPLv3 — see `LICENSE`
 
+## Why this rebuild is public
+
+This project started as an act of appreciation. [Umbrella](https://github.com/securityfirst/Umbrella_web), built by [Security First](https://github.com/securityfirst), is a genuinely important tool: plain-language digital and physical security guides that help journalists, activists, and ordinary people protect themselves when being targeted is a real risk. The original authors got the hard parts right — the content, the care, the no-data-collection stance. None of that is mine; this rebuild exists to celebrate and extend that work, not to replace it.
+
+Two reasons I'm sharing it:
+
+1. **A modernization showcase.** I wanted to see how far a modern web stack — Next.js App Router, PostgreSQL, full i18n across seven locales — could carry the same vital content with a faster, more accessible experience. All credit for the guides themselves belongs to Security First and the original Umbrella contributors.
+
+2. **An LLM-agent experiment.** This rebuild doubles as a proof of concept for AI-driven full-stack development. Nearly every line here — schema, API, UI, i18n, dev ops — was planned, implemented, reviewed, and iterated by LLM agents working from specs through structured personas (PM → developer → QA). The goal was to observe what agentic workflows can genuinely do end-to-end, where they break down, and how to direct them more effectively. In that sense, this repo is as much a research artifact about working *with* AI agents as it is an app.
+
+**If you need the actual security guidance, please use the official Umbrella app** from Security First. This repository is a technical showcase and an experiment — licensed under the same GPLv3 as the original, with attribution preserved in the app footer. The mission, the content, and the credit belong to the original team.
+
 ## Stack
 
 | Layer | Choice |
