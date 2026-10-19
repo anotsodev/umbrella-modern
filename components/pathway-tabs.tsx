@@ -109,20 +109,15 @@ const LEVEL_ICONS: Record<
 // Colored difficulty label for a checklist card, styled like the
 // card title but tinted to the level color (no pill). Flat-category
 // checklists (curated Pathways) have no level and render nothing.
-function LevelBadge({
-  slug,
-  label,
-}: {
-  slug: string;
-  label: string;
-}) {
+function LevelBadge({ slug }: { slug: string }) {
+  const t = useTranslations("pathways");
   const level = levelFromSlug(slug);
   if (!level) return null;
   return (
     <span
       className={`text-base font-medium ${LEVEL_TEXT_CLASSES[level] ?? ""}`}
     >
-      {label}
+      {t(`levels.${level}`)}
     </span>
   );
 }
@@ -407,12 +402,7 @@ function DomainPanel({
                 <LinkCard
                   href={`/${lang}/pathways/${item.slug}`}
                   title={item.title}
-                  header={
-                    <LevelBadge
-                      slug={item.slug}
-                      label={t(`levels.${levelFromSlug(item.slug) ?? ""}`)}
-                    />
-                  }
+                  header={<LevelBadge slug={item.slug} />}
                   meta={t("itemCount", { count: item.itemCount })}
                   thumb={<CardThumb slug={item.slug} />}
                   titleSize="hidden"
@@ -492,12 +482,7 @@ function OverviewPanel({
                           href={`/${lang}/pathways/${item.slug}`}
                           title={item.title}
                           header={
-                            <LevelBadge
-                              slug={item.slug}
-                              label={t(
-                                `levels.${levelFromSlug(item.slug) ?? ""}`
-                              )}
-                            />
+                            <LevelBadge slug={item.slug} />
                           }
                           meta={t("itemCount", { count: item.itemCount })}
                           thumb={<CardThumb slug={item.slug} />}

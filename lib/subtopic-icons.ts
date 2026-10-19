@@ -94,6 +94,12 @@ const ICON_RULES: [string, keyof typeof ICONS][] = [
   ["work", "users"],
   ["assess-your-risk", "compass"],
   ["pathways", "route"],
+  // Top-level categories (homepage + categories index)
+  ["about", "compass"],
+  ["emergency-support", "siren"],
+  ["forms", "fileWarning"],
+  ["glossary", "keyRound"],
+  ["tools", "keyRound"],
 ];
 
 // The icon registry. Keys are stable identifiers; the components are

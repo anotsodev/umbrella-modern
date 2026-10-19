@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { Hero } from "@/components/hero";
 import { WelcomeRow, type WelcomeRowCard } from "@/components/welcome-row";
 import { LinkCard } from "@/components/card";
+import { ICONS, subtopicIconKey } from "@/lib/subtopic-icons";
+import type { LucideIcon } from "lucide-react";
 
 // Reader is per-request, per-language content from Postgres.
 // `instant = false` opts out of Next 16's prerender-at-build-time
@@ -78,14 +80,18 @@ export default async function HomePage({ params }: Props) {
           {tCat("topLevel")}
         </h2>
         <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {categories.map((cat) => (
-            <li key={String(cat.id)}>
-              <LinkCard
-                href={`/${lang}/categories/${cat.slug}`}
-                title={cat.title}
-              />
-            </li>
-          ))}
+          {categories.map((cat) => {
+            const Icon: LucideIcon = ICONS[subtopicIconKey(cat.slug)];
+            return (
+              <li key={String(cat.id)}>
+                <LinkCard
+                  href={`/${lang}/categories/${cat.slug}`}
+                  title={cat.title}
+                  thumb={<Icon aria-hidden="true" className="size-8" strokeWidth={1.5} />}
+                />
+              </li>
+            );
+          })}
         </ul>
       </section>
     </main>
