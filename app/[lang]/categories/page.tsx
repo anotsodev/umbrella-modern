@@ -4,6 +4,8 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { isLocale, type Locale } from "@/i18n";
 import { getAllCategories } from "@/lib/reader";
 import { LinkCard } from "@/components/card";
+import { ICONS, subtopicIconKey } from "@/lib/subtopic-icons";
+import type { LucideIcon } from "lucide-react";
 
 // Next 16 `cacheComponents: true` rejects `export const dynamic = "force-dynamic"`.
 // Use `instant = false` instead, per Next.js 16 docs.
@@ -40,15 +42,19 @@ export default async function CategoriesIndex({ params }: Props) {
       <section>
         <h2 className="mb-4 text-xl font-semibold">{t("topLevel")}</h2>
         <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {topLevel.map((cat) => (
-            <li key={String(cat.id)}>
-              <LinkCard
-                href={`/${lang}/categories/${cat.slug}`}
-                title={cat.title}
-                titleSize="sm"
-              />
-            </li>
-          ))}
+          {topLevel.map((cat) => {
+            const Icon: LucideIcon = ICONS[subtopicIconKey(cat.slug)];
+            return (
+              <li key={String(cat.id)}>
+                <LinkCard
+                  href={`/${lang}/categories/${cat.slug}`}
+                  title={cat.title}
+                  titleSize="sm"
+                  thumb={<Icon aria-hidden="true" className="size-7" strokeWidth={1.5} />}
+                />
+              </li>
+            );
+          })}
         </ul>
       </section>
     </main>
