@@ -54,3 +54,6 @@ prisma/dev.db
 
 # impeccable critique snapshots
 .impeccable/
+
+# local agent-sandbox project marker (umbrella-modern is itself the project)
+.agent-project

@@ -11,7 +11,7 @@ import type { ReactNode } from "react";
 import { Button } from "@/components/button";
 
 type HeroProps = {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   subtitle: string;
   intro?: string;
@@ -35,9 +35,11 @@ export function Hero({
     <section className="relative overflow-hidden rounded-lg border border-line bg-surface">
       <div className="grid grid-cols-1 lg:grid-cols-5">
         <div className="flex flex-col justify-center gap-4 p-8 sm:p-10 lg:col-span-3 lg:p-12">
-          <p className="text-xs font-medium uppercase tracking-widest text-fg-muted">
-            {eyebrow}
-          </p>
+          {eyebrow ? (
+            <p className="text-xs font-medium uppercase tracking-widest text-fg-muted">
+              {eyebrow}
+            </p>
+          ) : null}
           <h1 className="text-3xl font-semibold tracking-tight text-fg sm:text-4xl lg:text-5xl">
             {title}
           </h1>
