@@ -44,13 +44,13 @@ export function LocalePicker({ current }: { current: string }) {
   }
 
   return (
-    <div className="relative">
+    <div className="relative shrink-0">
       <button
         type="button"
         aria-label={t("menu")}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex items-center gap-1 rounded-md border border-line-strong px-3 py-1.5 text-sm text-fg hover:bg-surface-sunken"
+        className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-md border border-line-strong px-3 py-1.5 text-sm text-fg hover:bg-surface-sunken"
       >
         {NATIVE_NAMES[current as keyof typeof NATIVE_NAMES] ?? current}
         <span aria-hidden>▾</span>

@@ -9,6 +9,7 @@ import { locales, isLocale, rtlLocales } from "@/i18n";
 import { LocalePicker } from "@/components/locale-picker";
 import { LocalStorageNotice } from "@/components/local-storage-notice";
 import { HeaderAuth } from "@/components/header-auth";
+import { MobileNav } from "@/components/mobile-nav";
 import { Footer } from "@/components/footer";
 import "../globals.css";
 
@@ -70,14 +71,15 @@ export default async function LocaleLayout({
             <LocalStorageNotice lang={lang} />
           </Suspense>
           <header className="border-b border-line">
-            <nav className="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-6 py-4">
-              <div className="flex flex-wrap items-center gap-6">
-                <Link
-                  href={`/${lang}`}
-                  className="text-sm font-medium text-fg"
-                >
-                  Umbrella
-                </Link>
+            <nav className="mx-auto flex w-full max-w-5xl flex-wrap items-center gap-x-3 gap-y-2 px-6 py-4">
+              <MobileNav lang={lang} />
+              <Link
+                href={`/${lang}`}
+                className="text-sm font-medium text-fg"
+              >
+                Umbrella
+              </Link>
+              <div className="hidden flex-wrap items-center gap-x-3 lg:flex">
                 <Link
                   href={`/${lang}`}
                   className="text-sm text-fg-muted hover:text-fg"
@@ -120,10 +122,16 @@ export default async function LocaleLayout({
                 >
                   {tNav("credits")}
                 </Link>
+              </div>
+              {/* Search + locale + account wrap as one group: they sit
+                  on the links' lane when it fits, otherwise drop to a
+                  right-aligned lane of their own (ms-auto keeps them
+                  end-aligned in RTL too). */}
+              <div className="ms-auto flex items-center gap-x-2 gap-y-2">
                 <form
                   action={`/${lang}/search`}
                   method="get"
-                  className="flex items-center"
+                  className="hidden items-center sm:flex"
                   role="search"
                 >
                   <input
@@ -132,23 +140,23 @@ export default async function LocaleLayout({
                     defaultValue=""
                     placeholder={tNav("searchPlaceholder")}
                     aria-label="Search"
-                    className="w-40 rounded-md border border-line-strong bg-surface px-2 py-1 text-xs text-fg placeholder:text-fg-subtle focus:border-accent focus:outline-none"
+                    className="w-28 rounded-md border border-line-strong bg-surface px-3 py-1.5 text-sm text-fg placeholder:text-fg-subtle focus:border-accent focus:outline-none"
                   />
                 </form>
+                {/* Suspense required: next-intl client components use usePathname() which must be inside a Suspense boundary under Next 16 cacheComponents. */}
+                <Suspense fallback={null}>
+                  <LocalePicker current={lang} />
+                </Suspense>
+                <Suspense
+                  fallback={
+                    <span className="text-sm text-fg-subtle" aria-hidden="true">
+                      …
+                    </span>
+                  }
+                >
+                  <HeaderAuth lang={lang} />
+                </Suspense>
               </div>
-              {/* Suspense required: next-intl client components use usePathname() which must be inside a Suspense boundary under Next 16 cacheComponents. */}
-              <Suspense fallback={null}>
-                <LocalePicker current={lang} />
-              </Suspense>
-              <Suspense
-                fallback={
-                  <span className="text-sm text-fg-subtle" aria-hidden="true">
-                    …
-                  </span>
-                }
-              >
-                <HeaderAuth lang={lang} />
-              </Suspense>
             </nav>
           </header>
           <div className="flex-1">{children}</div>

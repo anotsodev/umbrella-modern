@@ -25,8 +25,12 @@
 // roving tabindex and arrow/Home/End key navigation. The filter is
 // a labelled search input; result counts are announced politely.
 
-import { useId, useMemo, useRef, useState } from "react";
+import { useId, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
+import {
+  Star,
+  type LucideIcon,
+} from "lucide-react";
 import { LinkCard } from "@/components/card";
 import { levelFromSlug } from "@/lib/levels";
 import { ICONS, subtopicIconKey } from "@/lib/subtopic-icons";
@@ -69,21 +73,42 @@ const FILTER_INPUT_CLASSES =
   "w-full rounded-md border border-line-strong bg-surface px-3 py-2 text-sm " +
   "text-fg placeholder:text-fg-subtle focus:border-accent focus:outline-none";
 
-// Level badge colors follow the app's soft-token scale:
+// Level text colors follow the app's soft-token scale:
 // Beginner = success (emerald), Advanced = warn (amber),
-// Expert = danger (red). Class strings are written out per level so
-// Tailwind can see every utility name statically.
-const LEVEL_BADGE_CLASSES: Record<string, string> = {
-  beginner:
-    "bg-success-soft-bg text-success-soft-fg dark:bg-success-soft-bg-dark dark:text-success-soft-fg-dark",
-  advanced:
-    "bg-warn-soft-bg text-warn-soft-fg dark:bg-warn-soft-bg-dark dark:text-warn-soft-fg-dark",
-  expert:
-    "bg-danger-soft-bg text-danger-soft-fg dark:bg-danger-soft-bg-dark dark:text-danger-soft-fg-dark",
+// Expert = danger (red). Rendered as plain colored text (no pill).
+const LEVEL_TEXT_CLASSES: Record<string, string> = {
+  beginner: "text-success-soft-fg dark:text-success-soft-fg-dark",
+  advanced: "text-warn-soft-fg dark:text-warn-soft-fg-dark",
+  expert: "text-danger-soft-fg dark:text-danger-soft-fg-dark",
 };
 
-// Colored level pill for a checklist card. Flat-category checklists
-// (curated Pathways) have no level and render no badge.
+// Difficulty icon per level — 1–3 filled stars — tinted to the
+// level color. Static registry so consumers use member access
+// (react-hooks/static-components).
+const LEVEL_ICONS: Record<
+  string,
+  { Icon: LucideIcon; count: number; text: string } | undefined
+> = {
+  beginner: {
+    Icon: Star,
+    count: 1,
+    text: "text-success-soft-fg dark:text-success-soft-fg-dark",
+  },
+  advanced: {
+    Icon: Star,
+    count: 2,
+    text: "text-warn-soft-fg dark:text-warn-soft-fg-dark",
+  },
+  expert: {
+    Icon: Star,
+    count: 3,
+    text: "text-danger-soft-fg dark:text-danger-soft-fg-dark",
+  },
+};
+
+// Colored difficulty label for a checklist card, styled like the
+// card title but tinted to the level color (no pill). Flat-category
+// checklists (curated Pathways) have no level and render nothing.
 function LevelBadge({
   slug,
   label,
@@ -95,7 +120,7 @@ function LevelBadge({
   if (!level) return null;
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium ${LEVEL_BADGE_CLASSES[level] ?? ""}`}
+      className={`text-base font-medium ${LEVEL_TEXT_CLASSES[level] ?? ""}`}
     >
       {label}
     </span>
@@ -115,12 +140,87 @@ function SectionIcon({ slug }: { slug: string }) {
     />
   );
 }
+
+// Right-side thumbnail tile for a pathway card: a 1–3 star
+// difficulty rating (tinted to the level color) for leveled
+// checklists, falling back to the subtopic icon for flat
+// categories. Decorative — the card title carries the meaning.
+function CardThumb({ slug }: { slug: string }) {
+  const level = levelFromSlug(slug);
+  const entry = level ? LEVEL_ICONS[level] : undefined;
+  if (entry) {
+    const LevelIcon = entry.Icon;
+    return (
+      <span className={`flex gap-0.5 ${entry.text}`}>
+        {Array.from({ length: entry.count }, (_, i) => (
+          <LevelIcon
+            key={i}
+            aria-hidden="true"
+            className="size-6 fill-current"
+            strokeWidth={1.5}
+          />
+        ))}
+      </span>
+    );
+  }
+  const Icon = ICONS[subtopicIconKey(slug)];
+  return <Icon aria-hidden="true" className="size-8" strokeWidth={1.5} />;
+}
+// The URL hash is the source of truth for the active tab
+// (/en/pathways#communications survives reloads and shared links),
+// read through useSyncExternalStore. history.replaceState doesn't
+// fire hashchange, so writes notify subscribers manually.
+const hashListeners = new Set<() => void>();
+
+function subscribeToHash(callback: () => void) {
+  window.addEventListener("hashchange", callback);
+  hashListeners.add(callback);
+  return () => {
+    window.removeEventListener("hashchange", callback);
+    hashListeners.delete(callback);
+  };
+}
+
+function getHashSlug() {
+  return window.location.hash.slice(1);
+}
+
+function getServerHashSlug() {
+  return "";
+}
+
+function setHash(slug: string) {
+  const { pathname, search } = window.location;
+  window.history.replaceState(
+    null,
+    "",
+    slug ? `#${slug}` : pathname + search
+  );
+  for (const cb of hashListeners) cb();
+}
+
 export function PathwayTabs({ domains, lang }: Props) {
   const t = useTranslations("pathways");
-  const [active, setActive] = useState(-1);
   const [query, setQuery] = useState("");
   const baseId = useId();
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const slugToIndex = useMemo(
+    () => new Map(domains.map((d, i) => [d.slug, i])),
+    [domains]
+  );
+  const hashSlug = useSyncExternalStore(
+    subscribeToHash,
+    getHashSlug,
+    getServerHashSlug
+  );
+  const active = slugToIndex.get(hashSlug) ?? -1;
+
+  // Single entry point for tab changes so the hash stays in sync.
+  // replaceState: switching tabs shouldn't pollute browser history.
+  function openDomain(index: number) {
+    setHash(index === -1 ? "" : (domains[index]?.slug ?? ""));
+  }
 
   const showAll = active === -1;
   const normalizedQuery = query.trim().toLowerCase();
@@ -159,7 +259,7 @@ export function PathwayTabs({ domains, lang }: Props) {
     else if (e.key === "End") next = last;
     if (next === null) return;
     e.preventDefault();
-    setActive(next);
+    openDomain(next);
     tabRefs.current[next]?.focus();
   }
 
@@ -182,7 +282,7 @@ export function PathwayTabs({ domains, lang }: Props) {
           aria-selected={showAll}
           aria-controls={`${baseId}-panel-all`}
           tabIndex={showAll ? 0 : -1}
-          onClick={() => setActive(-1)}
+          onClick={() => openDomain(-1)}
           onKeyDown={onKeyDown}
           className={tabClass(showAll)}
         >
@@ -202,7 +302,7 @@ export function PathwayTabs({ domains, lang }: Props) {
               aria-selected={selected}
               aria-controls={`${baseId}-panel-${i}`}
               tabIndex={selected ? 0 : -1}
-              onClick={() => setActive(i)}
+              onClick={() => openDomain(i)}
               onKeyDown={onKeyDown}
               className={tabClass(selected)}
             >
@@ -241,7 +341,7 @@ export function PathwayTabs({ domains, lang }: Props) {
           matches={matches}
           lang={lang}
           baseId={baseId}
-          onOpenDomain={setActive}
+          onOpenDomain={openDomain}
         />
       ) : (
         <div
@@ -307,11 +407,15 @@ function DomainPanel({
                 <LinkCard
                   href={`/${lang}/pathways/${item.slug}`}
                   title={item.title}
-                  subtitle={t("itemCount", { count: item.itemCount })}
-                  badge={
-                    <LevelBadge slug={item.slug} label={t(`levels.${levelFromSlug(item.slug) ?? ""}`)} />
+                  header={
+                    <LevelBadge
+                      slug={item.slug}
+                      label={t(`levels.${levelFromSlug(item.slug) ?? ""}`)}
+                    />
                   }
-                  titleSize="sm"
+                  meta={t("itemCount", { count: item.itemCount })}
+                  thumb={<CardThumb slug={item.slug} />}
+                  titleSize="hidden"
                 />
               </li>
             ))}
@@ -387,8 +491,7 @@ function OverviewPanel({
                         <LinkCard
                           href={`/${lang}/pathways/${item.slug}`}
                           title={item.title}
-                          subtitle={t("itemCount", { count: item.itemCount })}
-                          badge={
+                          header={
                             <LevelBadge
                               slug={item.slug}
                               label={t(
@@ -396,7 +499,9 @@ function OverviewPanel({
                               )}
                             />
                           }
-                          titleSize="sm"
+                          meta={t("itemCount", { count: item.itemCount })}
+                          thumb={<CardThumb slug={item.slug} />}
+                          titleSize="hidden"
                         />
                       </li>
                     );
