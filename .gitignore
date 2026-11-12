@@ -57,3 +57,4 @@ prisma/dev.db
 
 # local agent-sandbox project marker (umbrella-modern is itself the project)
 .agent-project
+.cptr
