@@ -1,6 +1,120 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# --------------------------------------------------------------------------
+# Canonical .gitignore — propagated across ~/Projects workspaces (2026-11-15)
+# Canonical copy lives in infra/optiplex-management; see logs/ for the record.
+# Merge of the two prior styles (full template + compact secrets style).
+# --------------------------------------------------------------------------
 
-# dependencies
+# --------------------------------------------------------------------------
+# Secrets — generic shapes that should NEVER be tracked
+# --------------------------------------------------------------------------
+
+# Generic env files
+.env
+.env.*
+*.env
+*.env.*
+!.env.example
+!.env.template
+
+# Common secret-shaped filenames
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+*.jks
+secrets.*
+credentials.*
+*credentials*
+service-account*.json
+*-credentials.json
+*-secret.json
+
+# Cloud-specific
+*.b2-backup
+*b2_application*
+.aws/credentials
+.gcp/credentials.json
+.azure/credentials
+
+# SSH / GPG
+id_rsa
+id_rsa.pub
+id_ed25519
+*.gpg
+
+# Tokens embedded in URLs (very hard to scrub — be conservative)
+*github_pat*
+*ghp_*
+*gho_*
+*ghs_*
+*ghr_*
+*xoxb-*
+*xoxp-*
+*token*
+auth_token
+
+# npm config — may carry registry auth tokens. Ignored by default; a repo
+# that genuinely needs it can allowlist with a trailing "!.npmrc".
+.npmrc
+
+# --------------------------------------------------------------------------
+# Agent memory / scratch state
+# --------------------------------------------------------------------------
+
+.cptr/
+.cursor/
+.aider*
+.continue/
+
+# --------------------------------------------------------------------------
+# OS / editor noise
+# --------------------------------------------------------------------------
+
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# --------------------------------------------------------------------------
+# Transient files
+# --------------------------------------------------------------------------
+
+*.log
+*.tmp
+*.bak
+*.bak-*
+
+# --------------------------------------------------------------------------
+# Build / runtime artifacts
+# --------------------------------------------------------------------------
+
+# Node
+node_modules/
+dist/
+build/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Docker Compose override files
+docker-compose.override.yml
+
+# --------------------------------------------------------------------------
+# umbrella-modern — Next.js app specifics
+# --------------------------------------------------------------------------
+
+# .npmrc is tracked here (contains only legacy-peer-deps=true, no tokens)
+!.npmrc
+
 /node_modules
 /.pnp
 .pnp.*
@@ -9,51 +123,22 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
-
-# testing
 /coverage
-
-# next.js
 /.next/
 /out/
-
-# production
 /build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
 .vercel
-
-# typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# Backups and dumps (host-side; the in-container volume is separate)
 *.sql
 *.sql.gz
 *.dump
 !prisma/migrations/*.sql
-
-# umbrella-content clone lives in a Docker volume (umbrella-modern-content)
 /public/content
-
-# local sqlite (docker-managed)
 prisma/dev.db
-
-# impeccable critique snapshots
 .impeccable/
-
-# local agent-sandbox project marker (umbrella-modern is itself the project)
 .agent-project
